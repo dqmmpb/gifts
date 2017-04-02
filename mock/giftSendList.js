@@ -1,0 +1,122 @@
+const faker = require('faker')
+faker.locale = 'zh_CN'
+
+module.exports = {
+  api: '/mock/user/gift/sendlist/get',
+  response: function (req, res) {
+    res.json({
+      "rc": 1,
+      "sendList": [
+        {
+          "sendTime": "2017-03-24 09:49:08",
+          "totalFee": "56",
+          "takeAmount": 0,
+          "leftAmount": 0,
+          "shareCode": "06c2c01b6eed435d9b36f8ff1db9d0f896652035",
+          "dataList": [
+            "T3 X 3",
+            "T1 X 2"
+          ]
+        },
+        {
+          "sendTime": "2017-03-10 11:11:41",
+          "totalFee": "0",
+          "takeAmount": 7,
+          "leftAmount": 0,
+          "shareCode": "1111",
+          "dataList": [
+            "T1 X 7"
+          ]
+        },
+        {
+          "sendTime": "2017-03-10 11:11:41",
+          "totalFee": "0",
+          "takeAmount": 9,
+          "leftAmount": 0,
+          "shareCode": "2222",
+          "dataList": [
+            "T1 X 6",
+            "T3 X 3"
+          ]
+        },
+        {
+          "sendTime": "2017-03-14 17:20:16",
+          "totalFee": "26",
+          "takeAmount": 0,
+          "leftAmount": 0,
+          "shareCode": "2e0d9bcdaf4342f8ae0d34d7740e15d779237801",
+          "dataList": [
+            "T3 X 3",
+            "T1 X 2"
+          ]
+        },
+        {
+          "sendTime": "2017-03-14 17:20:16",
+          "totalFee": "26",
+          "takeAmount": 5,
+          "leftAmount": 0,
+          "shareCode": "3ce18aeea2b348a6b2d700db3cc2bb2c00795496",
+          "dataList": [
+            "T3 X 3",
+            "T1 X 2"
+          ]
+        },
+        {
+          "sendTime": "2017-03-14 17:04:42",
+          "totalFee": "26",
+          "takeAmount": 0,
+          "leftAmount": 0,
+          "shareCode": "61196ed906374127810c6f0ec65a806d36205324",
+          "dataList": [
+            "T1 X 2",
+            "T3 X 3"
+          ]
+        },
+        {
+          "sendTime": "2017-03-14 17:20:16",
+          "totalFee": "26",
+          "takeAmount": 5,
+          "leftAmount": 0,
+          "shareCode": "645b1901a12a47488894249f3f35c02983217700",
+          "dataList": [
+            "T3 X 3",
+            "T1 X 2"
+          ]
+        },
+        {
+          "sendTime": "2017-03-14 17:20:16",
+          "totalFee": "26",
+          "takeAmount": 5,
+          "leftAmount": 0,
+          "shareCode": "7a9ec3f671d94751b35a8ef47ec1d21829017802",
+          "dataList": [
+            "T3 X 3",
+            "T1 X 2"
+          ]
+        },
+        {
+          "sendTime": "2017-03-24 09:46:07",
+          "totalFee": "22",
+          "takeAmount": 5,
+          "leftAmount": 0,
+          "shareCode": "881b3289042749108d4b78fb832d9a6501750060",
+          "dataList": [
+            "T3 X 3",
+            "T1 X 2"
+          ]
+        },
+        {
+          "sendTime": "2017-03-14 17:20:16",
+          "totalFee": "26",
+          "takeAmount": 0,
+          "leftAmount": 0,
+          "shareCode": "b36a45dd08834bdd9eb85938c804711135400009",
+          "dataList": [
+            "T1 X 2",
+            "T3 X 3"
+          ]
+        }
+      ]
+    })
+  }
+}
