@@ -3,14 +3,14 @@
  */
 
 import http from '../../../common/httpUtil'
-import * as types from './giftLogisticsMutationTypes'
+import * as types from './logisticsMutationTypes'
 
 const actions = {
 
-  queryLogisticss ({ commit }, {giftId} = {}) {
+  queryLogisticsList ({ commit }, { deliveryId } = {}) {
     commit(types.GIFT_QUERY_LOGISTICS_BEGIN)
 
-    return http.get(`logistics/query?giftId=${giftId}`)
+    return http.get(`user/gift/logisticslist/get?deliveryId=${deliveryId}`)
       .then(data => {
         commit(types.GIFT_QUERY_LOGISTICS_SUC, data.data)
       })

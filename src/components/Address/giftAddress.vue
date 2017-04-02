@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <router-link :to="toAddress()"><x-button type="warn">从地址簿中选择</x-button></router-link>
+    <router-link :to="toAddressList()"><x-button type="warn">从地址簿中选择</x-button></router-link>
 
     <form ref="form" v-model="form">
       <group class="group-address">
@@ -29,10 +29,10 @@
 
 import { mapActions, mapGetters } from 'vuex'
 
-import moduleStore from './bll/giftAddressStore'
+import moduleStore from './bll/addressStore'
 import store from '../../store'
 import assignDeep from 'assign-deep'
-(!store.state.addresss) && store.registerModule('addresss', moduleStore)
+(!store.state.addresssStore) && store.registerModule('addresssStore', moduleStore)
 
 import { Tabbar, Group, Cell, XInput, XAddress, ChinaAddressData, XTextarea, XButton } from 'vux'
 
@@ -52,7 +52,7 @@ export default {
   methods: {
     ...mapActions(['saveSelectAddress']),
     toAddress () {
-      return '/address?redirectUrl=' + encodeURIComponent(this.$route.fullPath)
+      return '/addressList?redirectUrl=' + encodeURIComponent(this.$route.fullPath)
     },
     saveSelectHandler () {
     },

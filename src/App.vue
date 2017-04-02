@@ -14,15 +14,15 @@
       </transition>
 
       <tabbar class="view-tabbar" v-show="!isTabbarDemo" slot="bottom">
-        <tabbar-item :link="{path:'/'}" :selected="route.path === '/'">
+        <tabbar-item :link="{path:'/gift/sendList'}" :selected="route.path === '/gift/sendList'">
           <i class="fa fa-bars" slot="icon"></i>
-          <span slot="label">主页</span>
+          <span slot="label">送出礼物</span>
         </tabbar-item>
-        <tabbar-item :link="{path:'/gift/receive'}" :selected="route.path === '/gift/receive'">
+        <tabbar-item :link="{path:'/gift/gainList'}" :selected="route.path === '/gift/gainList'">
           <i class="fa fa-bars" slot="icon"></i>
-          <span slot="label"> 我的礼物</span>
+          <span slot="label">收到礼物</span>
         </tabbar-item>
-        <tabbar-item :link="{path:'/address'}" :selected="route.path === '/address'">
+        <tabbar-item :link="{path:'/addressList'}" :selected="route.path === '/addressList'">
           <i class="fa fa-bars" slot="icon"></i>
           <span slot="label">收货地址</span>
         </tabbar-item>
@@ -135,16 +135,17 @@ export default {
       }
     },
     isTabbarDemo () {
-      if (/address/.test(this.route.path)) return true
+      if (/addressList/.test(this.route.path)) return true
+      if (/addressAdd/.test(this.route.path)) return true
       if (/giftAddress/.test(this.route.path)) return true
       return /tabbar/.test(this.route.path)
     },
     title () {
       if (this.route.path === '/') return '主页'
-      if (this.route.path === '/address') return '收货地址'
-      if (this.route.path === '/address/add') return '新增收货地址'
-      if (this.route.path === '/gift/receive') return '我的礼物'
-      if (this.route.path === '/gift/receive/detail') return '礼物详情'
+      if (this.route.path === '/addressList') return '收货地址'
+      if (this.route.path === '/addressAdd') return '新增收货地址'
+      if (this.route.path === '/gift/gainList') return '收到礼物'
+      if (this.route.path === '/gift/gainDetail') return '礼物详情'
       return this.componentName ? `${this.componentName}` : ''
     }
   }
@@ -196,7 +197,7 @@ html, body {
 .router-view {
   width: 100%;
   height: 100%;
-  animation-duration: 0.5s;
+  animation-duration: 0s;
   animation-fill-mode: both;
   backface-visibility: hidden;
 }
@@ -260,4 +261,5 @@ html, body {
     transform: translate3d(100%, 0, 0);
   }
 }
+
 </style>

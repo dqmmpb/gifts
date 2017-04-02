@@ -1,24 +1,24 @@
 <template>
   <div>
     <scroller lock-x scrollbar-y use-pulldown height="100%" :pulldownConfig="pulldownConfig" @on-pulldown-loading="refresh" v-model="status" ref="scroller">
-      <div v-if="getLogisticss">
+      <div v-if="getGainDetail">
         <card>
           <div slot="content" class="card-padding">
-            <group>
-              <div v-if="getLogisticss.address" class="with-before address">
-                <cell :title="getLogisticss.name + ' ' + getLogisticss.phone" class="no-before first"></cell>
-                <cell :title="getLogisticss.address.state + '' + getLogisticss.address.streetAddress" class="no-before second"></cell>
-              </div>
-            </group>
+            <!--<group>-->
+              <!--<div v-if="getGainDetail.address" class="with-before address">-->
+                <!--<cell :title="getGainDetail.name + ' ' + getGainDetail.phone" class="no-before first"></cell>-->
+                <!--<cell :title="getGainDetail.address.state + '' + getGainDetail.address.streetAddress" class="no-before second"></cell>-->
+              <!--</div>-->
+            <!--</group>-->
           </div>
         </card>
         <div class="weui-panel weui-panel_access logistics">
-          <div class="weui-panel__hd">订单{{getLogisticss.orderNo}}的物流信息</div>
-          <div v-if="getLogisticss.logistics" >
-            <div class="weui-panel__bd" v-for="item in getLogisticss.logistics" :key="item.id">
+          <div class="weui-panel__hd">订单{{getLogisticsOrderNo}}的物流信息</div>
+          <div v-if="getLogisticsList" >
+            <div class="weui-panel__bd" v-for="item in getLogisticsList" :key="item.id">
               <div class="ct">
-                <div class="weui-media-box__title info">【{{item.area}}】{{item.name}}</div>
-                <p class="weui-media-box__desc date">{{item.date}}</p>
+                <div class="weui-media-box__title info">{{item.context}}</div>
+                <p class="weui-media-box__desc date">{{item.time}}</p>
               </div>
             </div>
           </div>
@@ -44,9 +44,12 @@
 
 import { mapActions, mapGetters } from 'vuex'
 
-import moduleStore from './bll/giftLogisticsStore'
+import moduleStore from './bll/logisticsStore'
 import store from '../../store'
-(!store.state.logistics) && store.registerModule('logistics', moduleStore)
+(!store.state.logisticsStore) && store.registerModule('logisticsStore', moduleStore)
+
+import moduleGainStore from '../Gift/Gain/bll/gainStore'
+(!store.state.gainStore) && store.registerModule('gainStore', moduleGainStore)
 
 import { Scroller, Group, Cell, Card, XButton, Spinner, Panel } from 'vux'
 
@@ -61,17 +64,18 @@ export default {
     Panel
   },
   computed: {
-    ...mapGetters(['getLogisticss'])
+    ...mapGetters(['getGainDetail', 'getLogisticsList', 'getLogisticsOrderNo'])
   },
   methods: {
-    ...mapActions(['queryLogisticss']),
+    ...mapActions(['queryGainDetail', 'queryLogisticsList']),
     refresh () {
       let self = this
       if (!self.isLoading) {
         console.log('refresh... ' + 1)
-        const giftId = this.$route.query.giftId
-        if (giftId) {
-          this.queryLogisticss({giftId}).then(() => {
+        const deliveryId = this.$route.query.deliveryId
+        if (deliveryId) {
+          // this.queryGainDetail({deliveryId: Number(deliveryId)})
+          this.queryLogisticsList({deliveryId: Number(deliveryId)}).then(() => {
             this.$nextTick(() => {
               setTimeout(() => {
                 this.$refs.scroller.donePulldown()
@@ -79,18 +83,19 @@ export default {
             })
           })
         }
-        console.log(this.getLogisticss)
+        console.log(this.getLogisticsList)
       }
     },
     initPage () {
       console.log(this.$route)
 
       if (this.$route.query) {
-        const giftId = this.$route.query.giftId
-        if (giftId) {
-          this.queryLogisticss({giftId})
+        const deliveryId = this.$route.query.deliveryId
+        if (deliveryId) {
+          // this.queryGainDetail({deliveryId: Number(deliveryId)})
+          this.queryLogisticsList({deliveryId: Number(deliveryId)})
         }
-        console.log(this.getLogisticss)
+        console.log(this.getLogisticsList)
       }
     }
   },
@@ -241,7 +246,6 @@ export default {
     font-size: 11px;
     font-weight: normal;
     padding-left: 1em;
-    text-indent: -0.5em;
     overflow: visible;
     text-overflow: normal;
     white-space: normal;

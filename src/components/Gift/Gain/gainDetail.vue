@@ -2,19 +2,21 @@
   <div>
     <scroller lock-x scrollbar-y use-pulldown height="100%" :pulldownConfig="pulldownConfig" @on-pulldown-loading="refresh" v-model="status" ref="scroller">
       <div>
-        <card v-if="getGiftReceiveDetail">
+        <card v-if="getGainDetail">
           <div slot="content" class="card-padding">
             <group>
-              <cell :title="getGiftReceiveDetail.date" :value="'[订单号]' + getGiftReceiveDetail.orderNo" class="no-before first"></cell>
+              <cell :title="firstTitle(getGainDetail)" :value="firstValue(getGainDetail)" class="no-before first"></cell>
 
-              <div class="with-before second">
-                <cell v-for="item in getGiftReceiveDetail.gifts" :key="item.id" :title="item.gift" :value="'×' + item.num" class="no-before"></cell>
-              </div>
+              <cell :title="secondTitle(getGainDetail)" :value="secondValue(getGainDetail)" class="with-before second"></cell>
+
+<!--              <div class="with-before second">
+                <cell v-for="item in getGainDetail.gifts" :key="item.id" :title="item.gift" :value="'×' + item.num" class="no-before"></cell>
+              </div>-->
 
               <cell class="with-before cell-padding">
                 <div slot="value">
-                  <router-link v-if="getGiftReceiveDetail.status === 1" :to="{path:'/giftAddress',query: {giftId:getGiftReceiveDetail.id}}"><x-button mini type="warn" class="btn-detail">选择收货地址</x-button></router-link>
-                  <router-link v-else :to="{path:'/logistics',query: {giftId:getGiftReceiveDetail.id}}"><x-button mini type="warn" class="btn-detail">查看物流详情</x-button></router-link>
+                  <router-link v-if="getGainDetail.isDelivered === 0" :to="{path:'/giftAddress',query: {giftId:getGainDetail.id}}"><x-button mini type="warn" class="btn-detail">选择收货地址</x-button></router-link>
+                  <router-link v-else :to="{path:'/logistics',query: {deliveryId:getGainDetail.id}}"><x-button mini type="warn" class="btn-detail">查看物流详情</x-button></router-link>
                 </div>
               </cell>
             </group>
@@ -30,9 +32,9 @@
 
 import { mapActions, mapGetters } from 'vuex'
 
-import moduleStore from './bll/giftReceiveDetailStore'
-import store from '../../store'
-(!store.state.giftReceiveDetail) && store.registerModule('giftReceiveDetail', moduleStore)
+import moduleStore from './bll/gainStore'
+import store from '../../../store'
+(!store.state.gainStore) && store.registerModule('gainStore', moduleStore)
 
 import { Scroller, Group, Cell, Card, XButton, Spinner } from 'vux'
 
@@ -46,26 +48,33 @@ export default {
     Spinner
   },
   computed: {
-    ...mapGetters(['getGiftReceiveDetail'])
+    ...mapGetters(['getGainDetail'])
   },
   methods: {
-    ...mapActions(['queryGiftReceiveDetail']),
+    ...mapActions(['queryGainDetail']),
+    firstTitle (item) {
+      return item.gainTime
+    },
+    firstValue (item) {
+      return '[订单号]' + item.nickName
+    },
+    secondTitle (item) {
+      return item.goodsName
+    },
+    secondValue (item) {
+      return '￥' + item.goodsPrice
+    },
     refresh () {
-      let self = this
-      if (!self.isLoading) {
-        console.log('refresh... ' + 1)
-        const giftId = this.$route.query.giftId
-        const status = this.$route.query.status
-        if (giftId) {
-          this.queryGiftReceiveDetail({giftId: giftId, status: status}).then(() => {
-            this.$nextTick(() => {
-              setTimeout(() => {
-                this.$refs.scroller.donePulldown()
-              }, 10)
-            })
+      console.log('refresh... ' + 1)
+      const giftId = this.$route.query.giftId
+      if (giftId) {
+        this.queryGainDetail({giftId: Number(giftId)}).then(() => {
+          this.$nextTick(() => {
+            setTimeout(() => {
+              this.$refs.scroller.donePulldown()
+            }, 10)
           })
-        }
-        console.log(this.getGiftReceiveDetail)
+        })
       }
     },
     initPage () {
@@ -73,11 +82,10 @@ export default {
 
       if (this.$route.query) {
         const giftId = this.$route.query.giftId
-        const status = this.$route.query.status
         if (giftId) {
-          this.queryGiftReceiveDetail({giftId: giftId, status: status})
+          console.log(giftId)
+          this.queryGainDetail({giftId: Number(giftId)})
         }
-        console.log(this.getGiftReceiveDetail)
       }
     }
   },

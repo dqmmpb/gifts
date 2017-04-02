@@ -5,7 +5,7 @@
 
     <swipeout class="vux-1px-b">
 
-      <swipeout-item v-for="item in getAddresss" :key="item.id" underlay-color="#ccc" :ref="'swipeoutItem' + item.id" :auto-close-on-button-click="false">
+      <swipeout-item v-for="item in getAddressList" :key="item.addressId" underlay-color="#ccc" :ref="'swipeoutItem' + item.addressId" :auto-close-on-button-click="false">
         <div slot="right-menu">
           <!--<swipeout-button @click.native="onButtonClick('edit', item)" type="primary">编辑</swipeout-button>-->
           <swipeout-button @click.native="onButtonClick('delete', item)" type="warn">删除</swipeout-button>
@@ -13,7 +13,7 @@
         <div slot="content" class="swipeout-content vux-1px-t" @click="onItemClick(item)">
           <div class="weui-media-box address">
             <h4 class="weui-media-box__title first">{{item.name}} {{item.phone}}</h4>
-            <p class="weui-media-box__desc second">{{getAddressSecond(item)}}</p>
+            <p class="weui-media-box__desc second">{{getArea(item)}} {{item.address}}</p>
           </div>
         </div>
       </swipeout-item>
@@ -33,7 +33,7 @@
 
 import { mapActions, mapGetters } from 'vuex'
 
-import moduleStore from './bll/giftAddressStore'
+import moduleStore from './bll/addressStore'
 import store from '../../store'
 (!store.state.addresss) && store.registerModule('addresss', moduleStore)
 
@@ -51,13 +51,13 @@ export default {
     Confirm
   },
   computed: {
-    ...mapGetters(['getAddresss'])
+    ...mapGetters(['getAddressList'])
   },
   methods: {
-    ...mapActions(['queryAddresss', 'selectAddress', 'deleteAddress']),
+    ...mapActions(['queryAddressList', 'selectAddress', 'deleteAddress']),
     onItemClick (item) {
       let self = this
-      this.selectAddress({addressId: item.id}).then(() => {
+      this.selectAddress({addressId: item.addressId}).then(() => {
         let redirectUrl = self.$route.query.redirectUrl
         if (redirectUrl) {
           let dec = decodeURIComponent(redirectUrl)
@@ -73,12 +73,12 @@ export default {
           title: '',
           content: '请确认是否删除',
           onCancel () {
-            self.$refs['swipeoutItem' + item.id][0].close()
-            console.log('plugin cancel', item.id)
+            self.$refs['swipeoutItem' + item.addressId][0].close()
+            console.log('plugin cancel', item.addressId)
           },
           onConfirm () {
-            self.deleteAddress({addressId: item.id}).then(() => {
-              console.log('plugin confirm', item.id)
+            self.deleteAddress({addressId: item.addressId}).then(() => {
+              console.log('plugin confirm', item.addressId)
             })
           }
         })
@@ -88,18 +88,17 @@ export default {
       console.log('event: ', type)
     },
     toAddressAdd () {
-      return '/address/add?redirectUrl=' + encodeURIComponent(this.$route.fullPath)
+      return '/addressAdd?redirectUrl=' + encodeURIComponent(this.$route.fullPath)
     },
     addressAddHandle (type) {
       console.log('event: ', type)
     },
-    getAddressSecond (item) {
-      let address = item.stateRaw && item.stateRaw.join('')
-      return address + ' ' + item.streetAddress
+    getArea (item) {
+      return item.areaRaw && item.areaRaw.join('')
     },
     initPage () {
       console.log(this.$route)
-      this.queryAddresss()
+      this.queryAddressList()
     }
   },
   data () {
@@ -129,12 +128,12 @@ export default {
 .address {
   padding: 5px 15px 5px 15px;
 & .first {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: normal;
     padding: 5px 0 0 0;
   }
 & .second {
-    font-size: 10px;
+    font-size: 12px;
     padding: 0 0 5px 0;
   }
 }

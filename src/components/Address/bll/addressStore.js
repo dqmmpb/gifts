@@ -2,19 +2,19 @@
  * Created by alphabeta on 16-12-29.
  */
 
-import actions from './giftAddressAction'
-import mutations from './giftAddressMutation'
+import actions from './addressAction'
+import mutations from './addressMutation'
 
 const state = {
   selectAddress: {},
-  currentAddress: {},
-  addresss: []
+  address: {},
+  addresses: []
 }
 
 const getters = {
-  getAddresss: state => state.addresss,
+  getAddressList: state => state.addresses,
   getSelectAddress: state => state.selectAddress,
-  getCurrentAddress: state => state.currentAddress
+  getAddress: state => state.address
 }
 
 export default {

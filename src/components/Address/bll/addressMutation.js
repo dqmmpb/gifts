@@ -2,7 +2,7 @@
  * Created by alphabeta on 16-12-29.
  */
 
-import * as types from './giftAddressMutationTypes'
+import * as types from './addressMutationTypes'
 
 /**
  * mutations
@@ -15,14 +15,14 @@ const mutations = {
   [types.ADDRESS_QUERY_ADDRESS_SUC] (state, data) {
     state.currentAddress = data.data
   },
-  [types.ADDRESS_QUERY_ADDRESSS_BEGIN] (state) {
+  [types.ADDRESS_QUERY_ADDRESSLIST_BEGIN] (state) {
   },
-  [types.ADDRESS_QUERY_ADDRESSS_SUC] (state, data) {
-    state.addresss = data.data
+  [types.ADDRESS_QUERY_ADDRESSLIST_SUC] (state, data) {
+    state.addresses = data.addressList
   },
   [types.ADDRESS_SELECT_SUC] (state, {addressId}) {
-    let address = state.addresss.find(address => {
-      return address.id === addressId
+    let address = state.addresses.find(address => {
+      return address.addressId === addressId
     })
     if (address) {
       state.selectAddress = address
@@ -37,12 +37,12 @@ const mutations = {
   [types.ADDRESS_DELETE_BEGIN] (state) {
   },
   [types.ADDRESS_DELETE_SUC] (state, {addressId}) {
-    let address = state.addresss.find(address => {
-      return address.id === addressId
+    let address = state.addresses.find(address => {
+      return address.addressId === addressId
     })
-    let indexOf = state.addresss.indexOf(address)
+    let indexOf = state.addresses.indexOf(address)
     if (indexOf !== -1) {
-      state.addresss.splice(indexOf, 1)
+      state.addresses.splice(indexOf, 1)
     }
     console.log(address)
   }

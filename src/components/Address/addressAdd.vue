@@ -1,14 +1,14 @@
 <template>
   <div>
 
-    <form ref="form" v-model="getCurrentAddress">
+    <form ref="form" v-model="getAddress">
       <group class="group-address">
-        <x-input title="收件人" :value="getCurrentAddress.name" placeholder="请填写您的姓名"></x-input>
+        <x-input title="收件人" :value="getAddress.name" placeholder="请填写您的姓名"></x-input>
 
-        <x-input title="联系方式" :value="getCurrentAddress.phone" placeholder="请填写您的联系方式" keyboard="number" :min="11" :max="11" is-type="china-mobile"></x-input>
+        <x-input title="联系方式" :value="getAddress.phone" placeholder="请填写您的联系方式" keyboard="number" :min="11" :max="11" is-type="china-mobile"></x-input>
 
-        <x-address title="收件地址" v-model="getCurrentAddress.area" :list="addressData" placeholder="请填写您的收件地址" value-text-align="left"></x-address>
-        <cell title="上面value值" style="display: none;" :value="getCurrentAddress.area"></cell>
+        <x-address title="收件地址" v-model="getAddress.area" :list="addressData" placeholder="请填写您的收件地址" value-text-align="left"></x-address>
+        <cell title="上面value值" style="display: none;" :value="getAddress.area"></cell>
 
         <x-textarea :max="100" placeholder="请输入详细地址..."></x-textarea>
       </group>
@@ -27,7 +27,7 @@
 
 import { mapActions, mapGetters } from 'vuex'
 
-import moduleStore from './bll/giftAddressStore'
+import moduleStore from './bll/addressStore'
 import store from '../../store'
 (!store.state.addresss) && store.registerModule('addresss', moduleStore)
 
@@ -44,7 +44,7 @@ export default {
     XButton
   },
   computed: {
-    ...mapGetters(['getAddresss', 'getCurrentAddress'])
+    ...mapGetters(['getAddresss', 'getAddress'])
   },
   methods: {
     ...mapActions(['queryAddresss', 'saveAddress', 'updateAddress', 'deleteAddress']),
@@ -52,7 +52,11 @@ export default {
       let self = this
 
       self.saveAddress(self.form).then(function () {
-       // self.$router.push('/giftAddress')
+        let redirectUrl = self.$route.query.redirectUrl
+        if (redirectUrl) {
+          let dec = decodeURIComponent(redirectUrl)
+          self.$router.push(dec)
+        }
       })
     },
     initPage () {
@@ -62,7 +66,7 @@ export default {
         if (addressId) {
           this.queryAddress({addressId: addressId})
         }
-        console.log(this.getCurrentAddress)
+        console.log(this.getAddress)
       }
     }
   },
@@ -88,8 +92,16 @@ export default {
 @import '~vux/src/styles/1px.less';
 
 .group-address {
+
   .weui-cells {
+    margin-top: 0;
     font-size: 14px !important;
+  }
+
+  .weui-cell, .vux-cell-box {
+    &:before {
+      left: 0;
+    }
   }
 
   .weui-label {

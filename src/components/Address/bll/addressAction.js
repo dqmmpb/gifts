@@ -3,7 +3,7 @@
  */
 
 import http from '../../../common/httpUtil'
-import * as types from './giftAddressMutationTypes'
+import * as types from './addressMutationTypes'
 
 const actions = {
 
@@ -16,12 +16,12 @@ const actions = {
       })
   },
 
-  queryAddresss ({ commit }) {
-    commit(types.ADDRESS_QUERY_ADDRESSS_BEGIN)
+  queryAddressList ({ commit }) {
+    commit(types.ADDRESS_QUERY_ADDRESSLIST_BEGIN)
 
-    return http.get(`address/query`)
+    return http.get(`user/addresslist/get`)
       .then(data => {
-        commit(types.ADDRESS_QUERY_ADDRESSS_SUC, data.data)
+        commit(types.ADDRESS_QUERY_ADDRESSLIST_SUC, data.data)
       })
   },
 

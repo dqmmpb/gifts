@@ -2,62 +2,51 @@ const faker = require('faker')
 faker.locale = 'zh_CN'
 
 module.exports = {
-  api: '/mock/logistics/query?:id',
+  api: '/mock/user/gift/logisticslist/get?:id',
   response: function (req, res) {
     res.json({
-      success: 'true',
-      msg: 'ok',
-      data: {
-        id: faker.random.uuid(),
-        orderNo: faker.random.number(),
-        name: faker.name.findName(),
-        phone: faker.phone.phoneNumber(),
-        address: {
-          id: faker.random.uuid(),
-          name: faker.name.findName(),
-          phone: faker.phone.phoneNumber(),
-          state: ['330000', '330100', '330102'],
-          stateRaw: ['浙江省', '杭州市', '上城区'],
-          streetAddress: faker.address.streetAddress()
+      "rc": 1,
+      "orderTime": "2017-03-27 16:33:11",
+      "orderNo": "883420070249072469",
+      "deliveryComp": "圆通速递",
+      "dataList": [
+        {
+          "time": "2016-11-17 12:47:59",
+          "context": "客户签收人: 已签收，签收人凭取货码签收。已签收感谢使用圆通速递，期待再次为您服务"
         },
-        date: faker.date.recent(),
-        type: '礼包',
-        status: '已发货',
-        money: faker.finance.amount(),
-        logistics: [
-          {
-            id: faker.random.uuid(),
-            name: '正在派送，派件人：' + faker.name.findName() + '，电话：' + faker.phone.phoneNumber(),
-            date: faker.date.recent(),
-            area: '杭州市'
-          }, {
-            id: faker.random.uuid(),
-            name: '到达城西分公司，来自杭州分拨',
-            date: faker.date.recent(),
-            area: '杭州市'
-          }, {
-            id: faker.random.uuid(),
-            name: '从杭州分拨离开，发往城西分公司',
-            date: faker.date.recent(),
-            area: '杭州分拨'
-          }, {
-            id: faker.random.uuid(),
-            name: '到达杭州分拨，来自宁波集散',
-            date: faker.date.recent(),
-            area: '杭州分拨'
-          }, {
-            id: faker.random.uuid(),
-            name: '从宁波集散出发，发往杭州分拨',
-            date: faker.date.recent(),
-            area: '宁波集散'
-          }, {
-            id: faker.random.uuid(),
-            name: '已揽收',
-            date: faker.date.recent(),
-            area: '宁波市'
-          }
-        ]
-      }
+        {
+          "time": "2016-11-16 09:20:27",
+          "context": "云南省昆明市呈贡区大学城公司(点击查询电话)夏** 派件中派件员电话15912462535"
+        },
+        {
+          "time": "2016-11-16 09:16:16",
+          "context": "云南省昆明市呈贡区大学城公司已收入"
+        },
+        {
+          "time": "2016-11-16 02:17:22",
+          "context": "昆明转运中心已发出,下一站云南省昆明市呈贡区大学城"
+        },
+        {
+          "time": "2016-11-13 04:30:12",
+          "context": "济南转运中心已发出,下一站昆明转运中心"
+        },
+        {
+          "time": "2016-11-13 04:28:11",
+          "context": "济南转运中心已收入"
+        },
+        {
+          "time": "2016-11-12 22:47:41",
+          "context": "山东省聊城市公司已发出,下一站济南转运中心"
+        },
+        {
+          "time": "2016-11-12 20:46:00",
+          "context": "山东省聊城市公司已打包"
+        },
+        {
+          "time": "2016-11-12 19:48:36",
+          "context": "山东省聊城市公司(点击查询电话) 已揽收"
+        }
+      ]
     })
   }
 }

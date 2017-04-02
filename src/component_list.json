@@ -1,9 +1,8 @@
 [
-  "Hello#/hello",
-  "Address/addressList#/address",
-  "Address/addressAdd#/address/add",
+  "Address/addressList#/addressList",
+  "Address/addressAdd#/addressAdd",
   "Address/giftAddress#/giftAddress",
-  "GiftReceive/giftReceive#/gift/receive",
-  "GiftReceive/giftReceiveDetail#/gift/receive/detail",
+  "Gift/Gain/gain#/gift/gainList",
+  "Gift/Gain/gainDetail#/gift/gainDetail",
   "Logistics/logistics#/logistics"
 ]
