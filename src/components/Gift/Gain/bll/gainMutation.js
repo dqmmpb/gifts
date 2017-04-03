@@ -9,12 +9,18 @@ import * as types from './gainMutationTypes'
  * @type {{}}
  */
 const mutations = {
+  [types.GIFT_QUERY_GAININFO_BEGIN] (state) {
+    state.gift = null
+  },
+  [types.GIFT_QUERY_GAININFO_SUC] (state, data) {
+    state.gift = data
+  },
   [types.GIFT_QUERY_GAINDETAIL_BEGIN] (state) {
     state.gift = null
   },
-  [types.GIFT_QUERY_GAINDETAIL_SUC] (state, { giftId }) {
+  [types.GIFT_QUERY_GAINDETAIL_SUC] (state, data) {
     let gift = state.gifts.find(gift => {
-      return gift.id === giftId
+      return gift.id === data.id
     })
     let indexOf = state.gifts.indexOf(gift)
     if (indexOf !== -1) {

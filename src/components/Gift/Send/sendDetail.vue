@@ -2,21 +2,21 @@
   <div>
 <!--    <scroller lock-x scrollbar-y use-pulldown height="100%" :pulldownConfig="pulldownConfig" @on-pulldown-loading="refresh" v-model="status" ref="scroller">
       <div>-->
-        <card v-if="getGainDetail">
+        <card v-if="getSendDetail">
           <div slot="content" class="card-padding">
             <group>
-              <cell :title="firstTitle(getGainDetail)" :value="firstValue(getGainDetail)" class="no-before first"></cell>
+              <cell :title="firstTitle(getSendDetail)" :value="firstValue(getSendDetail)" class="no-before first"></cell>
 
-              <cell :title="secondTitle(getGainDetail)" :value="secondValue(getGainDetail)" class="with-before second"></cell>
+              <cell :title="secondTitle(getSendDetail)" :value="secondValue(getSendDetail)" class="with-before second"></cell>
 
 <!--              <div class="with-before second">
-                <cell v-for="item in getGainDetail.gifts" :key="item.id" :title="item.gift" :value="'×' + item.num" class="no-before"></cell>
+                <cell v-for="item in getSendDetail.gifts" :key="item.id" :title="item.gift" :value="'×' + item.num" class="no-before"></cell>
               </div>-->
 
               <cell class="with-before cell-padding">
                 <div slot="value">
-                  <router-link v-if="getGainDetail.isDelivered === 0" :to="{path:'/giftAddress',query: {giftId:getGainDetail.id}}"><x-button mini type="warn" class="btn-detail">选择收货地址</x-button></router-link>
-                  <router-link v-else :to="{path:'/logistics',query: {deliveryId:getGainDetail.id}}"><x-button mini type="warn" class="btn-detail">查看物流详情</x-button></router-link>
+                  <router-link v-if="getSendDetail.isDelivered === 0" :to="{path:'/giftAddress',query: {giftId:getSendDetail.id}}"><x-button mini type="warn" class="btn-detail">选择收货地址</x-button></router-link>
+                  <router-link v-else :to="{path:'/logistics',query: {deliveryId:getSendDetail.id}}"><x-button mini type="warn" class="btn-detail">查看物流详情</x-button></router-link>
                 </div>
               </cell>
             </group>
@@ -32,9 +32,9 @@
 
 import { mapActions, mapGetters } from 'vuex'
 
-import moduleStore from './bll/gainStore'
+import moduleStore from './bll/sendStore'
 import store from '../../../store'
-(!store.state.gainStore) && store.registerModule('gainStore', moduleStore)
+(!store.state.sendStore) && store.registerModule('sendStore', moduleStore)
 
 import { Scroller, Group, Cell, Card, XButton, Spinner } from 'vux'
 
@@ -48,12 +48,12 @@ export default {
     Spinner
   },
   computed: {
-    ...mapGetters(['getGainDetail'])
+    ...mapGetters(['getSendDetail'])
   },
   methods: {
-    ...mapActions(['queryGainDetail']),
+    ...mapActions(['querySendDetail']),
     firstTitle (item) {
-      return item.gainTime
+      return item.sendTime
     },
     firstValue (item) {
       return '[订单号]' + item.nickName
@@ -68,7 +68,7 @@ export default {
       console.log('refresh... ' + 1)
       const giftId = this.$route.query.giftId
       if (giftId) {
-        this.queryGainDetail({giftId: Number(giftId)}).then(() => {
+        this.querySendDetail({giftId: Number(giftId)}).then(() => {
           this.$nextTick(() => {
             setTimeout(() => {
               this.$refs.scroller.donePulldown()
@@ -84,7 +84,7 @@ export default {
         const giftId = this.$route.query.giftId
         if (giftId) {
           console.log(giftId)
-          this.queryGainDetail({giftId: Number(giftId)})
+          this.querySendDetail({giftId: Number(giftId)})
         }
       }
     }
@@ -103,7 +103,7 @@ export default {
     }
   },
   mounted () {
-    console.log('[GainDetail Page] mounted')
+    console.log('[SendDetail Page] mounted')
     this.initPage()
   }
 }

@@ -10,7 +10,7 @@ const actions = {
   queryAddress ({ commit }, { addressId } = {}) {
     commit(types.ADDRESS_QUERY_ADDRESS_BEGIN)
 
-    return http.get(`address/detail?addressId`)
+    return http.post(`user/address/get/by-id?addressId=${addressId}`)
       .then(data => {
         commit(types.ADDRESS_QUERY_ADDRESS_SUC, data.data)
       })
@@ -19,7 +19,7 @@ const actions = {
   queryAddressList ({ commit }) {
     commit(types.ADDRESS_QUERY_ADDRESSLIST_BEGIN)
 
-    return http.get(`user/addresslist/get`)
+    return http.post(`user/addresslist/get`)
       .then(data => {
         commit(types.ADDRESS_QUERY_ADDRESSLIST_SUC, data.data)
       })
@@ -30,8 +30,14 @@ const actions = {
   },
 
   saveAddress ({ commit }, address) {
-    return http.post('address/add', address).then(() => {
-      commit(types.ADDRESS_ADD_SUC)
+    let options = {
+      emulateJSON: true,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    }
+    return http.post('user/address/add', address, options).then(data => {
+      commit(types.ADDRESS_ADD_SUC, data.data)
     })
   },
 
@@ -44,7 +50,7 @@ const actions = {
   deleteAddress ({ commit }, { addressId } = {}) {
     commit(types.ADDRESS_DELETE_BEGIN)
 
-    return http.get(`address/delete?addressId=${addressId}`).then(() => {
+    return http.post(`user/address/del?addressId=${addressId}`).then(() => {
       commit(types.ADDRESS_DELETE_SUC, {addressId})
     })
   }

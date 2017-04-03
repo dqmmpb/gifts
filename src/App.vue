@@ -13,14 +13,14 @@
         <router-view class="router-view"></router-view>
       </transition>
 
-      <tabbar class="view-tabbar" v-show="!isTabbarDemo" slot="bottom">
+      <tabbar class="view-tabbar" v-show="!isTabbarApp" slot="bottom">
         <tabbar-item :link="{path:'/gift/sendList'}" :selected="route.path === '/gift/sendList'">
           <i class="fa fa-bars" slot="icon"></i>
-          <span slot="label">送出礼物</span>
+          <span slot="label">送出的礼物</span>
         </tabbar-item>
         <tabbar-item :link="{path:'/gift/gainList'}" :selected="route.path === '/gift/gainList'">
           <i class="fa fa-bars" slot="icon"></i>
-          <span slot="label">收到礼物</span>
+          <span slot="label">收到的礼物</span>
         </tabbar-item>
         <tabbar-item :link="{path:'/addressList'}" :selected="route.path === '/addressList'">
           <i class="fa fa-bars" slot="icon"></i>
@@ -58,17 +58,13 @@ export default {
       this.$refs.viewBox.scrollTo(0)
     },
     ...mapActions([
-      'updateDemoPosition'
-    ]),
-    setLocale (locale) {
-      this.$i18n.set(locale)
-      this.$locale.set(locale)
-    }
+      'updateAppPosition'
+    ])
   },
   mounted () {
     this.handler = () => {
       if (this.path === '/') {
-        this.updateDemoPosition(this.$refs.viewBox.getScrollTop())
+        this.updateAppPosition(this.$refs.viewBox.getScrollTop())
       }
     }
     this.box = this.$refs.viewBox.getScrollBody()
@@ -91,10 +87,10 @@ export default {
       } else {
         this.box.removeEventListener('scroll', this.handler, false)
       }
-      if (path === '/' && this.demoTop) {
+      if (path === '/' && this.appTop) {
         this.$nextTick(() => {
           setTimeout(() => {
-            this.box.scrollTop = this.demoTop
+            this.box.scrollTop = this.appTop
           }, 550)
         })
       } else {
@@ -109,16 +105,10 @@ export default {
       route: state => state.route,
       path: state => state.route.path,
       deviceready: state => state.app.deviceready,
-      demoTop: state => state.vux.demoScrollTop,
+      appTop: state => state.vux.appScrollTop,
       isLoading: state => state.vux.isLoading,
       direction: state => state.vux.direction
     }),
-    isShowBar () {
-      if (/component/.test(this.path)) {
-        return true
-      }
-      return false
-    },
     leftOptions () {
       return {
         showBack: this.route.path !== '/'
@@ -134,7 +124,7 @@ export default {
         if (/component/.test(this.route.path) && parts[2]) return parts[2]
       }
     },
-    isTabbarDemo () {
+    isTabbarApp () {
       if (/addressList/.test(this.route.path)) return true
       if (/addressAdd/.test(this.route.path)) return true
       if (/giftAddress/.test(this.route.path)) return true
@@ -144,8 +134,11 @@ export default {
       if (this.route.path === '/') return '主页'
       if (this.route.path === '/addressList') return '收货地址'
       if (this.route.path === '/addressAdd') return '新增收货地址'
-      if (this.route.path === '/gift/gainList') return '收到礼物'
+      if (this.route.path === '/giftAddress') return '选择收货地址'
+      if (this.route.path === '/gift/gainList') return '收到的礼物'
       if (this.route.path === '/gift/gainDetail') return '礼物详情'
+      if (this.route.path === '/gift/gainInfo') return '礼物详情'
+      if (this.route.path === '/gift/sendList') return '送出的礼物'
       return this.componentName ? `${this.componentName}` : ''
     }
   }
@@ -178,11 +171,11 @@ html, body {
   &.weui-bar__item_on {
 
     & .weui-tabbar__icon  > i.fa {
-      color: #F70968;
+      color: #ff2c4c;
     }
 
     & .weui-tabbar__label {
-       color: #F70968;
+       color: #ff2c4c;
     }
   }
 }
@@ -196,7 +189,8 @@ html, body {
 */
 .router-view {
   width: 100%;
-  height: 100%;
+  height: auto !important;
+  min-height: 100%;
   animation-duration: 0s;
   animation-fill-mode: both;
   backface-visibility: hidden;
@@ -262,4 +256,8 @@ html, body {
   }
 }
 
+/*  div[id^="vux-scroller-"] {
+    padding-top: 46px !important;
+    padding-bottom: 50px !important;
+  }*/
 </style>

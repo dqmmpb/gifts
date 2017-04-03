@@ -4,10 +4,15 @@
 
 import Vue from 'vue'
 
-const basePath = '/gifts-api/'
+import assignDeep from 'assign-deep'
+
+// const basePath = '/gifts-api/'
+const basePath = '/hongbao/'
 
 function makeUrl (url) {
   if (url.startsWith('/')) {
+    return url
+  } else if (url.startsWith('http')) {
     return url
   } else {
     return `${basePath}${url}`
@@ -35,8 +40,9 @@ const Http = {
    * @param param
    * @returns {*|Promise.<T>}
    */
-  post (url, param) {
-    return Vue.http.post(makeUrl(url), param, {emulateJSON: true})
+  post (url, param, optioins) {
+    let oo = assignDeep({}, {emulateJSON: true}, optioins)
+    return Vue.http.post(makeUrl(url), param, oo)
   },
 
   /**

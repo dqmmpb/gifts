@@ -6,23 +6,23 @@ module.exports = {
   response: function (req, res) {
     res.json({
       "rc": 1,
-      "addressList": [
+      "list": [
         {
-          "addressId": faker.random.uuid(),
+          "id": faker.random.uuid(),
           "name": faker.name.findName(),
           "phone": faker.phone.phoneNumber(),
           "area": ['330000', '330100', '330102'],
           "areaRaw": ['浙江省', '杭州市', '上城区'],
           "address": faker.address.streetAddress()
         }, {
-          "addressId": faker.random.uuid(),
+          "id": faker.random.uuid(),
           "name": faker.name.findName(),
           "phone": faker.phone.phoneNumber(),
           "area": ['330000', '330100', '330106'],
           "areaRaw": ['浙江省', '杭州市', '西湖区'],
           "address": faker.address.streetAddress()
         }, {
-          "addressId": faker.random.uuid(),
+          "id": faker.random.uuid(),
           "name": faker.name.findName(),
           "phone": faker.phone.phoneNumber(),
           "area": ['310000', '310100', '310101'],

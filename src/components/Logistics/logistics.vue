@@ -1,17 +1,19 @@
 <template>
   <div>
-    <scroller lock-x scrollbar-y use-pulldown height="100%" :pulldownConfig="pulldownConfig" @on-pulldown-loading="refresh" v-model="status" ref="scroller">
+<!--    <scroller lock-x scrollbar-y use-pulldown height="100%" :pulldownConfig="pulldownConfig" @on-pulldown-loading="refresh" v-model="status" ref="scroller">
+      <div>-->
       <div v-if="getGainDetail">
         <card>
           <div slot="content" class="card-padding">
-            <!--<group>-->
-              <!--<div v-if="getGainDetail.address" class="with-before address">-->
-                <!--<cell :title="getGainDetail.name + ' ' + getGainDetail.phone" class="no-before first"></cell>-->
-                <!--<cell :title="getGainDetail.address.state + '' + getGainDetail.address.streetAddress" class="no-before second"></cell>-->
-              <!--</div>-->
-            <!--</group>-->
+            <group>
+              <cell :title="firstTitle(getGainDetail)" :value="firstValue(getGainDetail)" class="no-before first"></cell>
+
+              <cell :title="secondTitle(getGainDetail)" :value="secondValue(getGainDetail)" class="with-before second"></cell>
+            </group>
+            <img src="../../assets/logistics-bottom.png" class="logistics-bottom">
           </div>
         </card>
+
         <div class="weui-panel weui-panel_access logistics">
           <div class="weui-panel__hd">订单{{getLogisticsOrderNo}}的物流信息</div>
           <div v-if="getLogisticsList" >
@@ -36,7 +38,8 @@
           <div class="sorry-text">暂无订单信息</div>
         </div>
       </div>
-    </scroller>
+<!--      </div>
+    </scroller>-->
   </div>
 </template>
 
@@ -68,6 +71,18 @@ export default {
   },
   methods: {
     ...mapActions(['queryGainDetail', 'queryLogisticsList']),
+    firstTitle (item) {
+      return item.gainTime
+    },
+    firstValue (item) {
+      return '[订单号]' + item.nickName
+    },
+    secondTitle (item) {
+      return '[收货人] 收货地址'
+    },
+    secondValue (item) {
+      return '￥' + item.goodsPrice
+    },
     refresh () {
       let self = this
       if (!self.isLoading) {
@@ -178,14 +193,20 @@ export default {
     border-radius: 0;
     vertical-align: middle;
     background-color: #fff;
-    color: #E64340;
+    color: #ff2c4c;
     &:after {
-       border-color: #E64340;
+       border-color: #ff2c4c;
        border-radius: 0;
     }
   }
 }
 
+.logistics-bottom {
+  height: 4px;
+  width: 100%;
+  display: block;
+  font-size: 0;
+}
 .logistics {
   & .weui-panel__hd {
     color: #000;

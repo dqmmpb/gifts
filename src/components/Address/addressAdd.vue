@@ -1,16 +1,15 @@
 <template>
   <div>
 
-    <form ref="form" v-model="getAddress">
+    <form ref="form" v-model="form">
       <group class="group-address">
-        <x-input title="收件人" :value="getAddress.name" placeholder="请填写您的姓名"></x-input>
+        <x-input title="收件人" v-model="form.name" :value="form.name" placeholder="请填写您的姓名"></x-input>
 
-        <x-input title="联系方式" :value="getAddress.phone" placeholder="请填写您的联系方式" keyboard="number" :min="11" :max="11" is-type="china-mobile"></x-input>
+        <x-input title="联系方式" v-model="form.phone"  :value="form.phone" placeholder="请填写您的联系方式" keyboard="number" :min="11" :max="11" is-type="china-mobile"></x-input>
 
-        <x-address title="收件地址" v-model="getAddress.area" :list="addressData" placeholder="请填写您的收件地址" value-text-align="left"></x-address>
-        <cell title="上面value值" style="display: none;" :value="getAddress.area"></cell>
+        <x-address title="收件地址" v-model="form.area" :list="addressData" placeholder="请填写您的收件地址" value-text-align="left"></x-address>
 
-        <x-textarea :max="100" placeholder="请输入详细地址..."></x-textarea>
+        <x-textarea :max="100" v-model="form.address" :value="form.address" placeholder="请输入详细地址..."></x-textarea>
       </group>
     </form>
 
@@ -29,7 +28,8 @@ import { mapActions, mapGetters } from 'vuex'
 
 import moduleStore from './bll/addressStore'
 import store from '../../store'
-(!store.state.addresss) && store.registerModule('addresss', moduleStore)
+import assignDeep from 'assign-deep'
+(!store.state.addresssStore) && store.registerModule('addresssStore', moduleStore)
 
 import { Tabbar, Group, Cell, XInput, XAddress, ChinaAddressData, XTextarea, XButton } from 'vux'
 
@@ -44,18 +44,17 @@ export default {
     XButton
   },
   computed: {
-    ...mapGetters(['getAddresss', 'getAddress'])
+    ...mapGetters(['getAddress'])
   },
   methods: {
-    ...mapActions(['queryAddresss', 'saveAddress', 'updateAddress', 'deleteAddress']),
+    ...mapActions(['saveAddress', 'updateAddress', 'deleteAddress']),
     saveHandler () {
       let self = this
-
       self.saveAddress(self.form).then(function () {
         let redirectUrl = self.$route.query.redirectUrl
         if (redirectUrl) {
           let dec = decodeURIComponent(redirectUrl)
-          self.$router.push(dec)
+          self.$router.back(dec)
         }
       })
     },
@@ -65,6 +64,7 @@ export default {
         const addressId = this.$route.query.addressId
         if (addressId) {
           this.queryAddress({addressId: addressId})
+          this.form = assignDeep({}, this.getAddress)
         }
         console.log(this.getAddress)
       }
@@ -75,7 +75,8 @@ export default {
       form: {
         name: null,
         phone: null,
-        area: null
+        area: [],
+        address: null
       },
       addressData: ChinaAddressData
     }
@@ -130,7 +131,12 @@ export default {
 .tabbar-button {
   width: 100%;
   & .tabbar-button__btn {
+    color: #fdef81;
+    background-color: #ff2c4c;
     border-radius: 0;
   }
+}
+.vux-popup-picker-header {
+  color: #ff2c4c !important;
 }
 </style>

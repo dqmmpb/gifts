@@ -15,13 +15,13 @@ import store from './store'
 
 store.registerModule('vux', {
   state: {
-    demoScrollTop: 0,
+    appScrollTop: 0,
     isLoading: false,
     direction: 'forward'
   },
   mutations: {
-    updateDemoPosition (state, payload) {
-      state.demoScrollTop = payload.top
+    updatePosition (state, payload) {
+      state.appScrollTop = payload.top
     },
     updateLoadingStatus (state, payload) {
       state.isLoading = payload.isLoading
@@ -31,8 +31,8 @@ store.registerModule('vux', {
     }
   },
   actions: {
-    updateDemoPosition ({commit}, top) {
-      commit({type: 'updateDemoPosition', top: top})
+    updateAppPosition ({commit}, top) {
+      commit({type: 'updateAppPosition', top: top})
     }
   }
 })

@@ -13,6 +13,9 @@ const mutations = {
     state.logistics = []
   },
   [types.GIFT_QUERY_LOGISTICS_SUC] (state, data) {
+    state.orderTime = data.orderTime
+    state.orderNo = data.orderNo
+    state.deliveryComp = data.deliveryComp
     state.logistics = data.dataList
   }
 }

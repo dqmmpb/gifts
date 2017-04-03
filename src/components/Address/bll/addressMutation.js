@@ -10,19 +10,27 @@ import * as types from './addressMutationTypes'
  */
 const mutations = {
   [types.ADDRESS_QUERY_ADDRESS_BEGIN] (state) {
-    state.currentAddress = null
+    state.address = null
   },
   [types.ADDRESS_QUERY_ADDRESS_SUC] (state, data) {
-    state.currentAddress = data.data
+    state.address = data.address
+    let address = state.addresses.find(address => {
+      return address.id === state.address.addressId
+    })
+    if (address) {
+
+    } else {
+      state.addresses.push(state.address)
+    }
   },
   [types.ADDRESS_QUERY_ADDRESSLIST_BEGIN] (state) {
   },
   [types.ADDRESS_QUERY_ADDRESSLIST_SUC] (state, data) {
-    state.addresses = data.addressList
+    state.addresses = data.list
   },
   [types.ADDRESS_SELECT_SUC] (state, {addressId}) {
     let address = state.addresses.find(address => {
-      return address.addressId === addressId
+      return address.id === addressId
     })
     if (address) {
       state.selectAddress = address

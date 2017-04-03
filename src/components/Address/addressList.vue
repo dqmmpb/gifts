@@ -3,22 +3,30 @@
 
     <confirm v-model="show"></confirm>
 
-    <swipeout class="vux-1px-b">
+    <div v-if="getAddressList && getAddressList.length > 0">
+      <swipeout class="vux-1px-b">
 
-      <swipeout-item v-for="item in getAddressList" :key="item.addressId" underlay-color="#ccc" :ref="'swipeoutItem' + item.addressId" :auto-close-on-button-click="false">
-        <div slot="right-menu">
-          <!--<swipeout-button @click.native="onButtonClick('edit', item)" type="primary">编辑</swipeout-button>-->
-          <swipeout-button @click.native="onButtonClick('delete', item)" type="warn">删除</swipeout-button>
-        </div>
-        <div slot="content" class="swipeout-content vux-1px-t" @click="onItemClick(item)">
-          <div class="weui-media-box address">
-            <h4 class="weui-media-box__title first">{{item.name}} {{item.phone}}</h4>
-            <p class="weui-media-box__desc second">{{getArea(item)}} {{item.address}}</p>
+        <swipeout-item v-for="item in getAddressList" :key="item.id" underlay-color="#ccc" :ref="'swipeoutItem' + item.id" :auto-close-on-button-click="false">
+          <div slot="right-menu">
+            <!--<swipeout-button @click.native="onButtonClick('edit', item)" type="primary">编辑</swipeout-button>-->
+            <swipeout-button @click.native="onButtonClick('delete', item)" type="warn">删除</swipeout-button>
           </div>
-        </div>
-      </swipeout-item>
+          <div slot="content" class="swipeout-content vux-1px-t" @click="onItemClick(item)">
+            <div class="weui-media-box address">
+              <h4 class="weui-media-box__title first">{{item.name}}&nbsp;{{item.phone}}</h4>
+              <p class="weui-media-box__desc second">{{getAreaAndAddress(item)}}</p>
+            </div>
+          </div>
+        </swipeout-item>
 
-    </swipeout>
+      </swipeout>
+    </div>
+    <div v-show="!(getAddressList && getAddressList.length > 0)">
+      <div class="sorry">
+        <img src="../../assets/sorry.png" class="sorry-img">
+        <div class="sorry-text">还没有添加过地址哦</div>
+      </div>
+    </div>
 
     <tabbar>
       <div class="tabbar-button">
@@ -35,7 +43,7 @@ import { mapActions, mapGetters } from 'vuex'
 
 import moduleStore from './bll/addressStore'
 import store from '../../store'
-(!store.state.addresss) && store.registerModule('addresss', moduleStore)
+(!store.state.addresssStore) && store.registerModule('addresssStore', moduleStore)
 
 import { Tabbar, Group, Cell, Swipeout, SwipeoutItem, SwipeoutButton, XButton, Confirm } from 'vux'
 
@@ -57,13 +65,16 @@ export default {
     ...mapActions(['queryAddressList', 'selectAddress', 'deleteAddress']),
     onItemClick (item) {
       let self = this
-      this.selectAddress({addressId: item.addressId}).then(() => {
-        let redirectUrl = self.$route.query.redirectUrl
-        if (redirectUrl) {
-          let dec = decodeURIComponent(redirectUrl)
-          self.$router.push(dec)
-        }
-      })
+      let redirectUrl = self.$route.query.redirectUrl
+      if (redirectUrl) {
+        this.selectAddress({addressId: item.id}).then(() => {
+          let redirectUrl = self.$route.query.redirectUrl
+          if (redirectUrl) {
+            let dec = decodeURIComponent(redirectUrl)
+            self.$router.back(dec)
+          }
+        })
+      }
     },
     onButtonClick (type, item) {
       let self = this
@@ -73,12 +84,12 @@ export default {
           title: '',
           content: '请确认是否删除',
           onCancel () {
-            self.$refs['swipeoutItem' + item.addressId][0].close()
-            console.log('plugin cancel', item.addressId)
+            self.$refs['swipeoutItem' + item.id][0].close()
+            console.log('plugin cancel', item.id)
           },
           onConfirm () {
-            self.deleteAddress({addressId: item.addressId}).then(() => {
-              console.log('plugin confirm', item.addressId)
+            self.deleteAddress({addressId: item.id}).then(() => {
+              console.log('plugin confirm', item.id)
             })
           }
         })
@@ -93,8 +104,9 @@ export default {
     addressAddHandle (type) {
       console.log('event: ', type)
     },
-    getArea (item) {
-      return item.areaRaw && item.areaRaw.join('')
+    getAreaAndAddress (item) {
+      let area = item.areaRaw && item.areaRaw.join('') || ''
+      return area + ' ' + item.address
     },
     initPage () {
       console.log(this.$route)
@@ -141,7 +153,26 @@ export default {
 .tabbar-button {
   width: 100%;
   & .tabbar-button__btn {
+    color: #fdef81;
+    background-color: #ff2c4c;
     border-radius: 0;
   }
+}
+.sorry {
+  padding: 50px 0 100px;
+  text-align: center;
+  .sorry-img {
+    width: 160px;
+    display: block;
+    font-size: 0;
+    margin: 0 auto;
+  }
+  .sorry-text {
+    font-size: 14px;
+    color: #ddd;
+  }
+}
+.weui-dialog__btn_primary {
+  color: #ff2c4c;
 }
 </style>

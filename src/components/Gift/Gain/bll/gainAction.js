@@ -10,15 +10,25 @@ const actions = {
   queryGainDetail ({ commit }, { giftId } = {}) {
     commit(types.GIFT_QUERY_GAINDETAIL_BEGIN)
 
-    return http.get(`user/gift/gainDetail?giftId=${giftId}`)
+    return http.post(`user/gift/gainDetail?giftId=${giftId}`)
       .then(data => {
-        commit(types.GIFT_QUERY_GAINDETAIL_SUC, { giftId })
+        commit(types.GIFT_QUERY_GAINDETAIL_SUC, data.data)
       })
   },
+
+  queryGainInfo ({ commit }, { shareCode } = {}) {
+    commit(types.GIFT_QUERY_GAININFO_BEGIN)
+
+    return http.post(`general/gift/gaininfo/get?shareCode=${shareCode}`)
+      .then(data => {
+        commit(types.GIFT_QUERY_GAININFO_SUC, data.data)
+      })
+  },
+
   queryGainList ({ commit }) {
     commit(types.GIFT_QUERY_GAINLIST_BEGIN)
 
-    return http.get(`user/gift/gainlist/get`)
+    return http.post(`user/gift/gainlist/get`)
       .then(data => {
         commit(types.GIFT_QUERY_GAINLIST_SUC, data.data)
       })

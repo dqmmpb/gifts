@@ -1,19 +1,20 @@
 <template>
   <div>
-    <!--<scroller v-if="getGainList" lock-x scrollbar-y use-pulldown height="100%" :pulldown-config="{content:'下拉刷新',downContent:'下拉刷新',upContent:'释放刷新',loadingContent:'加载中'}" @on-pulldown-loading="refresh" v-model="status" ref="scroller">
+<!--    <scroller lock-x scrollbar-y use-pulldown height="100%" :pulldown-config="{content:'下拉刷新',downContent:'下拉刷新',upContent:'释放刷新',loadingContent:'加载中'}" @on-pulldown-loading="refresh" v-model="status" ref="scroller">
       <div>-->
-        <card v-if="getGainList" v-for="item in getGainList" :key="item.id">
+        <card v-if="getSendList" v-for="item in getSendList" :key="item.id">
           <div slot="content" class="card-padding">
             <group>
               <cell :title="firstTitle(item)" :value="firstValue(item)" class="no-before first"></cell>
 
-              <cell :title="secondTitle(item)" :value="secondValue(item)" class="with-before second"></cell>
+              <div class="with-before second">
+                <cell v-for="datalist in item.dataList" :key="datalist.id" :title="datalist" class="no-before"></cell>
+              </div>
 
-              <cell :title="thirdTitle(item)" class="no-before">
-                <img slot="icon" width="20" style="display:block;margin-right:5px;" :src="getHeadImg(item)">
+              <cell :title="thirdTitle(item)" class="with-before cell-padding">
                 <div slot="value">
                   <!--<router-link v-if="item.isDelivered === 0" :to="{path:'/giftAddress',query: {giftId:item.id}}"><x-button mini type="warn" class="btn-detail">选择收货地址</x-button></router-link>-->
-                  <router-link :to="{path:'/gift/gainInfo',query: {shareCode:item.shareCode}}"><x-button mini type="warn" class="btn-detail">查看详情</x-button></router-link>
+                  <router-link :to="{path:'/gift/sendDetail',query: {giftId:item.id}}"><x-button mini type="warn" class="btn-detail">查看详情</x-button></router-link>
                 </div>
               </cell>
             </group>
@@ -21,7 +22,6 @@
         </card>
 <!--      </div>
     </scroller>-->
-
   </div>
 </template>
 
@@ -29,9 +29,9 @@
 
 import { mapActions, mapGetters } from 'vuex'
 
-import moduleStore from './bll/gainStore'
+import moduleStore from './bll/sendStore'
 import store from '../../../store'
-(!store.state.gainStore) && store.registerModule('gainStore', moduleStore)
+(!store.state.sendStore) && store.registerModule('sendStore', moduleStore)
 
 import { Scroller, Group, Cell, Card, XButton, Spinner } from 'vux'
 
@@ -45,47 +45,30 @@ export default {
     Spinner
   },
   computed: {
-    ...mapGetters(['getGainList'])
+    ...mapGetters(['getSendList'])
   },
   methods: {
-    ...mapActions(['queryGainList']),
+    ...mapActions(['querySendList']),
     firstTitle (item) {
-      return item.gainTime
+      return item.sendTime
     },
     firstValue (item) {
-      let isDelivered = item.isDelivered === 1 ? '已发货' : (item.isDelivered === 0 ? '未发货' : '')
-      if (item.giftSource === 0) {
-        return '[赠送]' + isDelivered
-      } else if (item.giftSource === 1) {
-        return '[领取]' + isDelivered
-      }
+      return '[礼包]'
     },
     secondTitle (item) {
       return item.goodsName
     },
     secondValue (item) {
-      return '￥' + item.goodsPrice
+      return ''
     },
     thirdTitle (item) {
-      if (item.giftSource === 0) {
-        return '"' + item.nickName + '"赠送'
-      } else if (item.giftSource === 1) {
-        return '从"' + item.nickName + '"讨来的礼包'
-      }
+      return '已领取' + item.takeAmount + '份，剩余' + item.leftAmount + '份未领取'
     },
     thirdValue (item) {
 
     },
-    getHeadImg (item) {
-      let defaultImg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAuCAMAAABgZ9sFAAAAVFBMVEXx8fHMzMzr6+vn5+fv7+/t7e3d3d2+vr7W1tbHx8eysrKdnZ3p6enk5OTR0dG7u7u3t7ejo6PY2Njh4eHf39/T09PExMSvr6+goKCqqqqnp6e4uLgcLY/OAAAAnklEQVRIx+3RSRLDIAxE0QYhAbGZPNu5/z0zrXHiqiz5W72FqhqtVuuXAl3iOV7iPV/iSsAqZa9BS7YOmMXnNNX4TWGxRMn3R6SxRNgy0bzXOW8EBO8SAClsPdB3psqlvG+Lw7ONXg/pTld52BjgSSkA3PV2OOemjIDcZQWgVvONw60q7sIpR38EnHPSMDQ4MjDjLPozhAkGrVbr/z0ANjAF4AcbXmYAAAAASUVORK5CYII='
-      if (/^(data:image)|(http)/.test(item.headImg)) {
-        return item.headImg
-      } else {
-        return defaultImg
-      }
-    },
     refresh () {
-      this.queryGainList().then(() => {
+      this.querySendList().then(() => {
         this.$nextTick(() => {
           setTimeout(() => {
             this.$refs.scroller.donePulldown()
@@ -94,7 +77,7 @@ export default {
       })
     },
     initPage () {
-      this.queryGainList()
+      this.querySendList()
     }
   },
   data () {
@@ -105,7 +88,7 @@ export default {
     }
   },
   mounted () {
-    console.log('[Gain Page] mounted')
+    console.log('[Send Page] mounted')
     this.initPage()
   }
 }
@@ -131,6 +114,13 @@ export default {
     }
   }
 
+.second {
+  font-size: 12px;
+  padding: 3px 15px 3px 15px;
+.weui-cell {
+  padding: 2px 0;
+}
+}
   .weui-cell.no-before {
     &:before {
       display: none !important;
@@ -150,9 +140,6 @@ export default {
 
   .weui-cell.first {
     font-size: 12px;
-  }
-  .weui-cell.second {
-    padding: 15px 15px 10px 15px;
   }
 
   .btn-detail {

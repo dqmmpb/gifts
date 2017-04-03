@@ -10,7 +10,7 @@ const actions = {
   queryLogisticsList ({ commit }, { deliveryId } = {}) {
     commit(types.GIFT_QUERY_LOGISTICS_BEGIN)
 
-    return http.get(`user/gift/logisticslist/get?deliveryId=${deliveryId}`)
+    return http.post(`user/gift/logisticslist/get?deliveryId=${deliveryId}`)
       .then(data => {
         commit(types.GIFT_QUERY_LOGISTICS_SUC, data.data)
       })
