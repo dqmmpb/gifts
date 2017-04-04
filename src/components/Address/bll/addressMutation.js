@@ -14,14 +14,6 @@ const mutations = {
   },
   [types.ADDRESS_QUERY_ADDRESS_SUC] (state, data) {
     state.address = data.address
-    let address = state.addresses.find(address => {
-      return address.id === state.address.addressId
-    })
-    if (address) {
-
-    } else {
-      state.addresses.push(state.address)
-    }
   },
   [types.ADDRESS_QUERY_ADDRESSLIST_BEGIN] (state) {
   },
@@ -39,14 +31,21 @@ const mutations = {
   [types.ADDRESS_ADD_SUC] (state) {
 
   },
-  [types.ADDRESS_UPDATE_SUC] (state) {
+  [types.ADDRESS_UPDATE_SUC] (state, data) {
+    let address = state.addresses.find(address => {
+      return address.id === data.addressId
+    })
+    if (address) {
 
+    } else {
+      state.addresses.push(state.address)
+    }
   },
   [types.ADDRESS_DELETE_BEGIN] (state) {
   },
   [types.ADDRESS_DELETE_SUC] (state, {addressId}) {
     let address = state.addresses.find(address => {
-      return address.addressId === addressId
+      return address.id === addressId
     })
     let indexOf = state.addresses.indexOf(address)
     if (indexOf !== -1) {

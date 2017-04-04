@@ -69,6 +69,11 @@ const routes = [{
   component: lazyLoading('Address/addressAdd')
 },
 {
+  path: '/addressEdit',
+  name: '编辑收货地址',
+  component: lazyLoading('Address/addressEdit')
+},
+{
   path: '/giftAddress',
   name: '选择收货地址',
   component: lazyLoading('Gift/giftAddress')

@@ -15,7 +15,7 @@
 
     <tabbar>
       <div class="tabbar-button">
-        <x-button type="warn" class="tabbar-button__btn" @click.native="saveHandler">确认添加</x-button>
+        <x-button type="warn" class="tabbar-button__btn" @click.native="saveHandler">确认修改</x-button>
       </div>
     </tabbar>
 
@@ -28,6 +28,7 @@ import { mapActions, mapGetters } from 'vuex'
 
 import moduleStore from './bll/addressStore'
 import store from '../../store'
+import assignDeep from 'assign-deep'
 (!store.state.addresssStore) && store.registerModule('addresssStore', moduleStore)
 
 import { Tabbar, Group, Cell, XInput, XAddress, ChinaAddressData, XTextarea, XButton, Value2nameFilter as value2name } from 'vux'
@@ -46,20 +47,21 @@ export default {
     ...mapGetters(['getAddress'])
   },
   methods: {
-    ...mapActions(['saveAddress']),
+    ...mapActions(['queryAddress', 'updateAddress']),
     getName (value) {
       return value2name(value, ChinaAddressData, ',')
     },
     saveHandler () {
       let self = this
       let preForm = {
+        id: self.form.id,
         name: self.form.name,
         phone: self.form.phone,
         areaCode: self.form.area.join(','),
         areaName: self.getName(self.form.area),
         address: self.form.address
       }
-      self.saveAddress(preForm).then(function () {
+      self.updateAddress(preForm).then(function () {
         let redirectUrl = self.$route.query.redirectUrl
         if (redirectUrl) {
           let dec = decodeURIComponent(redirectUrl)
@@ -69,21 +71,32 @@ export default {
     },
     initPage () {
       console.log(this.$route)
+      if (this.$route.query) {
+        const addressId = this.$route.query.addressId
+        if (addressId) {
+          this.queryAddress({addressId: addressId}).then(() => {
+            this.form = assignDeep({}, this.getAddress)
+            this.area = this.form.area ? this.form.area.split(',') : []
+            console.log(this.getAddress)
+          })
+        }
+      }
     }
   },
   data () {
     return {
       form: {
-        name: '1111111111',
+        id: null,
+        name: null,
         phone: null,
         area: [],
-        address: '2222222'
+        address: null
       },
       addressData: ChinaAddressData
     }
   },
   mounted () {
-    console.log('[Address Add Page] mounted')
+    console.log('[Address Edit Page] mounted')
     this.initPage()
   }
 }

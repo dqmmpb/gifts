@@ -120,6 +120,7 @@ export default {
     isTabbarApp () {
       if (/addressList/.test(this.route.path)) return true
       if (/addressAdd/.test(this.route.path)) return true
+      if (/addressEdit/.test(this.route.path)) return true
       if (/giftAddress/.test(this.route.path)) return true
       return /tabbar/.test(this.route.path)
     },

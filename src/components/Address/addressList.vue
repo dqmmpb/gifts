@@ -3,35 +3,39 @@
 
     <confirm v-model="show"></confirm>
 
-    <div v-if="getAddressList && getAddressList.length > 0">
-      <swipeout class="vux-1px-b">
+<!--    <scroller v-if="!isInit" lock-x scrollbar-y use-pulldown height="-96" :pulldown-config="{content:'下拉刷新',downContent:'下拉刷新',upContent:'释放刷新',loadingContent:'加载中'}" @on-pulldown-loading="refresh" v-model="status" ref="scroller">
+      <div>-->
+        <div v-if="!isInit && !empty">
+          <swipeout class="vux-1px-b">
 
-        <swipeout-item v-for="item in getAddressList" :key="item.id" underlay-color="#ccc" :ref="'swipeoutItem' + item.id" :auto-close-on-button-click="false">
-          <div slot="right-menu">
-            <!--<swipeout-button @click.native="onButtonClick('edit', item)" type="primary">编辑</swipeout-button>-->
-            <swipeout-button @click.native="onButtonClick('delete', item)" type="warn">删除</swipeout-button>
-          </div>
-          <div slot="content" class="swipeout-content vux-1px-t" @click="onItemClick(item)">
-            <div class="weui-media-box address">
-              <grid>
-                <grid-item :label="123">
-                  <img slot="icon" src="../../assets/logo.png">
-                </grid-item>
-              </grid>
-              <h4 class="weui-media-box__title first">{{item.name}}&nbsp;{{item.phone}}</h4>
-              <p class="weui-media-box__desc second">{{getAreaAndAddress(item)}}</p>
-            </div>
-          </div>
-        </swipeout-item>
+            <swipeout-item v-for="item in getAddressList" :key="item.id" underlay-color="#ccc" :ref="'swipeoutItem' + item.id" :auto-close-on-button-click="false">
+              <div slot="right-menu">
+                <!--<swipeout-button @click.native="onButtonClick('edit', item)" type="primary">编辑</swipeout-button>-->
+                <swipeout-button @click.native="onButtonClick('delete', item)" type="warn">删除</swipeout-button>
+              </div>
+              <div slot="content" class="swipeout-content vux-1px-t">
+                <div class="weui-media-box address">
+                  <div class="text" @click="onItemClick(item)">
+                    <div class="first">{{item.name}}&nbsp;{{item.phone}}</div>
+                    <div class="second">{{getAreaAndAddress(item)}}</div>
+                  </div>
+                  <div class="edit">
+                    <router-link :to="toAddressEdit(item)">编辑</router-link>
+                  </div>
+                </div>
+              </div>
+            </swipeout-item>
 
-      </swipeout>
-    </div>
-    <div v-show="!(getAddressList && getAddressList.length > 0)">
-      <div class="sorry">
-        <img src="../../assets/sorry.png" class="sorry-img">
-        <div class="sorry-text">还没有添加过地址哦</div>
-      </div>
-    </div>
+          </swipeout>
+        </div>
+        <div v-show="!isInit && empty">
+          <div class="sorry">
+            <img src="../../assets/sorry.png" class="sorry-img">
+            <div class="sorry-text">还没有添加过地址哦</div>
+          </div>
+        </div>
+<!--      </div>
+    </scroller>-->
 
     <tabbar>
       <div class="tabbar-button">
@@ -50,10 +54,11 @@ import moduleStore from './bll/addressStore'
 import store from '../../store'
 (!store.state.addresssStore) && store.registerModule('addresssStore', moduleStore)
 
-import { Tabbar, Group, Cell, Swipeout, SwipeoutItem, SwipeoutButton, XButton, Confirm, Grid, GridItem } from 'vux'
+import { Scroller, Tabbar, Group, Cell, Swipeout, SwipeoutItem, SwipeoutButton, XButton, Confirm, Spinner } from 'vux'
 
 export default {
   components: {
+    Scroller,
     Tabbar,
     Group,
     Cell,
@@ -61,9 +66,8 @@ export default {
     SwipeoutItem,
     SwipeoutButton,
     XButton,
-    Confirm,
-    Grid,
-    GridItem
+    Spinner,
+    Confirm
   },
   computed: {
     ...mapGetters(['getAddressList'])
@@ -108,6 +112,9 @@ export default {
     toAddressAdd () {
       return '/addressAdd?redirectUrl=' + encodeURIComponent(this.$route.fullPath)
     },
+    toAddressEdit (item) {
+      return '/addressEdit?addressId=' + item.id + '&redirectUrl=' + encodeURIComponent(this.$route.fullPath)
+    },
     addressAddHandle (type) {
       console.log('event: ', type)
     },
@@ -115,15 +122,38 @@ export default {
       let area = item.areaRaw && item.areaRaw.join('') || ''
       return area + ' ' + item.address
     },
+    refresh () {
+      let self = this
+      this.queryAddressList().then(() => {
+        this.$nextTick(() => {
+          setTimeout(() => {
+            this.$refs.scroller.donePulldown()
+            self.isInit = false
+            self.empty = !(this.getAddressList && this.getAddressList.length > 0)
+          }, 10)
+        })
+      })
+    },
     initPage () {
+      let self = this
       console.log(this.$route)
-      this.queryAddressList()
+      this.queryAddressList().then(() => {
+        this.$nextTick(() => {
+          self.isInit = false
+          self.empty = !(this.getAddressList && this.getAddressList.length > 0)
+        })
+      })
     }
   },
   data () {
     return {
+      status: {
+        pulldownStatus: 'default'
+      },
       btnClick: false,
-      show: false
+      show: false,
+      empty: true,
+      isInit: true
     }
   },
   mounted () {
@@ -146,14 +176,37 @@ export default {
 
 .address {
   padding: 5px 15px 5px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+& .text {
+  width: 100%;
+  }
 & .first {
     font-size: 14px;
     font-weight: normal;
     padding: 5px 0 0 0;
+    text-align: justify;
   }
 & .second {
     font-size: 12px;
     padding: 0 0 5px 0;
+    text-align: justify;
+  }
+& .edit {
+    width: 50px;
+    height: 30px;
+  line-height: 30px;
+  vertical-align: middle;
+    text-align: center;
+    flex-shrink:0;
+    color: #ff2c4c;
+  & a {
+      color: #ff2c4c;
+      height: 30px;
+      line-height: 30px;
+      vertical-align: middle;
+    }
   }
 }
 
@@ -182,4 +235,17 @@ export default {
 .weui-dialog__btn_primary {
   color: #ff2c4c;
 }
+.rotate {
+  display: inline-block;
+  transform: rotate(-180deg);
+}
+.pullup-arrow {
+  transition: all linear 0.2s;
+  color: #666;
+  font-size: 25px;
+}
+.router-view {
+  height: 100%;
+}
+
 </style>

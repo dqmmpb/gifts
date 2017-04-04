@@ -30,20 +30,20 @@ const actions = {
   },
 
   saveAddress ({ commit }, address) {
-    let options = {
-      emulateJSON: true,
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    }
-    return http.post('user/address/add', address, options).then(data => {
+    // let options = {
+    //   emulateJSON: false,
+    //   headers: {
+    //     'Content-Type': 'application/x-www-form-urlencoded'
+    //   }
+    // }
+    return http.post('user/address/add', address).then(data => {
       commit(types.ADDRESS_ADD_SUC, data.data)
     })
   },
 
   updateAddress ({ commit }, address) {
-    return http.post('address/update', address).then(() => {
-      commit(types.ADDRESS_UPDATE_SUC)
+    return http.post('user/address/update', address).then(data => {
+      commit(types.ADDRESS_UPDATE_SUC, data.data)
     })
   },
 
