@@ -10,18 +10,13 @@ argv.simulate = argv.simulate || false
 module.exports = {
   plugins: [
     'vux-ui', 'inline-manifest', 'progress-bar',
-    {
+  /*  {
       name: 'js-parser',
       test: /main\.js/,
       fn: function (source) {
         this.addDependency(demoPath)
         let list = fs.readFileSync(demoPath, 'utf-8')
         list = JSON.parse(list)
-        if (argv.demo) {
-          list = list.filter(item => {
-            return item.indexOf(argv.demo) > -1
-          })
-        }
         let str = []
         list.forEach(one => {
           let filename = one
@@ -37,12 +32,12 @@ module.exports = {
             }
           }`)
         })
-
         str = `[${str.join(',\n')}]`
         source = source.replace('const routes = []', 'const routes = ' + str)
+        console.log(source)
         return source
       }
-    },
+    },*/
     {
       name: 'duplicate-style'
     }

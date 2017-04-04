@@ -28,6 +28,7 @@ let webpackConfig = {
       'vue$': 'vue/dist/vue',
       'vuex$': 'vuex/dist/vuex',
       '@': resolve('src'),
+      'components': path.resolve(__dirname, '../src/components'),
     }
   },
   module: {

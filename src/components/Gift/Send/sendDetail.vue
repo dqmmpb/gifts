@@ -1,7 +1,7 @@
 <template>
   <div>
-<!--    <scroller lock-x scrollbar-y use-pulldown height="100%" :pulldownConfig="pulldownConfig" @on-pulldown-loading="refresh" v-model="status" ref="scroller">
-      <div>-->
+    <scroller lock-x scrollbar-y use-pulldown height="-96" :pulldownConfig="pulldownConfig" @on-pulldown-loading="refresh" v-model="status" ref="scroller">
+      <div>
         <card v-if="getSendDetail">
           <div slot="content" class="card-padding">
             <group>
@@ -22,8 +22,8 @@
             </group>
           </div>
         </card>
-<!--      </div>
-    </scroller>-->
+      </div>
+    </scroller>
 
   </div>
 </template>

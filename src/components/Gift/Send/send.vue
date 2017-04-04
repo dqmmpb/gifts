@@ -1,7 +1,7 @@
 <template>
   <div>
-<!--    <scroller lock-x scrollbar-y use-pulldown height="100%" :pulldown-config="{content:'下拉刷新',downContent:'下拉刷新',upContent:'释放刷新',loadingContent:'加载中'}" @on-pulldown-loading="refresh" v-model="status" ref="scroller">
-      <div>-->
+    <scroller v-if="getSendList" lock-x scrollbar-y use-pulldown height="-96" :pulldown-config="{content:'下拉刷新',downContent:'下拉刷新',upContent:'释放刷新',loadingContent:'加载中'}" @on-pulldown-loading="refresh" v-model="status" ref="scroller">
+      <div>
         <card v-if="getSendList" v-for="item in getSendList" :key="item.id">
           <div slot="content" class="card-padding">
             <group>
@@ -20,8 +20,9 @@
             </group>
           </div>
         </card>
-<!--      </div>
-    </scroller>-->
+      </div>
+    </scroller>
+
   </div>
 </template>
 

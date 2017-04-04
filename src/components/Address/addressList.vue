@@ -13,6 +13,11 @@
           </div>
           <div slot="content" class="swipeout-content vux-1px-t" @click="onItemClick(item)">
             <div class="weui-media-box address">
+              <grid>
+                <grid-item :label="123">
+                  <img slot="icon" src="../../assets/logo.png">
+                </grid-item>
+              </grid>
               <h4 class="weui-media-box__title first">{{item.name}}&nbsp;{{item.phone}}</h4>
               <p class="weui-media-box__desc second">{{getAreaAndAddress(item)}}</p>
             </div>
@@ -45,7 +50,7 @@ import moduleStore from './bll/addressStore'
 import store from '../../store'
 (!store.state.addresssStore) && store.registerModule('addresssStore', moduleStore)
 
-import { Tabbar, Group, Cell, Swipeout, SwipeoutItem, SwipeoutButton, XButton, Confirm } from 'vux'
+import { Tabbar, Group, Cell, Swipeout, SwipeoutItem, SwipeoutButton, XButton, Confirm, Grid, GridItem } from 'vux'
 
 export default {
   components: {
@@ -56,7 +61,9 @@ export default {
     SwipeoutItem,
     SwipeoutButton,
     XButton,
-    Confirm
+    Confirm,
+    Grid,
+    GridItem
   },
   computed: {
     ...mapGetters(['getAddressList'])

@@ -4,6 +4,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import { sync } from 'vuex-router-sync'
 
+const lazyLoading = (path) => () => System.import(`components/${path}.vue`)
+
 Vue.use(VueRouter)
 import App from './App'
 import Vuex from 'vuex'
@@ -56,9 +58,56 @@ if (process.env.platform === 'app') {
 const FastClick = require('fastclick')
 FastClick.attach(document.body)
 
-const routes = []
+const routes = [{
+  path: '/addressList',
+  name: '收货地址',
+  component: lazyLoading('Address/addressList')
+},
+{
+  path: '/addressAdd',
+  name: '新增收货地址',
+  component: lazyLoading('Address/addressAdd')
+},
+{
+  path: '/giftAddress',
+  name: '选择收货地址',
+  component: lazyLoading('Gift/giftAddress')
+},
+{
+  path: '/gift/gainList',
+  name: '收到的礼物',
+  component: lazyLoading('Gift/Gain/gain')
+},
+{
+  path: '/gift/gainDetail',
+  name: '礼物详情',
+  component: lazyLoading('Gift/Gain/gainDetail')
+},
+{
+  path: '/gift/gainInfo',
+  name: '礼物详情',
+  component: lazyLoading('Gift/Gain/gainInfo')
+},
+{
+  path: '/gift/sendList',
+  name: '送出的礼物',
+  component: lazyLoading('Gift/Send/send')
+},
+{
+  path: '/gift/sendDetail',
+  name: '礼物详情',
+  component: lazyLoading('Gift/Send/sendDetail')
+},
+{
+  path: '/logistics',
+  name: '物流详情',
+  component: lazyLoading('Logistics/logistics')
+}]
 
 const router = new VueRouter({
+  mode: 'hash',
+  linkActiveClass: 'is-active',
+  scrollBehavior: () => ({y: 0}), // 这个功能只在 HTML5 history 模式下可用
   routes
 })
 

@@ -117,13 +117,6 @@ export default {
     headerTransition () {
       return this.direction === 'forward' ? 'vux-header-fade-in-right' : 'vux-header-fade-in-left'
     },
-    componentName () {
-      console.log(this.route.path)
-      if (this.route.path) {
-        const parts = this.route.path.split('/')
-        if (/component/.test(this.route.path) && parts[2]) return parts[2]
-      }
-    },
     isTabbarApp () {
       if (/addressList/.test(this.route.path)) return true
       if (/addressAdd/.test(this.route.path)) return true
@@ -131,15 +124,7 @@ export default {
       return /tabbar/.test(this.route.path)
     },
     title () {
-      if (this.route.path === '/') return '主页'
-      if (this.route.path === '/addressList') return '收货地址'
-      if (this.route.path === '/addressAdd') return '新增收货地址'
-      if (this.route.path === '/giftAddress') return '选择收货地址'
-      if (this.route.path === '/gift/gainList') return '收到的礼物'
-      if (this.route.path === '/gift/gainDetail') return '礼物详情'
-      if (this.route.path === '/gift/gainInfo') return '礼物详情'
-      if (this.route.path === '/gift/sendList') return '送出的礼物'
-      return this.componentName ? `${this.componentName}` : ''
+      return this.route.name
     }
   }
 }
@@ -189,8 +174,7 @@ html, body {
 */
 .router-view {
   width: 100%;
-  height: auto !important;
-  min-height: 100%;
+  height: 100%;
   animation-duration: 0s;
   animation-fill-mode: both;
   backface-visibility: hidden;
