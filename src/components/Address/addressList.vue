@@ -54,7 +54,7 @@ import moduleStore from './bll/addressStore'
 import store from '../../store'
 (!store.state.addresssStore) && store.registerModule('addresssStore', moduleStore)
 
-import { Scroller, Tabbar, Group, Cell, Swipeout, SwipeoutItem, SwipeoutButton, XButton, Confirm, Spinner } from 'vux'
+import { Scroller, Tabbar, Group, Cell, Swipeout, SwipeoutItem, SwipeoutButton, XButton, Confirm, Spinner, ChinaAddressData, Value2nameFilter as value2name } from 'vux'
 
 export default {
   components: {
@@ -74,6 +74,9 @@ export default {
   },
   methods: {
     ...mapActions(['queryAddressList', 'selectAddress', 'deleteAddress']),
+    getName (value) {
+      return value2name(value, ChinaAddressData, ' ').replace(' ', '')
+    },
     onItemClick (item) {
       let self = this
       let redirectUrl = self.$route.query.redirectUrl
@@ -119,8 +122,8 @@ export default {
       console.log('event: ', type)
     },
     getAreaAndAddress (item) {
-      let area = item.areaRaw && item.areaRaw.join('') || ''
-      return area + ' ' + item.address
+      let area = item.areaCode ? item.areaCode : ''
+      return this.getName(area.split(','))
     },
     refresh () {
       let self = this
@@ -153,7 +156,8 @@ export default {
       btnClick: false,
       show: false,
       empty: true,
-      isInit: true
+      isInit: true,
+      addressData: ChinaAddressData
     }
   },
   mounted () {

@@ -13,7 +13,7 @@ const mutations = {
     state.address = null
   },
   [types.ADDRESS_QUERY_ADDRESS_SUC] (state, data) {
-    state.address = data.address
+    state.address = data
   },
   [types.ADDRESS_QUERY_ADDRESSLIST_BEGIN] (state) {
   },

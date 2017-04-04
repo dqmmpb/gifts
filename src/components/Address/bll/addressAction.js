@@ -10,7 +10,7 @@ const actions = {
   queryAddress ({ commit }, { addressId } = {}) {
     commit(types.ADDRESS_QUERY_ADDRESS_BEGIN)
 
-    return http.post(`user/address/get/by-id?addressId=${addressId}`)
+    return http.post(`user/address/get/byid?addressId=${addressId}`)
       .then(data => {
         commit(types.ADDRESS_QUERY_ADDRESS_SUC, data.data)
       })
@@ -30,12 +30,6 @@ const actions = {
   },
 
   saveAddress ({ commit }, address) {
-    // let options = {
-    //   emulateJSON: false,
-    //   headers: {
-    //     'Content-Type': 'application/x-www-form-urlencoded'
-    //   }
-    // }
     return http.post('user/address/add', address).then(data => {
       commit(types.ADDRESS_ADD_SUC, data.data)
     })
