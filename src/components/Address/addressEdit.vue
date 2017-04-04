@@ -1,15 +1,15 @@
 <template>
   <div>
 
-    <form ref="form" v-model="form">
+    <form ref="editForm" v-model="form">
       <group class="group-address">
         <x-input title="收件人" v-model="form.name" :value="form.name" placeholder="请填写您的姓名"></x-input>
 
-        <x-input title="联系方式" v-model="form.phone"  :value="form.phone" placeholder="请填写您的联系方式" keyboard="number" :min="11" :max="11" is-type="china-mobile"></x-input>
+        <x-input title="联系方式" v-model="form.phone" :value="form.phone" placeholder="请填写您的联系方式" keyboard="number" :min="11" :max="11" is-type="china-mobile"></x-input>
 
-        <x-address title="收件地址" v-model="form.area" :list="addressData" placeholder="请填写您的收件地址" value-text-align="left"></x-address>
+        <x-address title="收件地址" v-model="form.areaCode" :list="addressData" placeholder="请填写您的收件地址" value-text-align="left"></x-address>
 
-        <x-textarea :max="100" v-model="form.address" :value="form.address" placeholder="请输入详细地址..."></x-textarea>
+        <x-textarea :min="4" :max="100" v-model="form.address" :value="form.address" placeholder="请输入详细地址..."></x-textarea>
       </group>
     </form>
 
@@ -57,8 +57,8 @@ export default {
         id: self.form.id,
         name: self.form.name,
         phone: self.form.phone,
-        areaCode: self.form.area.join(','),
-        areaName: self.getName(self.form.area),
+        areaCode: self.form.areaCode.join(','),
+        areaName: self.getName(self.form.areaCode),
         address: self.form.address
       }
       self.updateAddress(preForm).then(function () {
@@ -75,9 +75,11 @@ export default {
         const addressId = this.$route.query.addressId
         if (addressId) {
           this.queryAddress({addressId: addressId}).then(() => {
-            this.form = assignDeep({}, this.getAddress)
-            this.area = this.form.area ? this.form.area.split(',') : []
-            console.log(this.getAddress)
+            this.$nextTick(() => {
+              let tempForm = assignDeep({}, this.getAddress)
+              tempForm.areaCode = tempForm.areaCode ? tempForm.areaCode.split(',') : []
+              this.form = tempForm
+            })
           })
         }
       }
@@ -89,7 +91,7 @@ export default {
         id: null,
         name: null,
         phone: null,
-        area: [],
+        areaCode: [],
         address: null
       },
       addressData: ChinaAddressData

@@ -10,16 +10,17 @@
       </router-link>
     </div>
 
-    <form ref="form" v-model="form">
+    <form ref="selectForm" v-model="form">
       <group class="group-address">
-        <x-input title="地址ID" :value="form.id" style="display: none;"></x-input>
-        <x-input title="收件人" required :value="form.name" placeholder="请填写您的姓名"></x-input>
+        <x-input title="地址ID" v-model="form.id" :value="form.id" style="display: none;"></x-input>
 
-        <x-input title="联系方式" required :value="form.phone" placeholder="请填写您的联系方式" keyboard="number" :min="11" :max="11" is-type="china-mobile"></x-input>
+        <x-input title="收件人" v-model="form.name" :value="form.name" placeholder="请填写您的姓名"></x-input>
 
-        <x-address title="收件地址" v-model="form.area" :list="addressData" placeholder="请填写您的收件地址" value-text-align="left"></x-address>
+        <x-input title="联系方式" v-model="form.phone" :value="form.phone" placeholder="请填写您的联系方式" keyboard="number" :min="11" :max="11" is-type="china-mobile"></x-input>
 
-        <x-textarea :min="4" :max="100" required :value="form.address" placeholder="请输入详细地址..."></x-textarea>
+        <x-address title="收件地址" v-model="form.areaCode" :list="addressData" placeholder="请填写您的收件地址" value-text-align="left"></x-address>
+
+        <x-textarea :min="4" :max="100" v-model="form.address" :value="form.address" placeholder="请输入详细地址..."></x-textarea>
       </group>
     </form>
 
@@ -62,7 +63,7 @@ export default {
       return '/addressList?redirectUrl=' + encodeURIComponent(this.$route.fullPath)
     },
     getName (value) {
-      return value2name(value, ChinaAddressData)
+      return value2name(value, ChinaAddressData, ',')
     },
     saveSelectHandler () {
 //      let self = this
@@ -72,7 +73,7 @@ export default {
 //        title: '收货地址',
 //        content: '<div class="confirm-address"><div><b>收货人</b>：' + addForm.name + '</div>' +
 //        '<div><b>联系方式</b>：' + addForm.phone + '</div>' +
-//        '<div><b>收件地址</b>：' + self.getName(addForm.area) + ' ' + addForm.address + '</div></div>',
+//        '<div><b>收件地址</b>：' + self.getName(addForm.areaCode) + ' ' + addForm.address + '</div></div>',
 //        onCancel () {
 //          console.log('plugin cancel', addForm.id)
 //        },
@@ -91,7 +92,9 @@ export default {
 //      })
     },
     initPage () {
-      this.form = assignDeep({}, this.getSelectAddress)
+      let tempForm = assignDeep({}, this.getSelectAddress)
+      tempForm.areaCode = tempForm.areaCode ? tempForm.areaCode.split(',') : []
+      this.form = tempForm
     }
   },
   data () {
@@ -100,15 +103,14 @@ export default {
         id: null,
         name: null,
         phone: null,
-        area: [],
+        areaCode: [],
         address: null
       },
-      disabledSubmit: true,
       addressData: ChinaAddressData
     }
   },
   mounted () {
-    console.log('[Address Page] mounted')
+    console.log('[Address Select Page] mounted')
     this.initPage()
   }
 }

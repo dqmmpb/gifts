@@ -38,7 +38,7 @@ const mutations = {
     if (address) {
 
     } else {
-      state.addresses.push(state.address)
+      // state.addresses.push(state.address)
     }
   },
   [types.ADDRESS_DELETE_BEGIN] (state) {

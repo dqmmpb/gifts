@@ -33,9 +33,6 @@ module.exports = {
         pathRewrite: {'^/gifts-api' : '/mock'},
         changeOrigin: true
       },
-      // '/hongbao': {
-      //   target: 'http://192.168.1.167:8080',
-      // }
       '/hongbao': {
         target: 'http://59.110.153.132',
       }
