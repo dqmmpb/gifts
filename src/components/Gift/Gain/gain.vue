@@ -1,6 +1,6 @@
 <template>
   <div>
-    <scroller v-if="getGainList" lock-x scrollbar-y use-pulldown height="-96" :pulldown-config="{content:'下拉刷新',downContent:'下拉刷新',upContent:'释放刷新',loadingContent:'加载中'}" @on-pulldown-loading="refresh" v-model="status" ref="scroller">
+    <scroller lock-x scrollbar-y use-pulldown height="-50" :pulldown-config="{content:'下拉刷新',downContent:'下拉刷新',upContent:'释放刷新',loadingContent:'加载中'}" @on-pulldown-loading="refresh" v-model="status" ref="scrollerGain">
       <div>
         <card v-if="getGainList" v-for="item in getGainList" :key="item.id">
           <div slot="content" class="card-padding">
@@ -12,8 +12,8 @@
               <cell :title="thirdTitle(item)" class="no-before">
                 <img slot="icon" width="20" style="display:block;margin-right:5px;" :src="getHeadImg(item)">
                 <div slot="value">
-                  <!--<router-link v-if="item.isDelivered === 0" :to="{path:'/giftAddress',query: {giftId:item.id}}"><x-button mini type="warn" class="btn-detail">选择收货地址</x-button></router-link>-->
-                  <router-link :to="{path:'/gift/gainInfo',query: {shareCode:item.shareCode}}"><x-button mini type="warn" class="btn-detail">查看详情</x-button></router-link>
+                  <router-link v-if="item.giftSource === 0" :to="{path:'/gift/gainInfo',query: {shareCode:item.shareCode}}"><x-button mini type="warn" class="btn-detail">查看详情</x-button></router-link>
+                  <router-link v-if="item.giftSource === 1" :to="{path:'/gift/askforgive/detail',query: {shareCode:item.shareCode}}"><x-button mini type="warn" class="btn-detail">查看详情</x-button></router-link>
                 </div>
               </cell>
             </group>
@@ -57,7 +57,7 @@ export default {
       if (item.giftSource === 0) {
         return '[赠送]' + isDelivered
       } else if (item.giftSource === 1) {
-        return '[领取]' + isDelivered
+        return '[礼物]' + isDelivered
       }
     },
     secondTitle (item) {
@@ -88,7 +88,7 @@ export default {
       this.queryGainList().then(() => {
         this.$nextTick(() => {
           setTimeout(() => {
-            this.$refs.scroller.donePulldown()
+            this.$refs.scrollerGain.donePulldown()
           }, 10)
         })
       })
@@ -96,7 +96,9 @@ export default {
     initPage () {
       this.queryGainList().then(() => {
         this.$nextTick(() => {
-          this.$refs.scroller.reset()
+          setTimeout(() => {
+            this.$refs.scrollerGain.reset()
+          }, 10)
         })
       })
     }
@@ -172,18 +174,6 @@ export default {
        border-radius: 0;
     }
   }
-}
-.rotate {
-  display: inline-block;
-  transform: rotate(-180deg);
-}
-.pullup-arrow {
-  transition: all linear 0.2s;
-  color: #666;
-  font-size: 25px;
-}
-.router-view {
-  height: 100%;
 }
 
 </style>

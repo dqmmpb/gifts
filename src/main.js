@@ -11,6 +11,18 @@ import App from './App'
 import Vuex from 'vuex'
 Vue.use(Vuex)
 
+import zhCN from 'vee-validate/dist/locale/zh_CN'
+
+import VeeValidate, { Validator } from 'vee-validate'
+
+// Add locale helper.
+Validator.addLocale(zhCN)
+
+// Install the Plugin and set the locale.
+Vue.use(VeeValidate, {
+  locale: 'zh_CN'
+})
+
 require('es6-promise').polyfill()
 
 import store from './store'
@@ -84,14 +96,14 @@ const routes = [{
   component: lazyLoading('Gift/Gain/gain')
 },
 {
-  path: '/gift/gainDetail',
-  name: '礼物详情',
-  component: lazyLoading('Gift/Gain/gainDetail')
-},
-{
   path: '/gift/gainInfo',
   name: '礼物详情',
   component: lazyLoading('Gift/Gain/gainInfo')
+},
+{
+  path: '/gift/baseInfo',
+  name: '礼物详情',
+  component: lazyLoading('Gift/Gain/baseInfo')
 },
 {
   path: '/gift/sendList',
@@ -107,6 +119,16 @@ const routes = [{
   path: '/logistics',
   name: '物流详情',
   component: lazyLoading('Logistics/logistics')
+},
+{
+  path: '/gift/askforgive/detail',
+  name: '礼物详情',
+  component: lazyLoading('Gift/Ask/askForGiveDetail')
+},
+{
+  path: '/qrcode',
+  name: '关注公众号',
+  component: lazyLoading('Gift/qrCode')
 }]
 
 const router = new VueRouter({

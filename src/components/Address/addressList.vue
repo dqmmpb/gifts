@@ -3,7 +3,7 @@
 
     <confirm v-model="show"></confirm>
 
-<!--    <scroller v-if="!isInit" lock-x scrollbar-y use-pulldown height="-96" :pulldown-config="{content:'下拉刷新',downContent:'下拉刷新',upContent:'释放刷新',loadingContent:'加载中'}" @on-pulldown-loading="refresh" v-model="status" ref="scroller">
+<!--    <scroller v-if="!isInit" lock-x scrollbar-y use-pulldown height="-50" :pulldown-config="{content:'下拉刷新',downContent:'下拉刷新',upContent:'释放刷新',loadingContent:'加载中'}" @on-pulldown-loading="refresh" v-model="status" ref="scrollerAddressList">
       <div>-->
         <div v-if="!isInit && !empty">
           <swipeout class="vux-1px-b">
@@ -75,7 +75,7 @@ export default {
   methods: {
     ...mapActions(['queryAddressList', 'selectAddress', 'deleteAddress']),
     getName (value) {
-      return value2name(value, ChinaAddressData, ' ').replace(' ', '')
+      return value2name(value, ChinaAddressData, ' ').replace(/\s/g, '')
     },
     onItemClick (item) {
       let self = this
@@ -92,25 +92,22 @@ export default {
     },
     onButtonClick (type, item) {
       let self = this
-      console.log('on button click ' + type)
       if (type === 'delete') {
         this.$vux.confirm.show({
           title: '',
           content: '请确认是否删除',
           onCancel () {
             self.$refs['swipeoutItem' + item.id][0].close()
-            console.log('plugin cancel', item.id)
           },
           onConfirm () {
             self.deleteAddress({addressId: item.id}).then(() => {
-              console.log('plugin confirm', item.id)
             })
           }
         })
       }
     },
     handleEvents (type) {
-      console.log('event: ', type)
+      // console.log('event: ', type)
     },
     toAddressAdd () {
       return '/addressAdd?redirectUrl=' + encodeURIComponent(this.$route.fullPath)
@@ -119,18 +116,19 @@ export default {
       return '/addressEdit?addressId=' + item.id + '&redirectUrl=' + encodeURIComponent(this.$route.fullPath)
     },
     addressAddHandle (type) {
-      console.log('event: ', type)
+      // console.log('event: ', type)
     },
     getAreaAndAddress (item) {
       let area = item.areaCode ? item.areaCode : ''
-      return this.getName(area.split(','))
+      let address = item.address ? item.address : ''
+      return this.getName(area.split(',')) + address
     },
     refresh () {
       let self = this
       this.queryAddressList().then(() => {
         this.$nextTick(() => {
           setTimeout(() => {
-            this.$refs.scroller.donePulldown()
+            // this.$refs.scrollerAddressList.donePulldown()
             self.isInit = false
             self.empty = !(this.getAddressList && this.getAddressList.length > 0)
           }, 10)
@@ -139,7 +137,6 @@ export default {
     },
     initPage () {
       let self = this
-      console.log(this.$route)
       this.queryAddressList().then(() => {
         this.$nextTick(() => {
           self.isInit = false
@@ -214,14 +211,6 @@ export default {
   }
 }
 
-.tabbar-button {
-  width: 100%;
-  & .tabbar-button__btn {
-    color: #fdef81;
-    background-color: #ff2c4c;
-    border-radius: 0;
-  }
-}
 .sorry {
   padding: 50px 0 100px;
   text-align: center;
@@ -235,21 +224,6 @@ export default {
     font-size: 14px;
     color: #ddd;
   }
-}
-.weui-dialog__btn_primary {
-  color: #ff2c4c;
-}
-.rotate {
-  display: inline-block;
-  transform: rotate(-180deg);
-}
-.pullup-arrow {
-  transition: all linear 0.2s;
-  color: #666;
-  font-size: 25px;
-}
-.router-view {
-  height: 100%;
 }
 
 </style>

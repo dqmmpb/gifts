@@ -1,34 +1,57 @@
 <template>
   <div>
+    <form ref="selectForm" v-model="form" @submit.prevent="validateBeforeSubmit">
 
-    <div class="gift-address">
-      <router-link :to="toAddressList()">
-        <x-button type="warn" class="gift-address-btn">
-          <span class="btn-title">从地址簿中选择</span>
-          <span class="btn-title-sub">添加到地址簿，未来收件更方便</span>
-        </x-button>
-      </router-link>
-    </div>
+      <div class="panel-padding">
+        <router-link :to="toAddressList()">
+          <x-button type="warn" class="btn-normal btn-default padding5px0px border40px" action-type="button">
+            <span class="btn-title">从地址簿中选择</span>
+            <span class="btn-title-sub">添加到地址簿，未来收件更方便</span>
+          </x-button>
+        </router-link>
+      </div>
 
-    <form ref="selectForm" v-model="form">
       <group class="group-address">
-        <x-input title="地址ID" v-model="form.id" :value="form.id" style="display: none;"></x-input>
+        <div class="vux-x-input weui-cell input" style="display: none;">
+          <div class="weui-cell__hd">
+            <label class="weui-label" style="width: 5em;">地址ID</label>
+          </div>
+          <div class="weui-cell__bd weui-cell__primary">
+            <input class="weui-input" type="hidden" name="id" v-model="form.id" placeholder="请填写ID">
+          </div>
+        </div>
 
-        <x-input title="收件人" v-model="form.name" :value="form.name" placeholder="请填写您的姓名"></x-input>
+        <div class="vux-x-input weui-cell input">
+          <div class="weui-cell__hd">
+            <label class="weui-label" style="width: 5em;">收件人</label>
+          </div>
+          <div class="weui-cell__bd weui-cell__primary">
+            <input class="weui-input" type="text" name="name" v-model="form.name" placeholder="请填写您的姓名" v-validate="'required'" :class="{'input': true, 'is-danger': errors.has('name') }">
+          </div>
+        </div>
 
-        <x-input title="联系方式" v-model="form.phone" :value="form.phone" placeholder="请填写您的联系方式" keyboard="number" :min="11" :max="11" is-type="china-mobile"></x-input>
+        <div class="vux-x-input weui-cell input">
+          <div class="weui-cell__hd">
+            <label class="weui-label" style="width: 5em;">联系方式</label>
+          </div>
+          <div class="weui-cell__bd weui-cell__primary">
+            <input class="weui-input" type="text" name="phone" v-model="form.phone" placeholder="请填写您的联系方式" keyboard="number" v-validate:phone.initial="'required|numeric'" :class="{'input': true, 'is-danger': errors.has('phone') }">
+          </div>
+        </div>
+
+        <input class="weui-input" type="hidden" name="areaCode" v-model="form.areaCode" placeholder="请填写您的收件地址" v-validate="'required'" :class="{'input': true, 'is-danger': errors.has('areaCode') }">
 
         <x-address title="收件地址" v-model="form.areaCode" :list="addressData" placeholder="请填写您的收件地址" value-text-align="left"></x-address>
 
-        <x-textarea :min="4" :max="100" v-model="form.address" :value="form.address" placeholder="请输入详细地址..."></x-textarea>
+        <x-textarea :min="4" :max="100" name="address" v-model="form.address" :value="form.address" placeholder="请输入详细地址..."  v-validate="'required'" :class="{'input': true, 'is-danger': errors.has('address') }"></x-textarea>
       </group>
-    </form>
 
-    <tabbar>
-      <div class="tabbar-button">
-        <x-button type="warn" class="tabbar-button__btn" @click.native="saveSelectHandler()">确认无误</x-button>
-      </div>
-    </tabbar>
+      <tabbar>
+        <div class="tabbar-button">
+          <x-button type="warn" class="tabbar-button__btn" action-type="submit">确认无误</x-button>
+        </div>
+      </tabbar>
+    </form>
 
   </div>
 </template>
@@ -41,6 +64,9 @@ import moduleStore from '../Address/bll/addressStore'
 import store from '../../store'
 import assignDeep from 'assign-deep'
 (!store.state.addresssStore) && store.registerModule('addresssStore', moduleStore)
+
+import moduleStoreGain from './Gain/bll/gainStore'
+(!store.state.gainStore) && store.registerModule('gainStore', moduleStoreGain)
 
 import { Tabbar, Group, Cell, XInput, XAddress, ChinaAddressData, XTextarea, XButton, Value2nameFilter as value2name } from 'vux'
 
@@ -58,38 +84,83 @@ export default {
     ...mapGetters(['getSelectAddress'])
   },
   methods: {
-    ...mapActions(['saveSelectAddress']),
+    ...mapActions(['giftAddressAdd']),
     toAddressList () {
       return '/addressList?redirectUrl=' + encodeURIComponent(this.$route.fullPath)
     },
     getName (value) {
       return value2name(value, ChinaAddressData, ',')
     },
-    saveSelectHandler () {
-//      let self = this
-     // let addForm = self.form
-    //  console.log(self.$refs.form.valid)
-//      this.$vux.confirm.show({
-//        title: '收货地址',
-//        content: '<div class="confirm-address"><div><b>收货人</b>：' + addForm.name + '</div>' +
-//        '<div><b>联系方式</b>：' + addForm.phone + '</div>' +
-//        '<div><b>收件地址</b>：' + self.getName(addForm.areaCode) + ' ' + addForm.address + '</div></div>',
-//        onCancel () {
-//          console.log('plugin cancel', addForm.id)
-//        },
-//        onConfirm () {
-//          let shareCode = self.$route.query.shareCode
-//          if (shareCode) {
-//            this.giftDelivery({shareCode: shareCode}).then(() => {
-//              let redirectUrl = self.$route.query.redirectUrl
-//              if (redirectUrl) {
-//                let dec = decodeURIComponent(redirectUrl)
-//                self.$router.back(dec)
-//              }
-//            })
-//          }
-//        }
-//      })
+    validateBeforeSubmit () {
+      this.$nextTick(() => {
+        let self = this
+        let addForm = self.form
+        self.$validator.validateAll().then(() => {
+          self.$vux.confirm.show({
+            title: '收货地址',
+            content: '<div class="confirm-address"><div><b>收货人</b>：' + addForm.name + '</div>' +
+            '<div><b>联系方式</b>：' + addForm.phone + '</div>' +
+            '<div><b>收件地址</b>：' + self.getName(addForm.areaCode) + ' ' + addForm.address + '</div></div>',
+            onCancel () {
+
+            },
+            onConfirm () {
+              let shareCode = self.$route.query.shareCode
+              if (shareCode) {
+                let preForm = {
+                  shareCode: shareCode,
+                  name: self.form.name,
+                  phone: self.form.phone,
+                  areaCode: self.form.areaCode.join(','),
+                  areaName: self.getName(self.form.areaCode),
+                  address: self.form.address
+                }
+                self.giftAddressAdd(preForm).then(data => {
+                  console.log(data)
+                  if (data && data.rc === '1') {
+                    let redirectUrl = self.$route.query.redirectUrl
+                    if (redirectUrl) {
+                      let dec = decodeURIComponent(redirectUrl)
+                      self.$router.back(dec)
+                    }
+                  } else {
+                    self.$vux.toast.show({
+                      text: data && data.msg || '网络异常',
+                      type: 'text'
+                    })
+                  }
+                })
+              }
+            }
+          })
+
+          return false
+        }).catch(() => {
+          let err = self.$validator.errorBag
+          console.log(err)
+          if (err.has('name')) {
+            self.$vux.toast.show({
+              text: '请填写收件人',
+              type: 'text'
+            })
+          } else if (err.has('phone')) {
+            self.$vux.toast.show({
+              text: '请填写正确的手机号',
+              type: 'text'
+            })
+          } else if (err.has('areaCode')) {
+            self.$vux.toast.show({
+              text: '请选择省市区',
+              type: 'text'
+            })
+          } else if (err.has('address')) {
+            self.$vux.toast.show({
+              text: '请填写详细地址',
+              type: 'text'
+            })
+          }
+        })
+      })
     },
     initPage () {
       let tempForm = assignDeep({}, this.getSelectAddress)
@@ -119,26 +190,6 @@ export default {
 <style lang="less">
 
 @import '~vux/src/styles/1px.less';
-
-.gift-address {
-  padding: 15px 15px;
-}
-
-.weui-btn.gift-address-btn {
-  padding: 5px 0;
-  color: #ff2c4c;
-  font-size: 14px;
-  background-color: transparent;
-  &:after {
-    border-color: #ff2c4c;
-    border-radius: 46px;
-   }
-  &.weui-btn_warn:not(.weui-btn_disabled):active {
-    color: #ff2c4c;
-    font-size: 14px;
-    background-color: transparent;
-  }
-}
 
 .btn-title {
   display: block;
@@ -188,17 +239,6 @@ export default {
 
 }
 
-.tabbar-button {
-  width: 100%;
-  & .tabbar-button__btn {
-    color: #fdef81;
-    background-color: #ff2c4c;
-    border-radius: 0;
-  }
-}
-.weui-dialog__btn_primary {
-  color: #ff2c4c;
-}
 .confirm-address {
   text-align: left;
   font-size: 12px;
@@ -208,7 +248,4 @@ export default {
   }
 }
 
-.vux-popup-picker-header {
-  color: #ff2c4c !important;
-}
 </style>

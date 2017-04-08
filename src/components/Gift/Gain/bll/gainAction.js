@@ -7,12 +7,31 @@ import * as types from './gainMutationTypes'
 
 const actions = {
 
-  queryGainDetail ({ commit }, { giftId } = {}) {
-    commit(types.GIFT_QUERY_GAINDETAIL_BEGIN)
+  queryAskForGiveDetail ({ commit }, { shareCode } = {}) {
+    commit(types.GIFT_QUERY_ASKFORGIVEDETAIL_BEGIN)
 
-    return http.post(`user/gift/gainDetail?giftId=${giftId}`)
+    return http.post(`user/askforgive/detail/get?shareCode=${shareCode}`)
       .then(data => {
-        commit(types.GIFT_QUERY_GAINDETAIL_SUC, data.data)
+        commit(types.GIFT_QUERY_ASKFORGIVEDETAIL_SUC, data.data)
+      })
+  },
+
+  queryBaseInfo ({ commit }, { shareCode } = {}) {
+    commit(types.GIFT_QUERY_BASEINFO_BEGIN)
+
+    return http.post(`general/gift/baseinfo/get?shareCode=${shareCode}`)
+      .then(data => {
+        commit(types.GIFT_QUERY_BASEINFO_SUC, data.data)
+      })
+  },
+
+  giftTake ({ commit }, { shareCode } = {}) {
+    commit(types.GIFT_TAKE_BEGIN)
+
+    return http.post(`user/gift/take?shareCode=${shareCode}`)
+      .then(data => {
+        commit(types.GIFT_TAKE_SUC, data.data)
+        return data.data
       })
   },
 
@@ -32,6 +51,19 @@ const actions = {
       .then(data => {
         commit(types.GIFT_QUERY_GAINLIST_SUC, data.data)
       })
+  },
+
+  giftDelivery ({ commit }, { shareCode } = {}) {
+    return http.post(`user/confirm/delivery?shareCode=${shareCode}`).then(data => {
+      commit(types.GIFT_DELIVERY_SUC, data.data)
+    })
+  },
+
+  giftAddressAdd ({ commit }, giftAddress) {
+    return http.post('user/gift/address/add', giftAddress).then(data => {
+      commit(types.GIFT_ADDRESS_ADD_SUC, data.data)
+      return data.data
+    })
   }
 
 }

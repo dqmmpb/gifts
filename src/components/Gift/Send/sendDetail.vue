@@ -1,6 +1,6 @@
 <template>
   <div>
-    <scroller lock-x scrollbar-y use-pulldown height="-96" :pulldownConfig="pulldownConfig" @on-pulldown-loading="refresh" v-model="status" ref="scroller">
+    <scroller lock-x scrollbar-y use-pulldown height="-50" :pulldownConfig="pulldownConfig" @on-pulldown-loading="refresh" v-model="status" ref="scrollerSendDetail">
       <div>
         <card v-if="getSendDetail">
           <div slot="content" class="card-padding">
@@ -71,20 +71,24 @@ export default {
         this.querySendDetail({giftId: Number(giftId)}).then(() => {
           this.$nextTick(() => {
             setTimeout(() => {
-              this.$refs.scroller.donePulldown()
+              this.$refs.scrollerSendDetail.donePulldown()
             }, 10)
           })
         })
       }
     },
     initPage () {
-      console.log(this.$route)
-
       if (this.$route.query) {
         const giftId = this.$route.query.giftId
         if (giftId) {
           console.log(giftId)
-          this.querySendDetail({giftId: Number(giftId)})
+          this.querySendDetail({giftId: Number(giftId)}).then(() => {
+            this.$nextTick(() => {
+              setTimeout(() => {
+                this.$refs.scrollerSendDetail.reset()
+              }, 10)
+            })
+          })
         }
       }
     }
@@ -169,18 +173,6 @@ export default {
        border-radius: 0;
     }
   }
-}
-.rotate {
-  display: inline-block;
-  transform: rotate(-180deg);
-}
-.pullup-arrow {
-  transition: all linear 0.2s;
-  color: #666;
-  font-size: 25px;
-}
-.router-view {
-  height: 100%;
 }
 
 </style>

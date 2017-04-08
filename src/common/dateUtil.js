@@ -23,7 +23,7 @@ const dateUtil = {
     } else if (Object.prototype.toString.call(dateObj) === '[object String]') {
       try {
         if (pattern) {
-          return fecha.format(this.dateParse(dateObj, pattern), fecha.masks[format] || format)
+          return fecha.format(this.parse(dateObj, pattern), fecha.masks[format] || format)
         } else {
           return fecha.format(dateObj, fecha.masks[format] || format)
         }

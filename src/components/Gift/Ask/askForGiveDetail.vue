@@ -1,6 +1,6 @@
 <template>
   <div>
-    <scroller lock-x scrollbar-y use-pulldown height="-50" :pulldown-config="{content:'下拉刷新',downContent:'下拉刷新',upContent:'释放刷新',loadingContent:'加载中'}" @on-pulldown-loading="refresh" v-model="status" ref="scrollerGainInfo">
+    <scroller lock-x scrollbar-y use-pulldown height="-50" :pulldown-config="{content:'下拉刷新',downContent:'下拉刷新',upContent:'释放刷新',loadingContent:'加载中'}" @on-pulldown-loading="refresh" v-model="status" ref="scrollerAskForGiveDetail">
       <div>
         <card v-if="getGainDetail">
           <div slot="content">
@@ -38,7 +38,7 @@
               <cell v-for="item in getGainDetail.gainUsers" :inline-desc="forthDesc(item)" :key="item.id" :title="forthTitle(item)" class="no-before">
                 <img slot="icon" width="38" style="display:block;margin-right:5px;" :src="getHeadImg(item)">
                 <div slot="value">
-                  <span class="small">领取了</span>
+                  <span class="small">赠送了</span>
                   <span>{{forthValue(item)}}</span>
                   <span class="small">{{forthValue2(item)}}</span>
                 </div>
@@ -66,7 +66,7 @@
 
 import { mapActions, mapGetters } from 'vuex'
 
-import moduleStore from './bll/gainStore'
+import moduleStore from '../Gain/bll/gainStore'
 import store from '../../../store'
 (!store.state.gainStore) && store.registerModule('gainStore', moduleStore)
 
@@ -89,7 +89,7 @@ export default {
     ...mapGetters(['getGainDetail'])
   },
   methods: {
-    ...mapActions(['queryGainInfo']),
+    ...mapActions(['queryAskForGiveDetail']),
     toAddressList () {
       const shareCode = this.$route.query.shareCode
       if (shareCode) {
@@ -166,10 +166,10 @@ export default {
       console.log('refresh... ' + 1)
       const shareCode = this.$route.query.shareCode
       if (shareCode) {
-        this.queryGainInfo({shareCode: shareCode}).then(() => {
+        this.queryAskForGiveDetail({shareCode: shareCode}).then(() => {
           this.$nextTick(() => {
             setTimeout(() => {
-              this.$refs.scrollerGainInfo.donePulldown()
+              this.$refs.scrollerAskForGiveDetail.donePulldown()
             }, 10)
           })
         })
@@ -179,10 +179,10 @@ export default {
       if (this.$route.query) {
         const shareCode = this.$route.query.shareCode
         if (shareCode) {
-          this.queryGainInfo({shareCode: shareCode}).then(() => {
+          this.queryAskForGiveDetail({shareCode: shareCode}).then(() => {
             this.$nextTick(() => {
               setTimeout(() => {
-                this.$refs.scrollerGainInfo.reset()
+                this.$refs.scrollerAskForGiveDetail.reset()
               }, 10)
             })
           })

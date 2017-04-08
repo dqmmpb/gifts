@@ -1,6 +1,6 @@
 <template>
   <div>
-    <scroller v-if="getSendList" lock-x scrollbar-y use-pulldown height="-96" :pulldown-config="{content:'下拉刷新',downContent:'下拉刷新',upContent:'释放刷新',loadingContent:'加载中'}" @on-pulldown-loading="refresh" v-model="status" ref="scroller">
+    <scroller lock-x scrollbar-y use-pulldown height="-50" :pulldown-config="{content:'下拉刷新',downContent:'下拉刷新',upContent:'释放刷新',loadingContent:'加载中'}" @on-pulldown-loading="refresh" v-model="status" ref="scrollerSend">
       <div>
         <card v-if="getSendList" v-for="item in getSendList" :key="item.id">
           <div slot="content" class="card-padding">
@@ -8,7 +8,7 @@
               <cell :title="firstTitle(item)" :value="firstValue(item)" class="no-before first"></cell>
 
               <div class="with-before second">
-                <cell v-for="datalist in item.dataList" :key="datalist.id" :title="datalist" class="no-before"></cell>
+                <cell v-for="dataItem in item.dataList" :key="dataItem.id" :title="secondTitle(dataItem)" :value="secondValue(dataItem)" class="no-before"></cell>
               </div>
 
               <cell :title="thirdTitle(item)" class="with-before cell-padding">
@@ -60,7 +60,7 @@ export default {
       return item.goodsName
     },
     secondValue (item) {
-      return ''
+      return '×' + item.amount
     },
     thirdTitle (item) {
       return '已领取' + item.takeAmount + '份，剩余' + item.leftAmount + '份未领取'
@@ -72,13 +72,17 @@ export default {
       this.querySendList().then(() => {
         this.$nextTick(() => {
           setTimeout(() => {
-            this.$refs.scroller.donePulldown()
+            this.$refs.scrollerSend.donePulldown()
           }, 10)
         })
       })
     },
     initPage () {
-      this.querySendList()
+      this.querySendList().then(() => {
+        this.$nextTick(() => {
+          this.$refs.scrollerSend.reset()
+        })
+      })
     }
   },
   data () {
@@ -156,18 +160,6 @@ export default {
        border-radius: 0;
     }
   }
-}
-.rotate {
-  display: inline-block;
-  transform: rotate(-180deg);
-}
-.pullup-arrow {
-  transition: all linear 0.2s;
-  color: #666;
-  font-size: 25px;
-}
-.router-view {
-  height: 100%;
 }
 
 </style>

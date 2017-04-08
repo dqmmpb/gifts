@@ -1,45 +1,45 @@
 <template>
   <div>
-<!--    <scroller lock-x scrollbar-y use-pulldown height="100%" :pulldownConfig="pulldownConfig" @on-pulldown-loading="refresh" v-model="status" ref="scroller">
-      <div>-->
-      <div v-if="getGainDetail">
-        <card>
-          <div slot="content" class="card-padding">
-            <group>
-              <cell :title="firstTitle(getGainDetail)" :value="firstValue(getGainDetail)" class="no-before first"></cell>
+    <scroller lock-x scrollbar-y use-pulldown height="-50" :pulldownConfig="pulldownConfig" @on-pulldown-loading="refresh" v-model="status" ref="scrollerLogistics">
+      <div>
+        <div v-if="getGainDetail">
+          <card>
+            <div slot="content" class="card-padding">
+              <group>
+                <cell :title="firstTitle(getGainDetail)" :value="firstValue(getGainDetail)" class="no-before first"></cell>
 
-              <cell :title="secondTitle(getGainDetail)" :value="secondValue(getGainDetail)" class="with-before second"></cell>
-            </group>
-            <img src="../../assets/logistics-bottom.png" class="logistics-bottom">
-          </div>
-        </card>
+                <cell :title="secondTitle(getGainDetail)" :value="secondValue(getGainDetail)" class="with-before second"></cell>
+              </group>
+              <img src="../../assets/logistics-bottom.png" class="logistics-bottom">
+            </div>
+          </card>
 
-        <div class="weui-panel weui-panel_access logistics">
-          <div class="weui-panel__hd">订单{{getLogisticsOrderNo}}的物流信息</div>
-          <div v-if="getLogisticsList" >
-            <div class="weui-panel__bd" v-for="item in getLogisticsList" :key="item.id">
-              <div class="ct">
-                <div class="weui-media-box__title info">{{item.context}}</div>
-                <p class="weui-media-box__desc date">{{item.time}}</p>
+          <div class="weui-panel weui-panel_access logistics">
+            <div class="weui-panel__hd">订单{{getLogisticsOrderNo}}的物流信息</div>
+            <div v-if="getLogisticsList" >
+              <div class="weui-panel__bd" v-for="item in getLogisticsList" :key="item.id">
+                <div class="ct">
+                  <div class="weui-media-box__title info">{{item.context}}</div>
+                  <p class="weui-media-box__desc date">{{item.time}}</p>
+                </div>
+              </div>
+            </div>
+            <div v-else>
+              <div class="sorry">
+                <img src="../../assets/sorry.png" class="sorry-img">
+                <div class="sorry-text">暂无任何物流信息</div>
               </div>
             </div>
           </div>
-          <div v-else>
-            <div class="sorry">
-              <img src="../../assets/sorry.png" class="sorry-img">
-              <div class="sorry-text">暂无任何物流信息</div>
-            </div>
+        </div>
+        <div v-else>
+          <div class="sorry">
+            <img src="../../assets/sorry.png" class="sorry-img">
+            <div class="sorry-text">暂无订单信息</div>
           </div>
         </div>
       </div>
-      <div v-else>
-        <div class="sorry">
-          <img src="../../assets/sorry.png" class="sorry-img">
-          <div class="sorry-text">暂无订单信息</div>
-        </div>
-      </div>
-<!--      </div>
-    </scroller>-->
+    </scroller>
   </div>
 </template>
 
@@ -93,7 +93,7 @@ export default {
           this.queryLogisticsList({deliveryId: Number(deliveryId)}).then(() => {
             this.$nextTick(() => {
               setTimeout(() => {
-                this.$refs.scroller.donePulldown()
+                this.$refs.scrollerLogistics.donePulldown()
               }, 10)
             })
           })
@@ -279,18 +279,6 @@ export default {
 }
 }
 
-.rotate {
-  display: inline-block;
-  transform: rotate(-180deg);
-}
-.pullup-arrow {
-  transition: all linear 0.2s;
-  color: #666;
-  font-size: 25px;
-}
-.router-view {
-  height: 100%;
-}
 .sorry {
   padding: 50px 0 100px;
   text-align: center;
