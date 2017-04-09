@@ -13,7 +13,7 @@
                 <img slot="icon" width="20" style="display:block;margin-right:5px;" :src="getHeadImg(item)">
                 <div slot="value">
                   <router-link v-if="item.giftSource === 0" :to="{path:'/gift/gainInfo',query: {shareCode:item.shareCode}}"><x-button mini type="warn" class="btn-detail">查看详情</x-button></router-link>
-                  <router-link v-if="item.giftSource === 1" :to="{path:'/gift/askforgive/detail',query: {shareCode:item.shareCode}}"><x-button mini type="warn" class="btn-detail">查看详情</x-button></router-link>
+                  <router-link v-if="item.giftSource === 1" :to="{path:'/gift/askForGive/detail',query: {shareCode:item.shareCode}}"><x-button mini type="warn" class="btn-detail">查看详情</x-button></router-link>
                 </div>
               </cell>
             </group>

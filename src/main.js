@@ -71,6 +71,10 @@ const FastClick = require('fastclick')
 FastClick.attach(document.body)
 
 const routes = [{
+  path: '/mainPage',
+  name: '礼物详情',
+  component: lazyLoading('mainPage')
+}, {
   path: '/addressList',
   name: '收货地址',
   component: lazyLoading('Address/addressList')
@@ -121,9 +125,24 @@ const routes = [{
   component: lazyLoading('Logistics/logistics')
 },
 {
-  path: '/gift/askforgive/detail',
-  name: '礼物详情',
-  component: lazyLoading('Gift/Ask/askForGiveDetail')
+  path: '/gift/askForGive/detail',
+  name: '讨礼物',
+  component: lazyLoading('Gift/AskFor/askForGiveDetail')
+},
+{
+  path: '/gift/wantToGive',
+  name: '送礼物',
+  component: lazyLoading('Gift/WantTo/wantToGive')
+},
+{
+  path: '/gift/recommendList',
+  name: '送礼物',
+  component: lazyLoading('Gift/WantTo/recommendList')
+},
+{
+  path: '/gift/wantToShare',
+  name: '分享礼包',
+  component: lazyLoading('Gift/WantTo/wantToShare')
 },
 {
   path: '/qrcode',

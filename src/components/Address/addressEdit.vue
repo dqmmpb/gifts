@@ -45,7 +45,7 @@ import { mapActions, mapGetters } from 'vuex'
 import moduleStore from './bll/addressStore'
 import store from '../../store'
 import assignDeep from 'assign-deep'
-(!store.state.addresssStore) && store.registerModule('addresssStore', moduleStore)
+(!store.state.addressesStore) && store.registerModule('addressesStore', moduleStore)
 
 import { Tabbar, Group, Cell, XInput, XAddress, ChinaAddressData, XTextarea, XButton, Value2nameFilter as value2name } from 'vux'
 

@@ -50,11 +50,11 @@
     </scroller>
 
 
-    <tabbar class="view-tabbar" slot="bottom">
-      <tabbar-item :link="{path:'/gift/sendList'}">
+    <tabbar v-if="getGainDetail" class="view-tabbar" slot="bottom">
+      <tabbar-item  v-if="getGainDetail.isDevlieried !== 0" :link="{path:'/gift/sendList'}">
         <span slot="label">查看活动详情</span>
       </tabbar-item>
-      <tabbar-item :link="{path:'/gift/gainList'}">
+      <tabbar-item :link="{path:'/gift/gainList'}" class="weui-bar__item_normal">
         <span slot="label">我也要送</span>
       </tabbar-item>
     </tabbar>

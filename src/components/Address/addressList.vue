@@ -52,7 +52,7 @@ import { mapActions, mapGetters } from 'vuex'
 
 import moduleStore from './bll/addressStore'
 import store from '../../store'
-(!store.state.addresssStore) && store.registerModule('addresssStore', moduleStore)
+(!store.state.addressesStore) && store.registerModule('addressesStore', moduleStore)
 
 import { Scroller, Tabbar, Group, Cell, Swipeout, SwipeoutItem, SwipeoutButton, XButton, Confirm, Spinner, ChinaAddressData, Value2nameFilter as value2name } from 'vux'
 

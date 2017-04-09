@@ -7,13 +7,17 @@
       <x-header slot="header" style="width:100%;position:absolute;left:0;top:0;z-index:100;" :left-options="leftOptions"
                 :title="title"
                 :transition="headerTransition"
-                @on-click-title="scrollTop" v-if="!isShowHeader" ></x-header>
+                @on-click-title="scrollTop" v-if="!isLoading && !isShowHeader"></x-header>
 
       <transition :name="'vux-pop-' + (direction === 'forward' ? 'in' : 'out')">
         <router-view class="router-view"></router-view>
       </transition>
 
-      <tabbar class="view-tabbar" v-show="!isTabbar" slot="bottom">
+      <tabbar class="view-tabbar" v-if="!isLoading && !isTabbar" slot="bottom">
+        <tabbar-item :link="{path:'/mainPage'}" :selected="route.path === '/mainPage'">
+          <i class="fa fa-bars" slot="icon"></i>
+          <span slot="label">活动首页</span>
+        </tabbar-item>
         <tabbar-item :link="{path:'/gift/baseInfo', query: {shareCode:'3ce18aeea2b348a6b2d700db3cc2bb2c00795496'}}" :selected="route.path === '/gift/baseInfo'">
           <i class="fa fa-bars" slot="icon"></i>
           <span slot="label">拆礼包</span>
@@ -120,6 +124,7 @@ export default {
       return this.isTabbar ? '0' : '50px'
     },
     isShowHeader () {
+      if (/mainPage/.test(this.route.path)) return true
       if (/gift\/baseInfo/.test(this.route.path)) return true
       if (/gift\/gainList/.test(this.route.path)) return true
       if (/gift\/gainInfo/.test(this.route.path)) return true
@@ -129,6 +134,9 @@ export default {
       if (/addressAdd/.test(this.route.path)) return true
       if (/addressEdit/.test(this.route.path)) return true
       if (/giftAddress/.test(this.route.path)) return true
+      if (/gift\/wantToGive/.test(this.route.path)) return true
+      if (/gift\/recommendList/.test(this.route.path)) return true
+      if (/gift\/wantToShare/.test(this.route.path)) return true
       return false
     },
     isShowBar () {
@@ -146,11 +154,15 @@ export default {
       return this.direction === 'forward' ? 'vux-header-fade-in-right' : 'vux-header-fade-in-left'
     },
     isTabbar () {
+      if (/mainPage/.test(this.route.path)) return true
       if (/addressList/.test(this.route.path)) return true
       if (/addressAdd/.test(this.route.path)) return true
       if (/addressEdit/.test(this.route.path)) return true
       if (/giftAddress/.test(this.route.path)) return true
       if (/gift\/gainInfo/.test(this.route.path)) return true
+      if (/gift\/wantToGive/.test(this.route.path)) return true
+      if (/gift\/recommendList/.test(this.route.path)) return true
+      if (/gift\/wantToShare/.test(this.route.path)) return true
       return /tabbar/.test(this.route.path)
     },
     title () {
