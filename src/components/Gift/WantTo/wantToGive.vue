@@ -54,7 +54,7 @@ export default {
     ...mapGetters(['getWantToBudget'])
   },
   methods: {
-    ...mapActions(['saveWantToBudget']),
+    ...mapActions(['storeWantToBudget']),
     onChange (val) {
       console.log('val change', val)
     },
@@ -90,7 +90,7 @@ export default {
             budget: self.getBudget(self.form.budget),
             limitCount: self.form.limitCount
           }
-          self.saveWantToBudget(preForm).then(function () {
+          self.storeWantToBudget(preForm).then(function () {
             let recommendList = '/gift/recommendList?budget=' + preForm.budget + '&limitCount=' + preForm.limitCount
             self.$router.push(recommendList)
           })
@@ -120,7 +120,7 @@ export default {
         if (limitCount) {
           preForm.limitCount = Number(limitCount)
         }
-        self.saveWantToBudget(preForm).then(function () {
+        self.storeWantToBudget(preForm).then(function () {
           let tempForm = assignDeep({}, self.getWantToBudget)
           tempForm.budget = tempForm.budget ? [tempForm.budget + ''] : []
           self.form = tempForm
@@ -130,7 +130,7 @@ export default {
           budget: self.getBudget([]),
           limitCount: 0
         }
-        self.saveWantToBudget(preForm).then(function () {
+        self.storeWantToBudget(preForm).then(function () {
           let tempForm = assignDeep({}, self.getWantToBudget)
           tempForm.budget = tempForm.budget ? [tempForm.budget + ''] : []
           self.form = tempForm

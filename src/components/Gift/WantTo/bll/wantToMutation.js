@@ -9,7 +9,7 @@ import * as types from './wantToMutationTypes'
  * @type {{}}
  */
 const mutations = {
-  [types.WANTTO_BUDGET_SUC] (state, data) {
+  [types.WANTTO_STORE_BUDGET_SUC] (state, data) {
     state.budget = data
   },
   [types.WANTTO_QUERY_GOODSLIST_BEGIN] (state) {
@@ -44,6 +44,10 @@ const mutations = {
         }
       }
     }
+  },
+  [types.WANTTO_PREPAY_BEGIN] (state) {
+  },
+  [types.WANTTO_PREPAY_SUC] (state, data) {
   },
   [types.WANTTO_SHARE_SUC] (state, data) {
   }

@@ -34,7 +34,7 @@ module.exports = {
         changeOrigin: true
       },
       '/hongbao': {
-        target: 'http://10.254.0.125:8080',
+        target: 'http://192.168.1.104:8080',
       }
       // '/hongbao': {
       //   target: 'http://59.110.153.132',

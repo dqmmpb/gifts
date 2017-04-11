@@ -34,8 +34,17 @@ const actions = {
       })
   },
 
-  saveWantToBudget ({ commit }, budget) {
-    commit(types.WANTTO_BUDGET_SUC, budget)
+  giftPrePay ({ commit }, { amounts, goodsIds }) {
+    commit(types.WANTTO_PREPAY_BEGIN)
+
+    return http.post(`user/gift/prepay?amounts=${amounts}&goodsIds=${goodsIds}`)
+      .then(data => {
+        commit(types.WANTTO_PREPAY_SUC, data.data)
+      })
+  },
+
+  storeWantToBudget ({ commit }, budget) {
+    commit(types.WANTTO_STORE_BUDGET_SUC, budget)
   },
 
   share ({ commit }, { url }) {

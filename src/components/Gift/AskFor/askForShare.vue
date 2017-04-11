@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="panel-padding text-align-center">
-      <div>支付成功</div>
+      <div>分享链接获取成功</div>
       <div class="wechat">
         <img src="../../../assets/qrcode.png" class="qrcode">
-        <div>已经为您打包好礼物，现在可以分享给朋友了</div>
+        <div>已经为您生成分享链接，现在可以找好友助攻了</div>
       </div>
       <x-button type="warn" class="tabbar-button__btn" @click.native="getShareCode">分享至好友或者朋友圈</x-button>
     </div>
@@ -15,9 +15,9 @@
 
 import { mapActions } from 'vuex'
 
-import moduleStore from './bll/wantToStore'
+import moduleStore from './bll/askForStore'
 import store from '../../../store'
-(!store.state.wantToStore) && store.registerModule('wantToStore', moduleStore)
+(!store.state.askForStore) && store.registerModule('askForStore', moduleStore)
 
 import { Tabbar, Group, Cell, XInput, XAddress, XTextarea, XButton } from 'vux'
 
@@ -87,10 +87,10 @@ export default {
             })
             self.$wechat.ready(function () {
               self.$wechat.onMenuShareAppMessage({
-                title: '送礼物',
+                title: '讨礼物',
                 link: 'http://192.168.1.104:8080/hongbao/view/' + shareCode, // 分享链接
                 imgUrl: 'http://7xjclc.com2.z0.glb.qiniucdn.com/1002.png', // 分享图标
-                desc: '这里有一个礼包，快来领取！',
+                desc: '我需要一个礼物，好友快来送给我！',
                 success: function () {
                   // 用户确认分享后执行的回调函数
                 },

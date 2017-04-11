@@ -1,0 +1,11 @@
+/**
+ * Created by alphabeta on 16-12-29.
+ */
+
+// module
+export const ASKFOR_STORE_AMOUNT_SUC = 'ASKFOR_STORE_AMOUNT_SUC'
+export const ASKFOR_AMOUNT_BEGIN = 'ASKFOR_AMOUNT_BEGIN'
+export const ASKFOR_AMOUNT_SUC = 'ASKFOR_AMOUNT_SUC'
+export const ASKFOR_SHARE_SUC = 'ASKFOR_SHARE_SUC'
+export const ASKFOR_PREPAY_BEGIN = 'ASKFOR_PREPAY_BEGIN'
+export const ASKFOR_PREPAY_SUC = 'ASKFOR_PREPAY_SUC'

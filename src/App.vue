@@ -137,6 +137,7 @@ export default {
       if (/gift\/wantToGive/.test(this.route.path)) return true
       if (/gift\/recommendList/.test(this.route.path)) return true
       if (/gift\/wantToShare/.test(this.route.path)) return true
+      if (/gift\/askForGive/.test(this.route.path)) return true
       return false
     },
     isShowBar () {
@@ -163,6 +164,7 @@ export default {
       if (/gift\/wantToGive/.test(this.route.path)) return true
       if (/gift\/recommendList/.test(this.route.path)) return true
       if (/gift\/wantToShare/.test(this.route.path)) return true
+      if (/gift\/askForGive/.test(this.route.path)) return true
       return /tabbar/.test(this.route.path)
     },
     title () {

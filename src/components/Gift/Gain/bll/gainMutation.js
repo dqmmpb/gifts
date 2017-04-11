@@ -15,6 +15,10 @@ const mutations = {
   [types.GIFT_TAKE_SUC] (state, data) {
     state.taking = false
   },
+  [types.GIFT_UPDATE_BASEINFO_SUC] (state, data) {
+    console.log(data)
+    state.baseInfo.giftStatus = data.giftStatus
+  },
   [types.GIFT_QUERY_BASEINFO_BEGIN] (state) {
     state.baseInfo = null
   },

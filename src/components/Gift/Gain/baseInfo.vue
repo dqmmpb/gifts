@@ -6,9 +6,13 @@
         <div class="user-red">您收到了一个来自"{{launcher()}}"的礼物红包</div>
         <div v-if="getBaseInfo.giftStatus === 1" class="red-message">礼物有价，心意无价</div>
         <div v-if="getBaseInfo.giftStatus === 10" class="red-message">您来晚了，红包已经被领完</div>
+        <div v-if="getBaseInfo.giftStatus === 11" class="red-message">您已经抢到礼物，请点击详情查看</div>
       </div>
       <div v-if="getBaseInfo.giftStatus === 1" class="open" @click="openHandler" :class="{ opend: taking }">開</div>
       <div v-if="getBaseInfo.giftStatus === 10" class="red-message">
+        <router-link :to="{path:'/gift/gainInfo',query: {shareCode: shareCode}}"><x-button type="warn" class="btn-normal btn-inverse btn-fill padding0px0px border30px btn-go-detail" action-type="button">查看领取详情>></x-button></router-link>
+      </div>
+      <div v-if="getBaseInfo.giftStatus === 11" class="red-message">
         <router-link :to="{path:'/gift/gainInfo',query: {shareCode: shareCode}}"><x-button type="warn" class="btn-normal btn-inverse btn-fill padding0px0px border30px btn-go-detail" action-type="button">查看领取详情>></x-button></router-link>
       </div>
     </div>
@@ -40,7 +44,7 @@ export default {
     ...mapGetters(['getBaseInfo', 'isTaking'])
   },
   methods: {
-    ...mapActions(['queryBaseInfo', 'giftTake']),
+    ...mapActions(['queryBaseInfo', 'giftTake', 'updateBaseInfo']),
     toAddressList () {
       const shareCode = this.$route.query.shareCode
       if (shareCode) {
@@ -77,16 +81,20 @@ export default {
           this.giftTake({shareCode: shareCode}).then(data => {
             console.log(data)
             if (data) {
-              if (data.rc === 101001) {
+              if (data.rc === 1) {
+                this.updateBaseInfo({giftStatus: 11})
+              } else if (data.rc === 101001) {
                 self.$vux.toast.show({
                   text: '已经领过了，请不要重复领取',
                   type: 'text'
                 })
-              } else if (data.rc === 111201) {
+                this.updateBaseInfo({giftStatus: 1})
+              } else if (data.rc === 101002) {
                 self.$vux.toast.show({
                   text: '您来晚了，红包已经被领完',
                   type: 'text'
                 })
+                this.updateBaseInfo({giftStatus: 10})
               }
               this.$nextTick(() => {
                 setTimeout(function () {

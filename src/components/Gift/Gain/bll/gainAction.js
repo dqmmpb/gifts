@@ -35,6 +35,10 @@ const actions = {
       })
   },
 
+  updateBaseInfo ({ commit }, { giftStatus } = {}) {
+    commit(types.GIFT_UPDATE_BASEINFO_SUC, { giftStatus })
+  },
+
   queryGainInfo ({ commit }, { shareCode } = {}) {
     commit(types.GIFT_QUERY_GAININFO_BEGIN)
 

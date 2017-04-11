@@ -1,33 +1,36 @@
 <template>
   <div>
-    <scroller lock-x scrollbar-y use-pulldown height="-50" :pulldown-config="{content:'下拉刷新',downContent:'下拉刷新',upContent:'释放刷新',loadingContent:'加载中'}" @on-pulldown-loading="refresh" v-model="status" ref="scrollerRecommendList">
-      <div>
-        <card v-if="getWantToGoodsList" v-for="item in getWantToGoodsList" :key="item.id">
-          <div slot="content" class="card-padding">
-            <group>
-              <cell :title="goodsName(item)" :inline-desc="goodsPrice(item)" :value="goodsAmount(item)" class="no-before">
-                <img slot="icon" width="38" style="display:block;margin-right:5px;" :src="goodsPic(item)">
-              </cell>
-              <cell title="" class="no-before">
-                <div slot="value">
-                  <x-button mini type="warn" class="btn-detail" @click.native="giftSwitchHandler(item)">不喜欢，换一个</x-button>
-                </div>
-              </cell>
-            </group>
-          </div>
-        </card>
-      </div>
-    </scroller>
+    <form ref="wantToForm" v-model="form" @submit.prevent="validateBeforeSubmit">
+
+      <scroller lock-x scrollbar-y use-pulldown height="-50" :pulldown-config="{content:'下拉刷新',downContent:'下拉刷新',upContent:'释放刷新',loadingContent:'加载中'}" @on-pulldown-loading="refresh" v-model="status" ref="scrollerRecommendList">
+        <div>
+          <card v-if="getWantToGoodsList" v-for="item in getWantToGoodsList" :key="item.id">
+            <div slot="content" class="card-padding">
+              <group>
+                <cell :title="goodsName(item)" :inline-desc="goodsPrice(item)" :value="goodsAmount(item)" class="no-before">
+                  <img slot="icon" width="38" style="display:block;margin-right:5px;" :src="goodsPic(item)">
+                </cell>
+                <cell title="" class="no-before">
+                  <div slot="value">
+                    <x-button mini type="warn" class="btn-detail" @click.native="giftSwitchHandler(item)">不喜欢，换一个</x-button>
+                  </div>
+                </cell>
+              </group>
+            </div>
+          </card>
+        </div>
+      </scroller>
 
 
-    <tabbar class="view-tabbar" slot="bottom">
-      <tabbar-item :link="toPrev()">
-        <span slot="label">上一步</span>
-      </tabbar-item>
-      <tabbar-item :link="toShare()" class="weui-bar__item_normal">
-        <span slot="label">确认支付</span>
-      </tabbar-item>
-    </tabbar>
+      <tabbar class="view-tabbar" slot="bottom">
+        <tabbar-item :link="toPrev()">
+          <span slot="label">上一步</span>
+        </tabbar-item>
+        <tabbar-item :link="toPrePay()" class="weui-bar__item_normal">
+          <span slot="label">确认支付</span>
+        </tabbar-item>
+      </tabbar>
+    </form>
 
   </div>
 </template>
@@ -57,7 +60,7 @@ export default {
     ...mapGetters(['getWantToGoodsList'])
   },
   methods: {
-    ...mapActions(['queryRecommendList', 'giftSwitch']),
+    ...mapActions(['queryRecommendList', 'giftSwitch', 'giftPrePay']),
     toPrev () {
       if (this.$route.query) {
         const budget = this.$route.query.budget
@@ -72,6 +75,64 @@ export default {
         return { path: '/gift/wantToGive', query: { budget: preForm.budget, limitCount: preForm.limitCount } }
       }
       return { path: '/gift/wantToGive' }
+    },
+    validateBeforeSubmit () {
+      let self = this
+      if (!self.getBudget(self.form.budget)) {
+        self.$vux.toast.show({
+          text: '请选择总预算',
+          type: 'text'
+        })
+      } else {
+        self.$validator.validateAll().then(() => {
+          let goodsList = self.getWantToGoodsList
+          let amounts = goodsList.map(goods => {
+            return goods.amount
+          }).join(',')
+          let goodsIds = goodsList.map(goods => {
+            return goods.goodsId
+          }).join(',')
+
+          let preForm = {
+            amounts: amounts,
+            goodsIds: goodsIds
+          }
+
+          self.giftPrePay(preForm).then(data => {
+            console.log(data)
+            self.$wechat.chooseWXPay({
+              timestamp: parseInt(data.timestamp),
+              nonceStr: data.nonceStr,
+              package: data.packageStr,
+              signType: data.signType,
+              paySign: data.paySign,
+              success: function (res) {
+                // 支付成功后的回调函数
+                self.$vux.toast.show({
+                  text: '支付成功',
+                  type: 'text'
+                })
+//                let recommendList = '/gift/recommendList?budget=' + preForm.budget + '&limitCount=' + preForm.limitCount
+//                self.$router.push(recommendList)
+              }
+            })
+          })
+
+          return false
+        }).catch(() => {
+          let err = self.$validator.errorBag
+          console.log(err)
+          if (err.has('limitCount')) {
+            self.$vux.toast.show({
+              text: '数据有误',
+              type: 'text'
+            })
+          }
+        })
+      }
+    },
+    toPrePay () {
+      this.$ref.wantToForm.submit()
     },
     toShare () {
       return { path: '/gift/wantToShare', query: { shareCode: '06c2c01b6eed435d9b36f8ff1db9d0f896652035' } }

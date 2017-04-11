@@ -72,7 +72,7 @@ FastClick.attach(document.body)
 
 const routes = [{
   path: '/mainPage',
-  name: '礼物详情',
+  name: '礼物说',
   component: lazyLoading('mainPage')
 }, {
   path: '/addressList',
@@ -101,7 +101,7 @@ const routes = [{
 },
 {
   path: '/gift/gainInfo',
-  name: '礼物详情',
+  name: '收到的礼物详情',
   component: lazyLoading('Gift/Gain/gainInfo')
 },
 {
@@ -116,7 +116,7 @@ const routes = [{
 },
 {
   path: '/gift/sendDetail',
-  name: '礼物详情',
+  name: '送出的礼物详情',
   component: lazyLoading('Gift/Send/sendDetail')
 },
 {
@@ -126,7 +126,7 @@ const routes = [{
 },
 {
   path: '/gift/askForGive/detail',
-  name: '讨礼物',
+  name: '讨礼物详情',
   component: lazyLoading('Gift/AskFor/askForGiveDetail')
 },
 {
@@ -136,13 +136,23 @@ const routes = [{
 },
 {
   path: '/gift/recommendList',
-  name: '送礼物',
+  name: '选礼物',
   component: lazyLoading('Gift/WantTo/recommendList')
 },
 {
   path: '/gift/wantToShare',
-  name: '分享礼包',
+  name: '分享送礼物',
   component: lazyLoading('Gift/WantTo/wantToShare')
+},
+{
+  path: '/gift/askForGive',
+  name: '讨礼物',
+  component: lazyLoading('Gift/AskFor/askForGive')
+},
+{
+  path: '/gift/askForShare',
+  name: '分享讨礼物',
+  component: lazyLoading('Gift/AskFor/askForShare')
 },
 {
   path: '/qrcode',
@@ -151,7 +161,7 @@ const routes = [{
 }]
 
 const router = new VueRouter({
-  mode: 'hash',
+  mode: 'history',
   linkActiveClass: 'is-active',
   scrollBehavior: () => ({y: 0}), // 这个功能只在 HTML5 history 模式下可用
   routes
