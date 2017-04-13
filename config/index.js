@@ -33,12 +33,15 @@ module.exports = {
         pathRewrite: {'^/gifts-api' : '/mock'},
         changeOrigin: true
       },
-      '/hongbao': {
+      '/hongbao_local': {
         target: 'http://192.168.1.104:8080',
+      },
+      '/hongbao_server': {
+        target: 'http://59.110.153.132',
+      },
+      '/hongbao': {
+        target: 'http://libao.tonpe.com',
       }
-      // '/hongbao': {
-      //   target: 'http://59.110.153.132',
-      // }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README

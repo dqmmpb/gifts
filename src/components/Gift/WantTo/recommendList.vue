@@ -1,7 +1,6 @@
 <template>
   <div>
-    <form ref="wantToForm" v-model="form" @submit.prevent="validateBeforeSubmit">
-
+    <form ref="recommendForm" v-model="form" @submit.prevent="validateBeforeSubmit">
       <scroller lock-x scrollbar-y use-pulldown height="-50" :pulldown-config="{content:'下拉刷新',downContent:'下拉刷新',upContent:'释放刷新',loadingContent:'加载中'}" @on-pulldown-loading="refresh" v-model="status" ref="scrollerRecommendList">
         <div>
           <card v-if="getWantToGoodsList" v-for="item in getWantToGoodsList" :key="item.id">
@@ -26,7 +25,7 @@
         <tabbar-item :link="toPrev()">
           <span slot="label">上一步</span>
         </tabbar-item>
-        <tabbar-item :link="toPrePay()" class="weui-bar__item_normal">
+        <tabbar-item @on-item-click="toPrePay" class="weui-bar__item_normal">
           <span slot="label">确认支付</span>
         </tabbar-item>
       </tabbar>
@@ -78,61 +77,73 @@ export default {
     },
     validateBeforeSubmit () {
       let self = this
-      if (!self.getBudget(self.form.budget)) {
-        self.$vux.toast.show({
-          text: '请选择总预算',
-          type: 'text'
-        })
-      } else {
-        self.$validator.validateAll().then(() => {
-          let goodsList = self.getWantToGoodsList
-          let amounts = goodsList.map(goods => {
-            return goods.amount
-          }).join(',')
-          let goodsIds = goodsList.map(goods => {
-            return goods.goodsId
-          }).join(',')
+      if (this.$route.query) {
+        const budget = this.$route.query.budget
+        const limitCount = this.$route.query.limitCount
+        let preForm = {}
+        if (budget) {
+          preForm.budget = Number(budget)
+        }
+        if (limitCount) {
+          preForm.limitCount = Number(limitCount)
+        }
 
-          let preForm = {
-            amounts: amounts,
-            goodsIds: goodsIds
-          }
+        if (!preForm.budget || !preForm.limitCount) {
+          self.$vux.toast.show({
+            text: '礼物数量或总预算异常',
+            type: 'text'
+          })
+        } else {
+          self.$validator.validateAll().then(() => {
+            let goodsList = self.getWantToGoodsList
+            let amounts = goodsList.map(goods => {
+              return goods.amount
+            }).join(',')
+            let goodsIds = goodsList.map(goods => {
+              return goods.goodsId
+            }).join(',')
 
-          self.giftPrePay(preForm).then(data => {
-            console.log(data)
-            self.$wechat.chooseWXPay({
-              timestamp: parseInt(data.timestamp),
-              nonceStr: data.nonceStr,
-              package: data.packageStr,
-              signType: data.signType,
-              paySign: data.paySign,
-              success: function (res) {
-                // 支付成功后的回调函数
-                self.$vux.toast.show({
-                  text: '支付成功',
-                  type: 'text'
-                })
+            let preForm = {
+              amounts: amounts,
+              goodsIds: goodsIds
+            }
+
+            self.giftPrePay(preForm).then(data => {
+              console.log(data)
+              self.$wechat.chooseWXPay({
+                timestamp: parseInt(data.timestamp),
+                nonceStr: data.nonceStr,
+                package: data.packageStr,
+                signType: data.signType,
+                paySign: data.paySign,
+                success: function (res) {
+                  // 支付成功后的回调函数
+                  self.$vux.toast.show({
+                    text: '支付成功',
+                    type: 'text'
+                  })
 //                let recommendList = '/gift/recommendList?budget=' + preForm.budget + '&limitCount=' + preForm.limitCount
 //                self.$router.push(recommendList)
-              }
+                }
+              })
             })
-          })
 
-          return false
-        }).catch(() => {
-          let err = self.$validator.errorBag
-          console.log(err)
-          if (err.has('limitCount')) {
-            self.$vux.toast.show({
-              text: '数据有误',
-              type: 'text'
-            })
-          }
-        })
+            return false
+          }).catch(() => {
+            let err = self.$validator.errorBag
+            console.log(err)
+            if (err.has('limitCount')) {
+              self.$vux.toast.show({
+                text: '数据有误',
+                type: 'text'
+              })
+            }
+          })
+        }
       }
     },
     toPrePay () {
-      this.$ref.wantToForm.submit()
+      this.validateBeforeSubmit()
     },
     toShare () {
       return { path: '/gift/wantToShare', query: { shareCode: '06c2c01b6eed435d9b36f8ff1db9d0f896652035' } }
@@ -215,6 +226,8 @@ export default {
   },
   data () {
     return {
+      form: {
+      },
       status: {
         pulldownStatus: 'default'
       }
