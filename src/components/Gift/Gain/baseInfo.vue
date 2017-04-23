@@ -88,7 +88,7 @@ export default {
                   text: '已经领过了，请不要重复领取',
                   type: 'text'
                 })
-                this.updateBaseInfo({giftStatus: 1})
+                this.updateBaseInfo({giftStatus: 11})
               } else if (data.rc === 101002) {
                 self.$vux.toast.show({
                   text: '您来晚了，红包已经被领完',
@@ -144,21 +144,6 @@ export default {
 
 <style lang="less">
 
-@import '~vux/src/styles/1px.less';
-
-.weui-panel {
-  &:before, &:after {
-    display: none;
-  }
-}
-
-@import './gift.less';
-
-.weui-btn {
-  &.btn-go-detail {
-    width: 120px;
-    font-size: 12px;
-  }
-}
+  @import './gain.less';
 
 </style>

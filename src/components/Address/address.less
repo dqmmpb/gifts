@@ -1,0 +1,88 @@
+
+.address {
+  padding: 5px 15px 5px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  & .text {
+    width: 100%;
+  }
+  & .first {
+    font-size: 14px;
+    font-weight: normal;
+    padding: 5px 0 0 0;
+    text-align: justify;
+  }
+  & .second {
+    font-size: 12px;
+    padding: 0 0 5px 0;
+    text-align: justify;
+  }
+  & .edit {
+    width: 50px;
+    height: 30px;
+    line-height: 30px;
+    vertical-align: middle;
+    text-align: center;
+    flex-shrink:0;
+    color: #ff2c4c;
+    & a {
+      color: #ff2c4c;
+      height: 30px;
+      line-height: 30px;
+      vertical-align: middle;
+    }
+  }
+}
+
+.sorry {
+  padding: 50px 0 100px;
+  text-align: center;
+  .sorry-img {
+    width: 160px;
+    display: block;
+    font-size: 0;
+    margin: 0 auto;
+  }
+  .sorry-text {
+    font-size: 14px;
+    color: #ddd;
+  }
+}
+
+
+.group-address {
+
+  .weui-cells {
+    margin-top: 0;
+    font-size: 14px !important;
+  }
+
+  .weui-cell, .vux-cell-box {
+    &:before {
+      left: 0;
+    }
+  }
+
+  .weui-label {
+    width: 5em !important;
+  }
+
+  .vux-popup-picker-select {
+    & span {
+      color: #999;
+    }
+    & span.vux-popup-picker-value {
+      color: #000;
+    }
+  }
+
+  & .vux-input-icon.vux-input-icon {
+    font-size: 14px;
+  }
+
+  & .vux-input-icon.weui-icon-warn:before, .vux-input-icon.weui-icon-success:before {
+    font-size: 14px;
+  }
+
+}

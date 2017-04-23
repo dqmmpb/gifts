@@ -24,11 +24,11 @@
         </tabbar-item>
         <tabbar-item :link="{path:'/gift/sendList'}" :selected="route.path === '/gift/sendList'">
           <i class="fa fa-bars" slot="icon"></i>
-          <span slot="label">送出的礼物</span>
+          <span slot="label">送出的</span>
         </tabbar-item>
         <tabbar-item :link="{path:'/gift/gainList'}" :selected="route.path === '/gift/gainList'">
           <i class="fa fa-bars" slot="icon"></i>
-          <span slot="label">收到的礼物</span>
+          <span slot="label">收到的</span>
         </tabbar-item>
         <tabbar-item :link="{path:'/addressList'}" :selected="route.path === '/addressList'">
           <i class="fa fa-bars" slot="icon"></i>

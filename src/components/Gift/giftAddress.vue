@@ -63,7 +63,7 @@ import { mapActions, mapGetters } from 'vuex'
 import moduleStore from '../Address/bll/addressStore'
 import store from '../../store'
 import assignDeep from 'assign-deep'
-(!store.state.addresssStore) && store.registerModule('addresssStore', moduleStore)
+(!store.state.addressesStore) && store.registerModule('addressesStore', moduleStore)
 
 import moduleStoreGain from './Gain/bll/gainStore'
 (!store.state.gainStore) && store.registerModule('gainStore', moduleStoreGain)

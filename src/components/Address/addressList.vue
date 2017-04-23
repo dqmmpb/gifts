@@ -166,64 +166,6 @@ export default {
 
 <style lang="less">
 
-@import '~vux/src/styles/1px.less';
-
-.swipeout-content {
-  padding: 0;
-}
-.weui-media-box {
-  padding: 0;
-}
-
-.address {
-  padding: 5px 15px 5px 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-& .text {
-  width: 100%;
-  }
-& .first {
-    font-size: 14px;
-    font-weight: normal;
-    padding: 5px 0 0 0;
-    text-align: justify;
-  }
-& .second {
-    font-size: 12px;
-    padding: 0 0 5px 0;
-    text-align: justify;
-  }
-& .edit {
-    width: 50px;
-    height: 30px;
-  line-height: 30px;
-  vertical-align: middle;
-    text-align: center;
-    flex-shrink:0;
-    color: #ff2c4c;
-  & a {
-      color: #ff2c4c;
-      height: 30px;
-      line-height: 30px;
-      vertical-align: middle;
-    }
-  }
-}
-
-.sorry {
-  padding: 50px 0 100px;
-  text-align: center;
-  .sorry-img {
-    width: 160px;
-    display: block;
-    font-size: 0;
-    margin: 0 auto;
-  }
-  .sorry-text {
-    font-size: 14px;
-    color: #ddd;
-  }
-}
+  @import './address.less';
 
 </style>

@@ -1,17 +1,19 @@
 <template>
   <div>
     <scroller lock-x scrollbar-y use-pulldown height="-50" :pulldown-config="{content:'下拉刷新',downContent:'下拉刷新',upContent:'释放刷新',loadingContent:'加载中'}" @on-pulldown-loading="refresh" v-model="status" ref="scrollerGainInfo">
-      <div>
+      <div class="gain-bg">
         <card v-if="getGainDetail">
-          <div slot="content">
+          <div slot="content" class="gain-info">
             <div v-if="getGainDetail.isDevlieried === 0">
-              <div>来自{{launcher()}}的心意</div>
-              <div class="panel-padding text-align-center">
-                <img class="goods-pic" :src="goodsPic()">
-                <div>恭喜您！</div>
-                <div>获得"{{goodsName()}}"</div>
+              <div class="gain-from">来自{{launcher()}}的心意</div>
+              <div class="gain-panel text-align-center">
+                <div class="goods-pic">
+                  <img :src="goodsPic()">
+                </div>
+                <div class="gain-title">恭喜您！</div>
+                <div class="gain-text">获得"{{goodsName()}}"</div>
                 <router-link v-if="getGainDetail.isDevlieried === 0" :to="toAddressList()">
-                  <x-button type="warn" class="btn-normal btn-default padding5px0px border40px">填写收货地址</x-button>
+                  <x-button type="warn" class="btn-normal btn-default btn-fill padding5px0px border40px btn-address">填写收货地址</x-button>
                 </router-link>
                 <router-link v-else :to="{path:'/logistics',query: {deliveryId:getGainDetail.id}}"><x-button mini type="warn">关注公众号，查看物流信息>></x-button></router-link>
               </div>
@@ -206,69 +208,6 @@ export default {
 
 <style lang="less">
 
-@import '~vux/src/styles/1px.less';
-
-.weui-panel {
-  &:before, &:after {
-    display: none;
-  }
-}
-.card-padding {
-
-  .weui-cells {
-    margin-top: 0;
-    font-size: 14px;
-
-    &:before, &:after {
-      display: none;
-    }
-  }
-
-  .weui-cell.no-before {
-    &:before {
-      display: none !important;
-    }
-  }
-  .weui-cell.with-before {
-    &:before {
-      left: 0;
-    }
-    &.cell-padding {
-      &:before {
-        left: 15px;
-        right: 15px;
-      }
-    }
-  }
-
-  .second {
-    padding: 12px 15px 7px 15px;
-    .weui-cell {
-      padding: 3px 0;
-    }
-  }
-  .small {
-    font-size: 80%;
-  }
-
-  .btn-detail {
-    font-size: 12px;
-    line-height: 1.8;
-    padding: 0 0.8em;
-    border-radius: 0;
-    vertical-align: middle;
-    background-color: #fff;
-    color: #ff2c4c;
-    &:after {
-       border-color: #ff2c4c;
-       border-radius: 0;
-    }
-  }
-}
-.goods-pic {
-  width: 100%;
-  max-width: 200px;
-  max-height: 100px;
-}
+  @import './gain.less';
 
 </style>

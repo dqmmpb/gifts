@@ -1,3 +1,5 @@
+@import '~vux/src/styles/1px.less';
+
 body {
   background-color: #fbf9fe;
 }
@@ -8,30 +10,34 @@ html, body {
   overflow-x: hidden;
 }
 
+@main-color-red: #ff2c4c;
+@main-color-yellow: #fdef81;
+
 .view-tabbar .weui-tabbar__item {
   & .weui-tabbar__icon > i {
     color: rgb(53, 73, 94);
   }
 
   & .weui-tabbar__label {
+    font-size: 15px;
     color: rgb(53, 73, 94);
   }
 
   &.weui-bar__item_on {
 
     & .weui-tabbar__icon > i.fa {
-      color: #ff2c4c;
+      color: @main-color-red;
     }
 
     & .weui-tabbar__label {
-      color: #ff2c4c;
+      color: @main-color-red
     }
   }
 
   &.weui-bar__item_normal {
     & .weui-tabbar__label {
-      color: #fdef81;
-      background: #ff2c4c;
+      color: @main-color-yellow;
+      background: @main-color-red
     }
   }
 }
@@ -70,7 +76,7 @@ html, body {
 }
 
 .vux-pop-in-enter-active {
-  perspective: 1000;
+  perspective: 1000px;
   animation-name: popInRight;
 }
 
@@ -128,19 +134,19 @@ html, body {
 .tabbar-button {
   width: 100%;
   & .tabbar-button__btn {
-    color: #fdef81;
-    background-color: #ff2c4c;
+    color: @main-color-yellow;
+    background-color:@main-color-red;
     border-radius: 0;
     height: 50px;
   }
 }
 
 .vux-popup-picker-header {
-  color: #ff2c4c !important;
+  color: @main-color-red !important;
 }
 
 .weui-dialog__btn_primary {
-  color: #ff2c4c !important;
+  color: @main-color-red !important;
 }
 
 .rotate {
@@ -199,41 +205,41 @@ html, body {
   }
 
   &.btn-default {
-    color: #ff2c4c;
+    color: @main-color-red;
     background-color: transparent;
     &:after {
-      border-color: #ff2c4c;
+      border-color: @main-color-red;
     }
     &.weui-btn_warn:not(.weui-btn_disabled):active {
-      color: #ff2c4c;
+      color:@main-color-red;
       background-color: transparent;
     }
 
     &.btn-fill {
-      color: #fdef81;
-      background-color: #ff2c4c;
+      color: @main-color-yellow;
+      background-color: @main-color-red;
       &:after {
-        border-color: #ff2c4c;
+        border-color: @main-color-red;
       }
     }
   }
 
   &.btn-inverse {
-    color: #fdef81;
+    color: @main-color-yellow;
     background-color: transparent;
     &:after {
-      border-color: #fdef81;
+      border-color: @main-color-yellow;
     }
     &.weui-btn_warn:not(.weui-btn_disabled):active {
-      color: #fdef81;
+      color: @main-color-yellow;
       background-color: transparent;
     }
 
     &.btn-fill {
-      color: #ff2c4c;
-      background-color: #fdef81;
+      color: @main-color-red;
+      background-color: @main-color-yellow;
       &:after {
-        border-color: #fdef81;
+        border-color: @main-color-yellow;
       }
     }
   }
@@ -242,3 +248,4 @@ html, body {
 .text-align-center {
   text-align: center;
 }
+
