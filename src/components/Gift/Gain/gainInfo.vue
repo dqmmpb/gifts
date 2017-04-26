@@ -15,20 +15,32 @@
                 <router-link v-if="getGainDetail.isDevlieried === 0" :to="toAddressList()">
                   <x-button type="warn" class="btn-normal btn-default btn-fill padding5px0px border40px btn-address">填写收货地址</x-button>
                 </router-link>
-                <router-link v-else :to="{path:'/logistics',query: {deliveryId:getGainDetail.id}}"><x-button mini type="warn">关注公众号，查看物流信息>></x-button></router-link>
+                <router-link v-else :to="{path:'/logistics',query: {deliveryId:getGainDetail.id}}">
+                  <x-button mini type="warn" class="btn-normal btn-default padding5px0px border40px">关注公众号，查看物流信息>></x-button>
+                </router-link>
               </div>
             </div>
             <div v-if="getGainDetail.isDevlieried === 1">
-              <div>来自{{launcher()}}的心意</div>
-              <div class="panel-padding text-align-center">
-                <div>您已领取"{{goodsName()}}"</div>
-                <router-link :to="toQrCode()"><x-button type="warn">关注公众号，查看物流信息>></x-button></router-link>
+              <div class="gain-from">来自{{launcher()}}的心意</div>
+              <div class="gain-panel text-align-center">
+                <div class="goods-pic">
+                  <img :src="goodsPic()">
+                </div>
+                <div class="gain-text">您已领取"{{goodsName()}}"</div>
+                <router-link :to="toQrCode()">
+                  <x-button type="warn" class="btn-normal btn-default padding5px0px border40px">关注公众号，查看物流信息>></x-button>
+                </router-link>
               </div>
             </div>
             <div v-if="getGainDetail.isDevlieried === 2">
-              <div class="panel-padding text-align-center">
-                <div>"{{getLauncher()}}"的礼物红包</div>
-                <router-link :to="toQrCode()"><x-button type="warn">关注公众号，获取更多惊喜>></x-button></router-link>
+              <div class="gain-panel text-align-center">
+                <div class="launcher-pic">
+                  <img :src="launcherPic()">
+                </div>
+                <div class="gain-text">"{{launcher()}}"的礼物红包</div>
+                <router-link :to="toQrCode()">
+                  <x-button type="warn" class="btn-normal btn-default padding5px0px border40px">关注公众号，获取更多惊喜>></x-button>
+                </router-link>
               </div>
             </div>
           </div>
@@ -37,12 +49,12 @@
         <card v-if="getGainDetail">
           <div slot="content" class="card-padding">
             <group :title="giftTitle()">
-              <cell v-for="item in getGainDetail.gainUsers" :inline-desc="forthDesc(item)" :key="item.id" :title="forthTitle(item)" class="no-before">
+              <cell v-for="item in getGainDetail.gainUsers" :inline-desc="forthDesc(item)" :key="item.id" :title="forthTitle(item)" class="cell-card no-before">
                 <img slot="icon" width="38" style="display:block;margin-right:5px;" :src="getHeadImg(item)">
-                <div slot="value">
-                  <span class="small">领取了</span>
+                <div slot="value" class="gift-info">
+                  <span>领取了</span>
                   <span>{{forthValue(item)}}</span>
-                  <span class="small">{{forthValue2(item)}}</span>
+                  <span>{{forthValue2(item)}}</span>
                 </div>
               </cell>
             </group>
@@ -109,6 +121,15 @@ export default {
     launcher () {
       let nickName = this.getGainDetail ? this.getGainDetail.launcher.nickName : 0
       return nickName
+    },
+    launcherPic () {
+      let launcherPic = this.getGainDetail ? this.getGainDetail.launcher.getHeadImg : ''
+      let defaultImg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAuCAMAAABgZ9sFAAAAVFBMVEXx8fHMzMzr6+vn5+fv7+/t7e3d3d2+vr7W1tbHx8eysrKdnZ3p6enk5OTR0dG7u7u3t7ejo6PY2Njh4eHf39/T09PExMSvr6+goKCqqqqnp6e4uLgcLY/OAAAAnklEQVRIx+3RSRLDIAxE0QYhAbGZPNu5/z0zrXHiqiz5W72FqhqtVuuXAl3iOV7iPV/iSsAqZa9BS7YOmMXnNNX4TWGxRMn3R6SxRNgy0bzXOW8EBO8SAClsPdB3psqlvG+Lw7ONXg/pTld52BjgSSkA3PV2OOemjIDcZQWgVvONw60q7sIpR38EnHPSMDQ4MjDjLPozhAkGrVbr/z0ANjAF4AcbXmYAAAAASUVORK5CYII='
+      if (/^(data:image)|(http)/.test(launcherPic)) {
+        return launcherPic
+      } else {
+        return defaultImg
+      }
     },
     goodsName () {
       let goodsName = this.getGainDetail ? this.getGainDetail.goodsName : ''

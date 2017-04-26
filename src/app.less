@@ -1,7 +1,7 @@
-@import '~vux/src/styles/1px.less';
+@import "./variables.less";
 
 body {
-  background-color: #fbf9fe;
+  background-color: @body-bg;
 }
 
 html, body {
@@ -10,17 +10,14 @@ html, body {
   overflow-x: hidden;
 }
 
-@main-color-red: #ff2c4c;
-@main-color-yellow: #fdef81;
-
 .view-tabbar .weui-tabbar__item {
   & .weui-tabbar__icon > i {
-    color: rgb(53, 73, 94);
+    color: @main-color-black;
   }
 
   & .weui-tabbar__label {
     font-size: 15px;
-    color: rgb(53, 73, 94);
+    color: @main-color-black;
   }
 
   &.weui-bar__item_on {
@@ -156,7 +153,7 @@ html, body {
 
 .pullup-arrow {
   transition: all linear 0.2s;
-  color: #666;
+  color: @main-color-black;
   font-size: 25px;
 }
 
@@ -248,4 +245,3 @@ html, body {
 .text-align-center {
   text-align: center;
 }
-
