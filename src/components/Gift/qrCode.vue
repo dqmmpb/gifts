@@ -42,13 +42,6 @@ export default {
 
 <style lang="less">
 
-@import '~vux/src/styles/1px.less';
+  @import './qrCode.less';
 
-.wechat {
-  & .qrcode {
-    width: 100%;
-  max-width: 200px;
-  max-height: 200px;
-  }
-}
 </style>

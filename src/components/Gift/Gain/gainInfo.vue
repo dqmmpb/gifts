@@ -3,44 +3,65 @@
     <scroller lock-x scrollbar-y use-pulldown height="-50" :pulldown-config="{content:'下拉刷新',downContent:'下拉刷新',upContent:'释放刷新',loadingContent:'加载中'}" @on-pulldown-loading="refresh" v-model="status" ref="scrollerGainInfo">
       <div class="gain-bg">
         <card v-if="getGainDetail">
-          <div slot="content" class="gain-info">
+          <div slot="content">
             <div v-if="getGainDetail.isDevlieried === 0">
-              <div class="gain-from">来自{{launcher()}}的心意</div>
-              <div class="gain-panel text-align-center">
-                <div class="goods-pic">
-                  <img :src="goodsPic()">
+              <div class="gain-info">
+                <div class="gain-from">来自{{launcher()}}的心意</div>
+                <div class="gain-panel text-align-center">
+                  <div class="gain-from">来自{{launcher()}}的心意</div>
+                  <div class="goods-pic">
+                    <img :src="goodsPic()">
+                  </div>
                 </div>
-                <div class="gain-title">恭喜您！</div>
-                <div class="gain-text">获得"{{goodsName()}}"</div>
-                <router-link v-if="getGainDetail.isDevlieried === 0" :to="toAddressList()">
-                  <x-button type="warn" class="btn-normal btn-default btn-fill padding5px0px border40px btn-address">填写收货地址</x-button>
-                </router-link>
-                <router-link v-else :to="{path:'/logistics',query: {deliveryId:getGainDetail.id}}">
-                  <x-button mini type="warn" class="btn-normal btn-default padding5px0px border40px">关注公众号，查看物流信息>></x-button>
-                </router-link>
+              </div>
+              <div class="gain-other">
+                <div class="gain-panel text-align-center">
+                  <div class="gain-title">恭喜您！</div>
+                  <div class="gain-text">获得"{{goodsName()}}"</div>
+                  <router-link v-if="getGainDetail.isDevlieried === 0" :to="toAddressList()">
+                    <x-button type="warn" class="btn-normal btn-default btn-fill padding5px0px border40px btn-address">填写收货地址</x-button>
+                  </router-link>
+                  <router-link v-else :to="{path:'/logistics',query: {deliveryId:getGainDetail.id}}">
+                    <x-button mini type="warn" class="btn-normal btn-default padding5px0px border40px">关注公众号，查看物流信息>></x-button>
+                  </router-link>
+                </div>
               </div>
             </div>
             <div v-if="getGainDetail.isDevlieried === 1">
-              <div class="gain-from">来自{{launcher()}}的心意</div>
-              <div class="gain-panel text-align-center">
-                <div class="goods-pic">
-                  <img :src="goodsPic()">
+              <div class="gain-info">
+                <div class="gain-from">来自{{launcher()}}的心意</div>
+                <div class="gain-panel text-align-center">
+                  <div class="goods-pic">
+                    <img :src="goodsPic()">
+                  </div>
                 </div>
-                <div class="gain-text">您已领取"{{goodsName()}}"</div>
-                <router-link :to="toQrCode()">
-                  <x-button type="warn" class="btn-normal btn-default padding5px0px border40px">关注公众号，查看物流信息>></x-button>
-                </router-link>
               </div>
+              <div class="gain-other">
+                <div class="gain-panel text-align-center">
+                  <div class="gain-text">您已领取"{{goodsName()}}"</div>
+                  <router-link :to="toQrCode()">
+                    <x-button type="warn" class="btn-normal btn-default padding5px0px border40px">关注公众号，查看物流信息>></x-button>
+                  </router-link>
+                </div>
+              </div>
+
             </div>
             <div v-if="getGainDetail.isDevlieried === 2">
-              <div class="gain-panel text-align-center">
-                <div class="launcher-pic">
-                  <img :src="launcherPic()">
+              <div class="gain-info">
+                <div class="gain-from"></div>
+                <div class="gain-panel text-align-center">
+                  <div class="launcher-pic">
+                    <img :src="launcherPic()">
+                  </div>
                 </div>
-                <div class="gain-text">"{{launcher()}}"的礼物红包</div>
-                <router-link :to="toQrCode()">
-                  <x-button type="warn" class="btn-normal btn-default padding5px0px border40px">关注公众号，获取更多惊喜>></x-button>
-                </router-link>
+              </div>
+              <div class="gain-other">
+                <div class="gain-panel text-align-center">
+                  <div class="gain-text">"{{launcher()}}"的礼物红包</div>
+                  <router-link :to="toQrCode()">
+                    <x-button type="warn" class="btn-normal btn-default padding5px0px border40px">关注公众号，获取更多惊喜>></x-button>
+                  </router-link>
+                </div>
               </div>
             </div>
           </div>
