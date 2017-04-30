@@ -1,10 +1,25 @@
 @import "../../variables.less";
 
 
-.wechat {
+.panel-qrcode {
+  padding: 60px 15px 0 15px;
+
+  .qrcode-msg {
+    font-size: 24px;
+    color: @main-color-label;
+  }
+
   & .qrcode {
     width: 100%;
-    max-width: 200px;
-    max-height: 200px;
+    max-width: 220px;
+    max-height: 220px;
   }
+
+  .qrcode-msg-2 {
+    font-size: 15px;
+    line-height: 24px;
+    color: @main-color-label;
+  }
+
 }
+
