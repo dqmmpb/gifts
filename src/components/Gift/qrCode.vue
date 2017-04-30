@@ -2,8 +2,8 @@
   <div>
     <div class="panel-padding text-align-center panel-qrcode">
       <div class="qrcode-msg">领取成功</div>
-      <div class="wechat">
-        <img src="../../assets/qrcode.png" class="qrcode">
+      <div class="qrcode">
+        <img src="../../assets/qrcode.png" class="img-qrcode">
       </div>
       <div class="qrcode-msg-2">
         <div>长按识别二维码关注哦</div>
