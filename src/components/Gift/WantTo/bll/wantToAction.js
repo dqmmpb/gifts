@@ -34,25 +34,8 @@ const actions = {
       })
   },
 
-  giftPrePay ({ commit }, { amounts, goodsIds }) {
-    commit(types.WANTTO_PREPAY_BEGIN)
-
-    return http.post(`user/gift/prepay?amounts=${amounts}&goodsIds=${goodsIds}`)
-      .then(data => {
-        commit(types.WANTTO_PREPAY_SUC, data.data)
-      })
-  },
-
   storeWantToBudget ({ commit }, budget) {
     commit(types.WANTTO_STORE_BUDGET_SUC, budget)
-  },
-
-  share ({ commit }, { url }) {
-    return http.post(`general/wechatconfig/get?url=${url}`)
-      .then(data => {
-        commit(types.WANTTO_SHARE_SUC, data.data)
-        return data.data
-      })
   }
 
   //

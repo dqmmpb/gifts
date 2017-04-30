@@ -42,6 +42,8 @@ import moduleStore from './bll/wantToStore'
 import store from '../../../store'
 (!store.state.wantToStore) && store.registerModule('wantToStore', moduleStore)
 
+import wechatUtil from '../../../common/wechatUtil'
+
 import { Tabbar, TabbarItem, Scroller, Group, Cell, Card, XButton, Spinner } from 'vux'
 
 export default {
@@ -108,24 +110,8 @@ export default {
               goodsIds: goodsIds
             }
 
-            self.giftPrePay(preForm).then(data => {
-              console.log(data)
-              self.$wechat.chooseWXPay({
-                timestamp: parseInt(data.timestamp),
-                nonceStr: data.nonceStr,
-                package: data.packageStr,
-                signType: data.signType,
-                paySign: data.paySign,
-                success: function (res) {
-                  // 支付成功后的回调函数
-                  self.$vux.toast.show({
-                    text: '支付成功',
-                    type: 'text'
-                  })
-//                let recommendList = '/gift/recommendList?budget=' + preForm.budget + '&limitCount=' + preForm.limitCount
-//                self.$router.push(recommendList)
-                }
-              })
+            wechatUtil.giftPrePay(preForm).then(data => {
+              wechatUtil.chooseWXPay(self, data)
             })
 
             return false

@@ -19,6 +19,8 @@ import moduleStore from './bll/askForStore'
 import store from '../../../store'
 (!store.state.askForStore) && store.registerModule('askForStore', moduleStore)
 
+import wechatUtil from '../../../common/wechatUtil'
+
 import { Tabbar, Group, Cell, XInput, XAddress, XTextarea, XButton } from 'vux'
 
 export default {
@@ -70,38 +72,18 @@ export default {
     },
     initPage () {
       let self = this
-      if (this.$route.query) {
-        const shareCode = this.$route.query.shareCode
-        if (shareCode) {
-          self.share({url: location.href}).then(data => {
-            console.log(data)
-            self.$wechat.config({
-              debug: false,
-              appId: data.appid,
-              timestamp: parseInt(data.timestamp),
-              nonceStr: data.nonceStr,
-              signature: data.signature,
-              jsApiList: [
-                'onMenuShareAppMessage'
-              ]
-            })
-            self.$wechat.ready(function () {
-              self.$wechat.onMenuShareAppMessage({
-                title: '讨礼物',
-                link: 'http://192.168.1.104:8080/hongbao/view/' + shareCode, // 分享链接
-                imgUrl: 'http://7xjclc.com2.z0.glb.qiniucdn.com/1002.png', // 分享图标
-                desc: '我需要一个礼物，好友快来送给我！',
-                success: function () {
-                  // 用户确认分享后执行的回调函数
-                },
-                cancel: function () {
-                  // 用户取消分享后执行的回调函数
-                }
-              })
-            })
-          })
+
+      wechatUtil.share({url: location.href}).then(data => {
+        let shareCode
+        if (self.$route.query) {
+          shareCode = self.$route.query.shareCode
         }
-      }
+        if (shareCode) {
+          wechatUtil.configAskForShare(self, data, shareCode)
+        } else {
+          wechatUtil.config(self, data)
+        }
+      })
     }
   },
   data () {
@@ -117,13 +99,6 @@ export default {
 
 <style lang="less">
 
-@import '~vux/src/styles/1px.less';
+  @import './../qrCode.less';
 
-.wechat {
-  & .qrcode {
-    width: 100%;
-  max-width: 200px;
-  max-height: 200px;
-  }
-}
 </style>
