@@ -1,3 +1,8 @@
+
+@import '~vux/src/styles/reset.less';
+@import '~vux/src/styles/1px.less';
+@import '~vux/src/styles/tap.less';
+
 @import "./variables.less";
 
 body {
@@ -142,10 +147,30 @@ html, body {
   color: @main-color-red !important;
 }
 
+.weui-dialog__btn {
+  font-size: 15px;
+}
+
+.weui-dialog__btn_default {
+  color: @main-color-label !important;
+}
+
 .weui-dialog__btn_primary {
   color: @main-color-red !important;
 }
+.weui-dialog__ft {
+  &:before,&:after {
+    border-top-color: @main-color-border !important;
+    color: @main-color-border !important;
+  }
 
+  & .weui-dialog__btn {
+    &:before,&:after {
+      border-left-color: @main-color-border !important;
+      color: @main-color-border !important;
+    }
+  }
+}
 .rotate {
   display: inline-block;
   transform: rotate(-180deg);
@@ -190,6 +215,14 @@ html, body {
         border-radius: 42px;
       }
     }
+
+    &.border44px {
+      border-radius: 44px;
+      &:after {
+        border-radius: 46px;
+      }
+    }
+
     &.border50px {
       border-radius: 50px;
       &:after {
@@ -244,4 +277,15 @@ html, body {
 
 .text-align-center {
   text-align: center;
+}
+
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+  color: @main-color-label-desc;
+}
+
+.weui-cells, .weui-cell, .vux-cell-box {
+  &:before,&:after {
+    border-top-color: @main-color-border !important;
+    color: @main-color-border !important;
+  }
 }

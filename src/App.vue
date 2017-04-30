@@ -177,8 +177,7 @@ export default {
 </script>
 
 <style lang="less">
-@import '~vux/src/styles/reset.less';
-@import '~vux/src/styles/1px.less';
-@import '~vux/src/styles/tap.less';
-@import './app.less';
+
+  @import './app.less';
+
 </style>

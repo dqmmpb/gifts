@@ -1,12 +1,12 @@
 <template>
   <div>
-    <form ref="selectForm" v-model="form" @submit.prevent="validateBeforeSubmit">
+    <form ref="selectForm" v-model="form" @submit.prevent="validateBeforeSubmit" class="form-address-select">
 
-      <div class="panel-padding">
-        <router-link :to="toAddressList()">
-          <x-button type="warn" class="btn-normal btn-default padding5px0px border40px" action-type="button">
-            <span class="btn-title">从地址簿中选择</span>
-            <span class="btn-title-sub">添加到地址簿，未来收件更方便</span>
+      <div class="address-select">
+        <router-link :to="toAddressList()" class="link-address-select">
+          <x-button type="warn" class="btn-normal btn-default padding5px0px border44px" action-type="button">
+            <span class="address-select-text">从地址簿中选择</span>
+            <span class="address-select-text-sub">添加到地址簿，未来收件更方便</span>
           </x-button>
         </router-link>
       </div>
@@ -189,63 +189,6 @@ export default {
 
 <style lang="less">
 
-@import '~vux/src/styles/1px.less';
-
-.btn-title {
-  display: block;
-  font-size: 14px;
-  line-height: 16px;
-}
-.btn-title-sub {
-  display: block;
-  font-size: 10px;
-  line-height: 14px;
-}
-
-.group-address {
-  .weui-cells {
-    margin-top: 0;
-    font-size: 14px !important;
-
-    & .weui-cell, & .vux-cell-box {
-      &:before {
-       left: 0;
-       }
-    }
-
-
-  }
-
-  .weui-label {
-    width: 5em !important;
-  }
-
-  .vux-popup-picker-select {
-  & span {
-      color: #999999;
-    }
-  & span.vux-popup-picker-value {
-      color: #000;
-    }
-  }
-
-& .vux-input-icon {
-  font-size: 14px !important;
-  }
-
-  & .vux-input-icon.weui-icon-warn:before, .vux-input-icon.weui-icon-success:before {
-  font-size: 14px !important;
-    }
-
-}
-
-.confirm-address {
-  text-align: left;
-  font-size: 12px;
-  b {
-    color: #000;
-    font-weight: 600;
-  }
-}
+  @import '../Address/address.less';
 
 </style>

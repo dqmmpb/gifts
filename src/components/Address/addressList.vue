@@ -6,21 +6,21 @@
 <!--    <scroller v-if="!isInit" lock-x scrollbar-y use-pulldown height="-50" :pulldown-config="{content:'下拉刷新',downContent:'下拉刷新',upContent:'释放刷新',loadingContent:'加载中'}" @on-pulldown-loading="refresh" v-model="status" ref="scrollerAddressList">
       <div>-->
         <div v-if="!isInit && !empty">
-          <swipeout class="vux-1px-b">
+          <swipeout>
 
-            <swipeout-item v-for="item in getAddressList" :key="item.id" underlay-color="#ccc" :ref="'swipeoutItem' + item.id" :auto-close-on-button-click="false">
+            <swipeout-item class="address-swipeout-item" v-for="item in getAddressList" :key="item.id" underlay-color="#c6babb" :ref="'swipeoutItem' + item.id" :auto-close-on-button-click="false">
               <div slot="right-menu">
                 <!--<swipeout-button @click.native="onButtonClick('edit', item)" type="primary">编辑</swipeout-button>-->
                 <swipeout-button @click.native="onButtonClick('delete', item)" type="warn">删除</swipeout-button>
               </div>
-              <div slot="content" class="swipeout-content vux-1px-t">
+              <div slot="content" class="swipeout-content">
                 <div class="weui-media-box address">
                   <div class="text" @click="onItemClick(item)">
-                    <div class="first">{{item.name}}&nbsp;{{item.phone}}</div>
+                    <div class="first"><span class="name">{{item.name}}</span><span class="phone">{{item.phone}}</span></div>
                     <div class="second">{{getAreaAndAddress(item)}}</div>
                   </div>
                   <div class="edit">
-                    <router-link :to="toAddressEdit(item)">编辑</router-link>
+                    <router-link :to="toAddressEdit(item)"><i class="fa fa-edit"></i></router-link>
                   </div>
                 </div>
               </div>
@@ -95,13 +95,14 @@ export default {
       if (type === 'delete') {
         this.$vux.confirm.show({
           title: '',
-          content: '请确认是否删除',
+          content: '<span class="confirm-delete">请确认是否删除</span>',
+          confirmText: '确定删除',
+          cancelText: '取消',
           onCancel () {
             self.$refs['swipeoutItem' + item.id][0].close()
           },
           onConfirm () {
-            self.deleteAddress({addressId: item.id}).then(() => {
-            })
+            self.deleteAddress({addressId: item.id})
           }
         })
       }

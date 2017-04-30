@@ -8,7 +8,6 @@
               <div class="gain-info">
                 <div class="gain-from">来自{{launcher()}}的心意</div>
                 <div class="gain-panel text-align-center">
-                  <div class="gain-from">来自{{launcher()}}的心意</div>
                   <div class="goods-pic">
                     <img :src="goodsPic()">
                   </div>
