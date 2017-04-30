@@ -2,7 +2,7 @@
   <div>
 
     <form ref="askForForm" v-model="form" @submit.prevent="validateBeforeSubmit">
-      <group class="group-wantto">
+      <group class="group-askfor">
 
         <popup-picker title="几次郎" :data="options" v-model="form.amount" @on-show="onShow" @on-hide="onHide" @on-change="onChange"></popup-picker>
 
@@ -189,46 +189,6 @@ export default {
 
 <style lang="less">
 
-@import '~vux/src/styles/1px.less';
-
-.group-wantto {
-
-  .weui-cells {
-    margin-top: 0;
-    font-size: 14px !important;
-  }
-
-  .weui-cell, .vux-cell-box {
-    &:before {
-      left: 0;
-    }
-  }
-
-  .weui-label {
-    width: 5em !important;
-  }
-
-  .vux-popup-picker-select {
-  & span {
-      color: #999999;
-    }
-  & span.vux-popup-picker-value {
-      color: #000;
-    }
-  }
-
-& .vux-input-icon.vux-input-icon {
-  font-size: 14px;
-  }
-
-  & .vux-input-icon.weui-icon-warn:before, .vux-input-icon.weui-icon-success:before {
-  font-size: 14px;
-    }
-
-    .limitCount {
-      text-align: right;
-    }
-
-}
+  @import "./askfor.less";
 
 </style>

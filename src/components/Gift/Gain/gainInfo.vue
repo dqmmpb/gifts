@@ -67,7 +67,7 @@
         </card>
 
         <card v-if="getGainDetail">
-          <div slot="content" class="card-padding">
+          <div slot="content" class="card-gain">
             <group :title="giftTitle()">
               <cell v-for="item in getGainDetail.gainUsers" :inline-desc="forthDesc(item)" :key="item.id" :title="forthTitle(item)" class="cell-card no-before">
                 <img slot="icon" width="38" style="display:block;margin-right:5px;" :src="getHeadImg(item)">

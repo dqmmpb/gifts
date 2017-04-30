@@ -1,0 +1,90 @@
+@import "../../../variables.less";
+
+.card-send {
+
+  .weui-cells {
+    margin-top: 0;
+    font-size: 15px;
+    background: transparent;
+    color: @main-color-label;
+
+    &:before, &:after {
+      display: none;
+    }
+
+    & .first {
+      font-size: 12px;
+      padding: 12px 15px;
+      & .weui-cell__ft {
+        color: @main-color-label;
+      }
+    }
+
+    & .second {
+      font-size: 14px;
+      padding: 10px 15px;
+      position: relative;
+
+      &:before {
+        content: " ";
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        height: 1px;
+        border-top: 1px solid @main-color-border;
+        color: @main-color-border;
+        transform-origin: 0 0;
+        transform: scaleY(0.5);
+        left: 0;
+      }
+
+      & .weui-cell {
+        padding: 3px 0;
+      }
+
+      & .weui-cell__ft {
+        color: @main-color-label;
+      }
+    }
+
+    & .third {
+      font-size: 15px;
+      padding: 10px 15px;
+    }
+
+  }
+
+  .weui-cell.no-before {
+    &:before {
+      display: none !important;
+    }
+  }
+  .weui-cell.with-before {
+    &:before {
+      left: 0;
+    }
+    &.cell-padding {
+      &:before {
+        left: 15px;
+        right: 15px;
+      }
+    }
+  }
+
+  .btn-detail {
+    font-size: 12px;
+    line-height: 25px;
+    height: 25px;
+    width: 65px;
+    padding: 0;
+    border-radius: 2px;
+    vertical-align: middle;
+    background-color: @main-color-white;
+    color: @main-color-red;
+    &:after {
+      border-color: @main-color-red;
+      border-radius: 3px;
+    }
+  }
+}

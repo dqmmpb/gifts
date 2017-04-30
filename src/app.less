@@ -46,6 +46,7 @@ html, body {
 
 .weui-tabbar__icon + .weui-tabbar__label {
   margin-top: 0 !important;
+  font-size: 10px !important;
 }
 
 /**
@@ -190,6 +191,12 @@ html, body {
   padding: 15px 15px;
 }
 
+.weui-panel {
+  &:before, &:after {
+    display: none;
+  }
+}
+
 .weui-btn {
 
   &.btn-normal {
@@ -287,5 +294,22 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
   &:before,&:after {
     border-top-color: @main-color-border !important;
     color: @main-color-border !important;
+  }
+}
+
+
+.vux-popup-picker-select-box {
+  overflow: hidden;
+}
+
+.vux-popup-picker-select {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  & span {
+    color: @main-color-label-desc;
+  }
+  & span.vux-popup-picker-value {
+    color: @main-color-label;
   }
 }

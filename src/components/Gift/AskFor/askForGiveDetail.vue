@@ -33,7 +33,7 @@
         </card>
 
         <card v-if="getGainDetail">
-          <div slot="content" class="card-padding">
+          <div slot="content" class="card-askfor">
             <group :title="giftTitle()">
               <cell v-for="item in getGainDetail.gainUsers" :inline-desc="forthDesc(item)" :key="item.id" :title="forthTitle(item)" class="no-before">
                 <img slot="icon" width="38" style="display:block;margin-right:5px;" :src="getHeadImg(item)">
@@ -206,69 +206,5 @@ export default {
 
 <style lang="less">
 
-@import '~vux/src/styles/1px.less';
-
-.weui-panel {
-  &:before, &:after {
-    display: none;
-  }
-}
-.card-padding {
-
-  .weui-cells {
-    margin-top: 0;
-    font-size: 14px;
-
-    &:before, &:after {
-      display: none;
-    }
-  }
-
-  .weui-cell.no-before {
-    &:before {
-      display: none !important;
-    }
-  }
-  .weui-cell.with-before {
-    &:before {
-      left: 0;
-    }
-    &.cell-padding {
-      &:before {
-        left: 15px;
-        right: 15px;
-      }
-    }
-  }
-
-  .second {
-    padding: 12px 15px 7px 15px;
-    .weui-cell {
-      padding: 3px 0;
-    }
-  }
-  .small {
-    font-size: 80%;
-  }
-
-  .btn-detail {
-    font-size: 12px;
-    line-height: 1.8;
-    padding: 0 0.8em;
-    border-radius: 0;
-    vertical-align: middle;
-    background-color: #fff;
-    color: #ff2c4c;
-    &:after {
-       border-color: #ff2c4c;
-       border-radius: 0;
-    }
-  }
-}
-.goods-pic {
-  width: 100%;
-  max-width: 200px;
-  max-height: 100px;
-}
-
+  @import "./askfor.less";
 </style>

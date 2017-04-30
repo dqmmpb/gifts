@@ -3,14 +3,14 @@
     <scroller lock-x scrollbar-y use-pulldown height="-50" :pulldown-config="{content:'下拉刷新',downContent:'下拉刷新',upContent:'释放刷新',loadingContent:'加载中'}" @on-pulldown-loading="refresh" v-model="status" ref="scrollerGain">
       <div>
         <card v-if="getGainList" v-for="item in getGainList" :key="item.id">
-          <div slot="content" class="card-padding">
+          <div slot="content" class="card-gain">
             <group>
               <cell :title="firstTitle(item)" :value="firstValue(item)" class="no-before first"></cell>
 
               <cell :title="secondTitle(item)" :value="secondValue(item)" class="with-before second"></cell>
 
-              <cell :title="thirdTitle(item)" class="no-before">
-                <img slot="icon" width="20" style="display:block;margin-right:5px;" :src="getHeadImg(item)">
+              <cell :title="thirdTitle(item)" class="with-before cell-padding third">
+                <img slot="icon" width="25" style="display:block;margin-right:5px;" :src="getHeadImg(item)">
                 <div slot="value" class="gain-footer-value">
                   <router-link v-if="item.giftSource === 0" :to="{path:'/gift/gainInfo',query: {shareCode:item.shareCode}}"><x-button mini type="warn" class="btn-detail">查看详情</x-button></router-link>
                   <router-link v-if="item.giftSource === 1" :to="{path:'/gift/askForGive/detail',query: {shareCode:item.shareCode}}"><x-button mini type="warn" class="btn-detail">查看详情</x-button></router-link>
@@ -64,7 +64,7 @@ export default {
       return item.goodsName
     },
     secondValue (item) {
-      return '￥' + item.goodsPrice
+      return '×' + item.goodsPrice
     },
     thirdTitle (item) {
       if (item.giftSource === 0) {
@@ -119,61 +119,6 @@ export default {
 
 <style lang="less">
 
-@import '~vux/src/styles/1px.less';
-
-.weui-panel {
-  &:before, &:after {
-    display: none;
-  }
-}
-.card-padding {
-
-  .weui-cells {
-    margin-top: 0;
-    font-size: 14px;
-
-    &:before, &:after {
-      display: none;
-    }
-  }
-
-  .weui-cell.no-before {
-    &:before {
-      display: none !important;
-    }
-  }
-  .weui-cell.with-before {
-    &:before {
-      left: 0;
-    }
-    &.cell-padding {
-      &:before {
-        left: 15px;
-        right: 15px;
-      }
-    }
-  }
-
-  .weui-cell.first {
-    font-size: 12px;
-  }
-  .weui-cell.second {
-    padding: 15px 15px 10px 15px;
-  }
-
-  .btn-detail {
-    font-size: 12px;
-    line-height: 1.8;
-    padding: 0 0.8em;
-    border-radius: 0;
-    vertical-align: middle;
-    background-color: #fff;
-    color: #ff2c4c;
-    &:after {
-       border-color: #ff2c4c;
-       border-radius: 0;
-    }
-  }
-}
+  @import "./gain.less";
 
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="getBaseInfo" class="open-red" id="open-red">
-      <div class="userinfo">
+      <div class="user-info">
         <div class="user-picture"><img :src="getHeadImg()"/></div>
         <div class="user-red">您收到了一个来自"{{launcher()}}"的礼物红包</div>
         <div v-if="getBaseInfo.giftStatus === 1" class="red-message">礼物有价，心意无价</div>
@@ -144,6 +144,6 @@ export default {
 
 <style lang="less">
 
-  @import './gain.less';
+  @import './red.less';
 
 </style>

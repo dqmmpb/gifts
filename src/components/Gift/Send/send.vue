@@ -3,7 +3,7 @@
     <scroller lock-x scrollbar-y use-pulldown height="-50" :pulldown-config="{content:'下拉刷新',downContent:'下拉刷新',upContent:'释放刷新',loadingContent:'加载中'}" @on-pulldown-loading="refresh" v-model="status" ref="scrollerSend">
       <div>
         <card v-if="getSendList" v-for="item in getSendList" :key="item.id">
-          <div slot="content" class="card-padding">
+          <div slot="content" class="card-send">
             <group>
               <cell :title="firstTitle(item)" :value="firstValue(item)" class="no-before first"></cell>
 
@@ -11,7 +11,7 @@
                 <cell v-for="dataItem in item.dataList" :key="dataItem.id" :title="secondTitle(dataItem)" :value="secondValue(dataItem)" class="no-before"></cell>
               </div>
 
-              <cell :title="thirdTitle(item)" class="with-before cell-padding">
+              <cell :title="thirdTitle(item)" class="with-before cell-padding third">
                 <div slot="value">
                   <!--<router-link v-if="item.isDelivered === 0" :to="{path:'/giftAddress',query: {giftId:item.id}}"><x-button mini type="warn" class="btn-detail">选择收货地址</x-button></router-link>-->
                   <router-link :to="{path:'/gift/sendDetail',query: {giftId:item.id}}"><x-button mini type="warn" class="btn-detail">查看详情</x-button></router-link>
@@ -101,65 +101,6 @@ export default {
 
 <style lang="less">
 
-@import '~vux/src/styles/1px.less';
-
-.weui-panel {
-  &:before, &:after {
-    display: none;
-  }
-}
-.card-padding {
-
-  .weui-cells {
-    margin-top: 0;
-    font-size: 14px;
-
-    &:before, &:after {
-      display: none;
-    }
-  }
-
-.second {
-  font-size: 12px;
-  padding: 3px 15px 3px 15px;
-.weui-cell {
-  padding: 2px 0;
-}
-}
-  .weui-cell.no-before {
-    &:before {
-      display: none !important;
-    }
-  }
-  .weui-cell.with-before {
-    &:before {
-      left: 0;
-    }
-    &.cell-padding {
-      &:before {
-        left: 15px;
-        right: 15px;
-      }
-    }
-  }
-
-  .weui-cell.first {
-    font-size: 12px;
-  }
-
-  .btn-detail {
-    font-size: 12px;
-    line-height: 1.8;
-    padding: 0 0.8em;
-    border-radius: 0;
-    vertical-align: middle;
-    background-color: #fff;
-    color: #ff2c4c;
-    &:after {
-       border-color: #ff2c4c;
-       border-radius: 0;
-    }
-  }
-}
+  @import './send.less';
 
 </style>

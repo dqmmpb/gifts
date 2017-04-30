@@ -1,0 +1,92 @@
+@import "../../../variables.less";
+
+.card-askfor {
+
+  .weui-cells {
+    margin-top: 0;
+    font-size: 15px;
+
+    &:before, &:after {
+      display: none;
+    }
+  }
+
+  .weui-cell.no-before {
+    &:before {
+      display: none !important;
+    }
+  }
+  .weui-cell.with-before {
+    &:before {
+      left: 0;
+    }
+    &.cell-padding {
+      &:before {
+        left: 15px;
+        right: 15px;
+      }
+    }
+  }
+
+  .btn-detail {
+    font-size: 12px;
+    line-height: 1.8;
+    padding: 0 0.8em;
+    border-radius: 0;
+    vertical-align: middle;
+    background-color: @main-color-white;
+    color: @main-color-red;
+    &:after {
+      border-color: @main-color-red;
+      border-radius: 0;
+    }
+  }
+}
+
+
+.group-askfor {
+
+  .weui-cells {
+    margin-top: 0;
+    font-size: 15px !important;
+
+    & .weui-cell {
+      padding: 15px 15px;
+    }
+
+    & .weui-cell, & .vux-cell-box {
+      &:before {
+        left: 0;
+      }
+    }
+  }
+
+  .weui-label {
+    width: 5em !important;
+    color: @main-color-label;
+  }
+
+  & .vux-input-icon {
+    font-size: 15px !important;
+  }
+
+  & .weui-input {
+    font-size: 15px;
+    height: auto;
+    line-height: 20px;
+  }
+
+  & .vux-input-icon.weui-icon-warn:before, .vux-input-icon.weui-icon-success:before {
+    font-size: 15px !important;
+  }
+
+  & .weui-textarea {
+    font-size: 15px;
+  }
+
+  .limitCount {
+    text-align: right;
+  }
+
+}
+
