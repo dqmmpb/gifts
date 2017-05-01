@@ -39,7 +39,7 @@
 
       <tabbar class="view-tabbar" slot="bottom">
         <tabbar-item class="weui-bar-total">
-          <span slot="label">合计： 7188元</span>
+          <span slot="label">合计： 7188元{{form.type}}</span>
         </tabbar-item>
         <tabbar-item @on-item-click="toPrePay" class="weui-bar__item_normal">
           <span slot="label">确认支付</span>
@@ -219,11 +219,10 @@ export default {
           preForm.activityId = activityId
           preForm.limitCount = Number(limitCount)
           preForm.type = type
+          self.form.type = type
         }
         self.storePreForm(preForm).then(() => {
           self.queryRecommendList(preForm).then(data => {
-            console.log(data)
-            console.log(data.goodsList ? data.goodsList.length : 0)
             self.form.limitCount = []
             if (data && data.goodsList) {
               for (let i = 0; i < data.goodsList.length; i++) {

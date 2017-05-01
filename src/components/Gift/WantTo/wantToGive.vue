@@ -33,7 +33,7 @@
             </td>
             <td colspan="2">
               <div class="tabbar-button">
-                <x-button class="tabbar-button__btn" action-type="button" @click.native="buyOther">赠送他人</x-button>
+                <x-button class="tabbar-button__btn" action-type="button" @click.native="buyFriend">赠送他人</x-button>
               </div>
             </td>
           </tr>
@@ -97,6 +97,11 @@ export default {
     buySelf () {
       console.log('bySelf ' + this.form.limitCount)
       this.form.type = 'self'
+      this.validateBeforeSubmit()
+    },
+    buyFriend () {
+      console.log('buyFriend ' + this.form.limitCount)
+      this.form.type = 'friend'
       this.validateBeforeSubmit()
     },
     validateBeforeSubmit () {
