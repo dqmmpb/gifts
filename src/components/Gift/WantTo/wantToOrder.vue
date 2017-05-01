@@ -81,39 +81,42 @@ export default {
     validateBeforeSubmit () {
       let self = this
       if (this.$route.query) {
-        const budget = this.$route.query.budget
+        const activityId = this.$route.query.activityId
+        const type = this.$route.query.type
         const limitCount = this.$route.query.limitCount
         let preForm = {}
-        if (budget) {
-          preForm.budget = Number(budget)
-        }
-        if (limitCount) {
+        if (activityId && limitCount && type) {
+          preForm.activityId = activityId
           preForm.limitCount = Number(limitCount)
+          preForm.type = type
         }
 
-        if (!preForm.budget || !preForm.limitCount) {
+        if (!preForm.activityId || !preForm.type || !preForm.limitCount) {
           self.$vux.toast.show({
-            text: '礼物数量或总预算异常',
+            text: '参数异常',
             type: 'text'
           })
         } else {
           self.$validator.validateAll().then(() => {
-            let goodsList = self.getWantToGoodsList
-            let amounts = goodsList.map(goods => {
-              return goods.amount
-            }).join(',')
-            let goodsIds = goodsList.map(goods => {
-              return goods.goodsId
-            }).join(',')
+//            let goodsList = self.getWantToGoodsList
+//            let amounts = goodsList.map(goods => {
+//              return goods.amount
+//            }).join(',')
+//            let goodsIds = goodsList.map(goods => {
+//              return goods.goodsId
+//            }).join(',')
+//
+//            let preForm = {
+//              amounts: amounts,
+//              goodsIds: goodsIds
+//            }
+//
+//            wechatUtil.giftPrePay(preForm).then(data => {
+//              wechatUtil.chooseWXPay(self, data)
+//            })
 
-            let preForm = {
-              amounts: amounts,
-              goodsIds: goodsIds
-            }
-
-            wechatUtil.giftPrePay(preForm).then(data => {
-              wechatUtil.chooseWXPay(self, data)
-            })
+            let wantToPayResult = '/gift/wantToPayResult?activityId=' + preForm.activityId + '&type=' + preForm.type + '&limitCount=' + preForm.limitCount + '&shareCode=3ce18aeea2b348a6b2d700db3cc2bb2c00795496'
+            self.$router.push(wantToPayResult)
 
             return false
           }).catch(() => {
@@ -237,6 +240,18 @@ export default {
               }, 10)
             })
           })
+        })
+
+        wechatUtil.share({url: location.href}).then(data => {
+          let shareCode
+          if (self.$route.query) {
+            shareCode = self.$route.query.shareCode
+          }
+          if (shareCode) {
+            wechatUtil.configWantToShare(self, data, shareCode)
+          } else {
+            wechatUtil.config(self, data)
+          }
         })
       }
     }

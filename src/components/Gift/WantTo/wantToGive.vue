@@ -129,7 +129,7 @@ export default {
           console.log(err)
           if (err.has('limitCount')) {
             self.$vux.toast.show({
-              text: '请输入礼物数量',
+              text: '请填写数量',
               type: 'text'
             })
           }

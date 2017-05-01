@@ -140,6 +140,11 @@ const routes = [{
   component: lazyLoading('Gift/WantTo/wantToOrder')
 },
 {
+  path: '/gift/wantToPayResult',
+  name: '支付成功',
+  component: lazyLoading('Gift/WantTo/wantToPayResult')
+},
+{
   path: '/gift/wantToShare',
   name: '分享送礼物',
   component: lazyLoading('Gift/WantTo/wantToShare')
