@@ -135,7 +135,7 @@ export default {
       if (/addressEdit/.test(this.route.path)) return true
       if (/giftAddress/.test(this.route.path)) return true
       if (/gift\/wantToGive/.test(this.route.path)) return true
-      if (/gift\/recommendList/.test(this.route.path)) return true
+      if (/gift\/wantToOrder/.test(this.route.path)) return true
       if (/gift\/wantToShare/.test(this.route.path)) return true
       if (/gift\/askForGive/.test(this.route.path)) return true
       if (/qrcode/.test(this.route.path)) return true
@@ -163,7 +163,7 @@ export default {
       if (/giftAddress/.test(this.route.path)) return true
       if (/gift\/gainInfo/.test(this.route.path)) return true
       if (/gift\/wantToGive/.test(this.route.path)) return true
-      if (/gift\/recommendList/.test(this.route.path)) return true
+      if (/gift\/wantToOrder/.test(this.route.path)) return true
       if (/gift\/wantToShare/.test(this.route.path)) return true
       if (/gift\/askForGive/.test(this.route.path)) return true
       if (/qrcode/.test(this.route.path)) return true

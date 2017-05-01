@@ -1,10 +1,10 @@
 <template>
   <div>
-    <scroller lock-x scrollbar-y use-pulldown height="-50" :pulldownConfig="pulldownConfig" @on-pulldown-loading="refresh" v-model="status" ref="scrollerLogistics">
+    <scroller lock-x scrollbar-y use-pulldown height="-50" :pulldown-config="{content:'下拉刷新',downContent:'下拉刷新',upContent:'释放刷新',loadingContent:'加载中'}" @on-pulldown-loading="refresh" v-model="status" ref="scrollerLogistics">
       <div>
         <div v-if="getGainDetail">
           <card>
-            <div slot="content" class="card-padding">
+            <div slot="content" class="card-logistics">
               <group>
                 <cell :title="firstTitle(getGainDetail)" :value="firstValue(getGainDetail)" class="no-before first"></cell>
 
@@ -118,12 +118,6 @@ export default {
     return {
       status: {
         pulldownStatus: 'default'
-      },
-      pulldownConfig: {
-        content: '下拉刷新',
-        downContent: '下拉刷新',
-        upContent: '松开刷新',
-        loadingContent: '正在刷新...'
       }
     }
   },
@@ -136,162 +130,6 @@ export default {
 
 <style lang="less">
 
-@import '~vux/src/styles/1px.less';
-
-.xs-container {
-  min-height: 100%;
-}
-.weui-panel {
-  &:before, &:after {
-    display: none;
-  }
-}
-.card-padding {
-
-  .weui-cells {
-    margin-top: 0;
-    font-size: 14px;
-
-    &:before, &:after {
-      display: none;
-    }
-  }
-
-  .weui-cell.no-before {
-    &:before {
-      display: none !important;
-    }
-  }
-  .weui-cell.with-before {
-    &:before {
-      left: 0;
-    }
-    &.cell-padding {
-      &:before {
-        left: 15px;
-        right: 15px;
-      }
-    }
-  }
-
-  .address {
-    padding: 5px 15px 5px 15px;
-    & .weui-cell.first {
-      font-size: 12px;
-      padding: 5px 0 0 0;
-    }
-    & .weui-cell.second {
-      font-size: 10px;
-      padding: 0 0 5px 0;
-    }
-  }
-
-  .btn-detail {
-    font-size: 12px;
-    line-height: 1.8;
-    padding: 0 0.8em;
-    border-radius: 0;
-    vertical-align: middle;
-    background-color: #fff;
-    color: #ff2c4c;
-    &:after {
-       border-color: #ff2c4c;
-       border-radius: 0;
-    }
-  }
-}
-
-.logistics-bottom {
-  height: 4px;
-  width: 100%;
-  display: block;
-  font-size: 0;
-}
-.logistics {
-  & .weui-panel__hd {
-    color: #000;
-    font-size: 12px;
-    padding: 5px 15px;
-    &:after {
-      display: none;
-     }
-  }
-
-& .weui-panel__bd {
-& .ct {
-    margin-left: 20px;
-  margin-right: 20px;
-    position: relative;
-    margin-bottom: 7px;
-
-&:before {
-   content: '';
-   position: absolute;
-   top: 6px;
-   left: 1px;
-   width: 4px;
-   height: 4px;
-   background: #ddd;
-   border-radius: 50%;
- }
-
-&:after {
-   content: '';
-   position: absolute;
-   top: 12px;
-   left: 2px;
-   bottom: 0;
-   width: 2px;
-   height: 100%;
-   background: #ddd;
- }
-}
-&:first-child .ct {
-   color: #F70968;
- & .info, & .date {
-  color: #F70968;
-   }
-&:before {
-   content: '';
-   position: absolute;
-   top: 4px;
-   left: 0;
-   width: 6px;
-   height: 6px;
-   background: #F70968;
-   border-radius: 50%;
- }
-}
-
-& .info {
-    font-size: 11px;
-    font-weight: normal;
-    padding-left: 1em;
-    overflow: visible;
-    text-overflow: normal;
-    white-space: normal;
-  }
-& .date {
-    font-size: 10px;
-    padding-left: 1em;
-    padding-bottom: 15px;
-  }
-}
-}
-
-.sorry {
-  padding: 50px 0 100px;
-  text-align: center;
-  .sorry-img {
-    width: 160px;
-    display: block;
-    font-size: 0;
-    margin: 0 auto;
-  }
-  .sorry-text {
-    font-size: 14px;
-    color: #ddd;
-  }
-}
+  @import './logistics.less';
 
 </style>

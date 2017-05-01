@@ -135,9 +135,9 @@ const routes = [{
   component: lazyLoading('Gift/WantTo/wantToGive')
 },
 {
-  path: '/gift/recommendList',
-  name: '选礼物',
-  component: lazyLoading('Gift/WantTo/recommendList')
+  path: '/gift/wantToOrder',
+  name: '确认订单',
+  component: lazyLoading('Gift/WantTo/wantToOrder')
 },
 {
   path: '/gift/wantToShare',

@@ -119,8 +119,8 @@ export default {
             type: self.form.type
           }
           self.storePreForm(preForm).then(() => {
-            let recommendList = '/gift/recommendList?activityId=' + preForm.activityId + '&type=' + preForm.type + '&limitCount=' + preForm.limitCount
-            self.$router.push(recommendList)
+            let wantToOrder = '/gift/wantToOrder?activityId=' + preForm.activityId + '&type=' + preForm.type + '&limitCount=' + preForm.limitCount
+            self.$router.push(wantToOrder)
           })
 
           return false

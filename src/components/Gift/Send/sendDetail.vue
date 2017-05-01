@@ -1,6 +1,6 @@
 <template>
   <div>
-    <scroller lock-x scrollbar-y use-pulldown height="-50" :pulldownConfig="pulldownConfig" @on-pulldown-loading="refresh" v-model="status" ref="scrollerSendDetail">
+    <scroller lock-x scrollbar-y use-pulldown height="-50" :pulldown-config="{content:'下拉刷新',downContent:'下拉刷新',upContent:'释放刷新',loadingContent:'加载中'}" @on-pulldown-loading="refresh" v-model="status" ref="scrollerSendDetail">
       <div>
         <card v-if="getSendDetail">
           <div slot="content" class="card-send">
@@ -97,12 +97,6 @@ export default {
     return {
       status: {
         pulldownStatus: 'default'
-      },
-      pulldownConfig: {
-        content: '下拉刷新',
-        downContent: '下拉刷新',
-        upContent: '松开刷新',
-        loadingContent: '正在刷新...'
       }
     }
   },
