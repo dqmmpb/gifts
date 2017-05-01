@@ -2,17 +2,14 @@
   <div>
     <scroller lock-x scrollbar-y use-pulldown height="-50" :pulldown-config="{content:'下拉刷新',downContent:'下拉刷新',upContent:'释放刷新',loadingContent:'加载中'}" @on-pulldown-loading="refresh" v-model="status" ref="scrollerMainPage">
       <div>
-        活动规则
+        千里送鹅毛，礼轻情意重
       </div>
     </scroller>
 
 
     <tabbar class="view-tabbar" slot="bottom">
-      <tabbar-item :link="{path:'/gift/askForGive'}">
-        <span slot="label">讨礼物</span>
-      </tabbar-item>
-      <tabbar-item :link="{path:'/gift/wantToGive'}" class="weui-bar__item_normal">
-        <span slot="label">送礼物</span>
+      <tabbar-item :link="{path:'/gift/wantToGive', query:{ activityId: 'act20170502' } }" class="tabbar-button__btn">
+        <span slot="label">查看鹅毛礼</span>
       </tabbar-item>
     </tabbar>
 

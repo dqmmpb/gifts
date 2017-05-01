@@ -6,12 +6,12 @@ import actions from './wantToAction'
 import mutations from './wantToMutation'
 
 const state = {
-  budget: {},
+  preForm: null,
   goodsList: []
 }
 
 const getters = {
-  getWantToBudget: state => state.budget,
+  getPreForm: state => state.preForm,
   getWantToGoodsList: state => state.goodsList
 }
 

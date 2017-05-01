@@ -7,21 +7,22 @@ import * as types from './wantToMutationTypes'
 
 const actions = {
 
-  // queryAddress ({ commit }, { addressId } = {}) {
-  //   commit(types.ADDRESS_QUERY_ADDRESS_BEGIN)
-  //
-  //   return http.post(`user/address/get/byid?addressId=${addressId}`)
-  //     .then(data => {
-  //       commit(types.ADDRESS_QUERY_ADDRESS_SUC, data.data)
-  //     })
-  // },
-  //
+  queryActivity ({ commit }, { activityId } = {}) {
+    commit(types.WANTTO_QUERY_ACTIVITY_BEGIN)
+
+    return http.post(`user/address/get/byid?addressId=${activityId}`)
+      .then(data => {
+        commit(types.WANTTO_QUERY_ACTIVITY_SUC, data.data)
+      })
+  },
+
   queryRecommendList ({ commit }, budget) {
     commit(types.WANTTO_QUERY_GOODSLIST_BEGIN)
 
     return http.post(`user/gift/recommendlist/get?budget=${budget.budget}&limitCount=${budget.limitCount}`)
       .then(data => {
         commit(types.WANTTO_QUERY_GOODSLIST_SUC, data.data)
+        return data.data
       })
   },
 
@@ -34,8 +35,8 @@ const actions = {
       })
   },
 
-  storeWantToBudget ({ commit }, budget) {
-    commit(types.WANTTO_STORE_BUDGET_SUC, budget)
+  storePreForm ({ commit }, preForm) {
+    commit(types.WANTTO_PREFORM_SUC, preForm)
   }
 
   //

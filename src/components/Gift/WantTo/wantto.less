@@ -90,3 +90,52 @@
 
 }
 
+.goods-table {
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
+
+  .btn-w {
+    width: 21px;
+  }
+
+  .input-w {
+    line-height: 1;
+  }
+
+  .minus, .plus {
+    width: 100%;
+  }
+
+  .count-input {
+    text-align: center;
+    height: 21px;
+    line-height: 21px;
+    border: 0;
+    width: 80px;
+  }
+
+  .weui-btn {
+    border-radius: 0;
+    padding: 0;
+    line-height: 21px;
+    &:after {
+      display: none;
+    }
+  }
+
+  .weui-btn_default:not(.weui-btn_disabled):active {
+    color: @main-color-yellow;
+    background-color: @main-color-red;
+  }
+}
+
+.weui-bar-total {
+  flex: 2;
+
+  & .weui-tabbar__label {
+    text-align: right;
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+}

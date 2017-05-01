@@ -42,6 +42,17 @@ html, body {
       background: @main-color-red
     }
   }
+
+  &.tabbar-button__btn {
+    font-size: 18px;
+    & .weui-tabbar__label {
+      font-size: 18px;
+      color: @main-color-yellow;
+      background-color:@main-color-red;
+      border-radius: 0;
+      height: 50px;
+    }
+  }
 }
 
 .weui-tabbar__icon + .weui-tabbar__label {
@@ -137,6 +148,7 @@ html, body {
 .tabbar-button {
   width: 100%;
   & .tabbar-button__btn {
+    font-size: 18px;
     color: @main-color-yellow;
     background-color:@main-color-red;
     border-radius: 0;
@@ -311,5 +323,96 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
   }
   & span.vux-popup-picker-value {
     color: @main-color-label;
+  }
+}
+
+.tabbar-no-border {
+  &:after {
+    display: none;
+  }
+}
+
+.tabbar-form {
+  width: 100%;
+}
+
+.tabbar-table {
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
+
+  .btn-w {
+    width: 80px;
+  }
+
+  .minus, .plus {
+    width: 100%;
+  }
+
+  .tabbar-input {
+    text-align: center;
+    height: 50px;
+    line-height: 50px;
+  }
+
+  tr {
+    td {
+      position: relative;
+      &:after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        height: 1px;
+        border-bottom: 1px solid @main-color-border;
+        color: @main-color-border;
+        transform-origin: 0 100%;
+        transform: scaleY(0.5);
+      }
+      &:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        width: 1px;
+        border-right: 1px solid @main-color-border;
+        color: @main-color-border;
+        transform-origin: 100% 0;
+        transform: scaleX(0.5);
+        z-index: 1;
+      }
+    }
+
+    &>td {
+      &:last-child {
+        &:before {
+          display: none;
+        }
+      }
+    }
+
+    &:last-child {
+      >td {
+        &:after {
+          display: none;
+        }
+      }
+    }
+  }
+  .weui-btn {
+    &:after {
+      display: none;
+    }
+  }
+  .tabbar-button__btn {
+    font-size: 15px;
+    padding: 0;
+  }
+
+  .weui-btn_default:not(.weui-btn_disabled):active {
+    color: @main-color-yellow;
+    background-color: @main-color-red;
   }
 }
