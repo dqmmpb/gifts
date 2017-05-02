@@ -16,7 +16,7 @@
               <cell class="with-before cell-padding">
                 <div slot="value">
                   <router-link v-if="getSendDetail.isDelivered === 0" :to="{path:'/giftAddress',query: {giftId:getSendDetail.id}}"><x-button mini type="warn" class="btn-detail">选择收货地址</x-button></router-link>
-                  <router-link v-else :to="{path:'/logistics',query: {deliveryId:getSendDetail.id}}"><x-button mini type="warn" class="btn-detail">查看物流详情</x-button></router-link>
+                  <router-link v-else :to="{path:'/gift/logistics',query: {deliveryId:getSendDetail.id}}"><x-button mini type="warn" class="btn-detail">查看物流详情</x-button></router-link>
                 </div>
               </cell>
             </group>

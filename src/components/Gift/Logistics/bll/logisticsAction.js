@@ -2,7 +2,7 @@
  * Created by alphabeta on 16-12-29.
  */
 
-import http from '../../../common/httpUtil'
+import http from '../../../../common/httpUtil'
 import * as types from './logisticsMutationTypes'
 
 const actions = {

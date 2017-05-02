@@ -120,9 +120,9 @@ const routes = [{
   component: lazyLoading('Gift/Send/sendDetail')
 },
 {
-  path: '/logistics',
+  path: '/gift/logistics',
   name: '物流详情',
-  component: lazyLoading('Logistics/logistics')
+  component: lazyLoading('Gift/Logistics/logistics')
 },
 {
   path: '/gift/askForGive/detail',

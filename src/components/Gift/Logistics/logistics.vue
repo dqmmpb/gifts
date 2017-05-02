@@ -10,7 +10,7 @@
 
                 <cell :title="secondTitle(getGainDetail)" :value="secondValue(getGainDetail)" class="with-before second"></cell>
               </group>
-              <img src="../../assets/logistics-bottom.png" class="logistics-bottom">
+              <img src="../../../assets/logistics-bottom.png" class="logistics-bottom">
             </div>
           </card>
 
@@ -26,7 +26,7 @@
             </div>
             <div v-else>
               <div class="sorry">
-                <img src="../../assets/sorry.png" class="sorry-img">
+                <img src="../../../assets/sorry.png" class="sorry-img">
                 <div class="sorry-text">暂无任何物流信息</div>
               </div>
             </div>
@@ -34,7 +34,7 @@
         </div>
         <div v-else>
           <div class="sorry">
-            <img src="../../assets/sorry.png" class="sorry-img">
+            <img src="../../../assets/sorry.png" class="sorry-img">
             <div class="sorry-text">暂无订单信息</div>
           </div>
         </div>
@@ -48,10 +48,10 @@
 import { mapActions, mapGetters } from 'vuex'
 
 import moduleStore from './bll/logisticsStore'
-import store from '../../store'
+import store from '../../../store'
 (!store.state.logisticsStore) && store.registerModule('logisticsStore', moduleStore)
 
-import moduleGainStore from '../Gift/Gain/bll/gainStore'
+import moduleGainStore from '../Gain/bll/gainStore'
 (!store.state.gainStore) && store.registerModule('gainStore', moduleGainStore)
 
 import { Scroller, Group, Cell, Card, XButton, Spinner, Panel } from 'vux'
