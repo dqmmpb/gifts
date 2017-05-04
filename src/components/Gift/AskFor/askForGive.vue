@@ -89,7 +89,7 @@ export default {
         }).catch(() => {
           let err = self.$validator.errorBag
           console.log(err)
-          if (err.has('limitCount')) {
+          if (err.has('amount')) {
             self.$vux.toast.show({
               text: '你是几次郎？',
               type: 'text'

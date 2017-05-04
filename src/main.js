@@ -214,6 +214,67 @@ router.afterEach(function (to) {
 
 Vue.config.productionTip = false
 
+Vue.http.interceptors.request.use(function (config) {
+  // Do something before request is sent
+  return config
+}, function (error) {
+  // Do something with request error
+  return Promise.reject(error)
+})
+
+// Add a response interceptor
+Vue.http.interceptors.response.use(function (response) {
+  // Do something with response data
+  if (response.status === 0) { // ignore
+    console.warn('[HTTP status=0]')
+    return response
+  }
+  // check resp status
+  if (response.status !== 200) {
+    console.info('[HTTP ERROR]', response)
+
+    const {errorCode, errorMessage} = response.body || {}
+    let errorMsg = 'Server Internal Error. Please contact Administrator!'
+    if (errorMessage) {
+      errorMsg = `${errorMessage}`
+    }
+    console.log(errorCode, errorMsg)
+    const msg = `${response.status} ${response.statusText}; \r\n${errorMsg}`
+    this.$vux.toast.show({
+      text: msg,
+      type: 'error'
+    })
+  } else { // 200
+    var data = response.data
+    console.log('hello')
+
+    if (data.success === false) {
+      switch (data.errorCode) {
+        case 'USER_NEED_LOGIN':
+        case 'USER_SESSION_TIMEOUT':
+          break
+        default:
+          const msg = `[${data.errorCode}]${data.errorMessage}`
+          this.$vux.toast.show({
+            text: msg,
+            type: 'error'
+          })
+          break
+      }
+      response.ok = false
+
+      return data
+      // throw data; // end http request, hack it
+    }
+
+    return response
+  }
+  return response
+}, function (error) {
+  // Do something with response error
+  return Promise.reject(error)
+})
+
 new Vue({
   store,
   router,

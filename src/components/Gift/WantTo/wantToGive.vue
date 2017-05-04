@@ -16,7 +16,7 @@
             </td>
             <td class="input-w">
               <div class="tabbar-button">
-                <input class="weui-input tabbar-input" disabled type="text" name="limitCount" v-model="form.limitCount" placeholder="数量" keyboard="number" v-validate="'required|numeric'" :class="{'input': true, 'is-danger': errors.has('limitCount') }">
+                <input class="weui-input tabbar-input" disabled type="text" name="amount" v-model="form.amount" placeholder="数量" keyboard="number" v-validate="'required|numeric'" :class="{'input': true, 'is-danger': errors.has('amount') }">
               </div>
             </td>
             <td class="btn-w">
@@ -81,32 +81,32 @@ export default {
       console.log('on hide', type)
     },
     minus () {
-      if (this.form.limitCount > 1) {
-        this.form.limitCount--
+      if (this.form.amount > 1) {
+        this.form.amount--
       } else {
-        this.form.limitCount = 1
+        this.form.amount = 1
       }
     },
     plus () {
-      if (this.form.limitCount < 100) {
-        this.form.limitCount++
+      if (this.form.amount < 100) {
+        this.form.amount++
       } else {
-        this.form.limitCount = 100
+        this.form.amount = 100
       }
     },
     buySelf () {
-      console.log('bySelf ' + this.form.limitCount)
-      this.form.type = 'self'
+      console.log('bySelf ' + this.form.amount)
+      this.form.pkgType = 2
       this.validateBeforeSubmit()
     },
     buyFriend () {
-      console.log('buyFriend ' + this.form.limitCount)
-      this.form.type = 'friend'
+      console.log('buyFriend ' + this.form.amount)
+      this.form.pkgType = 0
       this.validateBeforeSubmit()
     },
     validateBeforeSubmit () {
       let self = this
-      if (!self.form || self.form.limitCount < 1) {
+      if (!self.form || self.form.amount < 1) {
         self.$vux.toast.show({
           text: '请填写数量',
           type: 'text'
@@ -114,12 +114,12 @@ export default {
       } else {
         self.$validator.validateAll().then(() => {
           let preForm = {
-            activityId: self.form.activityId,
-            limitCount: self.form.limitCount,
-            type: self.form.type
+            activeCode: self.form.activeCode,
+            amount: self.form.amount,
+            pkgType: self.form.pkgType
           }
           self.storePreForm(preForm).then(() => {
-            let wantToOrder = '/gift/wantToOrder?activityId=' + preForm.activityId + '&type=' + preForm.type + '&limitCount=' + preForm.limitCount
+            let wantToOrder = '/gift/wantToOrder?activeCode=' + preForm.activeCode + '&pkgType=' + preForm.pkgType + '&amount=' + preForm.amount
             self.$router.push(wantToOrder)
           })
 
@@ -127,7 +127,7 @@ export default {
         }).catch(() => {
           let err = self.$validator.errorBag
           console.log(err)
-          if (err.has('limitCount')) {
+          if (err.has('amount')) {
             self.$vux.toast.show({
               text: '请填写数量',
               type: 'text'
@@ -139,26 +139,26 @@ export default {
     initPage () {
       let self = this
       if (this.$route.query) {
-        const activityId = this.$route.query.activityId
-        if (activityId) {
-          self.queryActivity({ activityId: activityId }).then(data => {
+        const activeCode = this.$route.query.activeCode
+        if (activeCode) {
+          self.queryActivity({ activeCode: activeCode }).then(data => {
             let pre = self.getPreForm
             if (pre) {
               let preForm = {}
-              if (pre.limitCount && pre.type) {
-                preForm.activityId = activityId
-                preForm.limitCount = Number(pre.limitCount)
+              if (pre.amount && pre.type) {
+                preForm.activeCode = activeCode
+                preForm.amount = Number(pre.amount)
                 preForm.type = pre.type
                 self.form = preForm
               } else {
-                preForm.activityId = activityId
-                preForm.limitCount = 1
+                preForm.activeCode = activeCode
+                preForm.amount = 1
                 self.form = preForm
               }
             } else {
               let preForm = {}
-              preForm.activityId = activityId
-              preForm.limitCount = 1
+              preForm.activeCode = activeCode
+              preForm.amount = 1
               self.form = preForm
             }
           })
@@ -179,7 +179,7 @@ export default {
   data () {
     return {
       form: {
-        limitCount: 1
+        amount: 1
       }
     }
   },

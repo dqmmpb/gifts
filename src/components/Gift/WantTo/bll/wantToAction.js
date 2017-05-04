@@ -7,10 +7,10 @@ import * as types from './wantToMutationTypes'
 
 const actions = {
 
-  queryActivity ({ commit }, { activityId } = {}) {
+  queryActivity ({ commit }, { activeCode } = {}) {
     commit(types.WANTTO_QUERY_ACTIVITY_BEGIN)
 
-    return http.post(`user/address/get/byid?addressId=${activityId}`)
+    return http.post(`user/gfit/get/byid?activeCode=${activeCode}`)
       .then(data => {
         commit(types.WANTTO_QUERY_ACTIVITY_SUC, data.data)
       })
@@ -19,7 +19,7 @@ const actions = {
   queryRecommendList ({ commit }, budget) {
     commit(types.WANTTO_QUERY_GOODSLIST_BEGIN)
 
-    return http.post(`user/gift/recommendlist/get?budget=${budget.budget}&limitCount=${budget.limitCount}`)
+    return http.post(`user/gift/recommendlist/get?budget=${budget.budget}&amount=${budget.amount}`)
       .then(data => {
         commit(types.WANTTO_QUERY_GOODSLIST_SUC, data.data)
         return data.data

@@ -11,7 +11,7 @@
                 </cell>
                 <cell title="购买数量" class="no-before">
                   <div slot="value">
-                    <table class="goods-table" v-if="form.limitCount[index]">
+                    <table class="goods-table" v-if="form.amount[index]">
                       <tr>
                         <td class="btn-w">
                           <div class="minus">
@@ -19,7 +19,7 @@
                           </div>
                         </td>
                         <td class="input-w">
-                          <input class="weui-input count-input" disabled type="text" name="limitCount" v-model="form.limitCount[index].count" placeholder="数量" keyboard="number" v-validate="'required|numeric'" :class="{'input': true, 'is-danger': errors.has('limitCount') }">
+                          <input class="weui-input count-input" disabled type="text" name="amount" v-model="form.amount[index].count" placeholder="数量" keyboard="number" v-validate="'required|numeric'" :class="{'input': true, 'is-danger': errors.has('amount') }">
                         </td>
                         <td class="btn-w">
                           <div class="plus">
@@ -81,17 +81,17 @@ export default {
     validateBeforeSubmit () {
       let self = this
       if (this.$route.query) {
-        const activityId = this.$route.query.activityId
-        const type = this.$route.query.type
-        const limitCount = this.$route.query.limitCount
+        const activeCode = this.$route.query.activeCode
+        const pkgType = this.$route.query.pkgType
+        const amount = this.$route.query.amount
         let preForm = {}
-        if (activityId && limitCount && type) {
-          preForm.activityId = activityId
-          preForm.limitCount = Number(limitCount)
-          preForm.type = type
+        if (activeCode && amount && pkgType) {
+          preForm.activeCode = activeCode
+          preForm.amount = Number(amount)
+          preForm.pkgType = pkgType
         }
 
-        if (!preForm.activityId || !preForm.type || !preForm.limitCount) {
+        if (!preForm.activeCode || !preForm.type || !preForm.amount) {
           self.$vux.toast.show({
             text: '参数异常',
             type: 'text'
@@ -115,14 +115,14 @@ export default {
 //              wechatUtil.chooseWXPay(self, data)
 //            })
 
-            let wantToPayResult = '/gift/wantToPayResult?activityId=' + preForm.activityId + '&type=' + preForm.type + '&limitCount=' + preForm.limitCount + '&shareCode=3ce18aeea2b348a6b2d700db3cc2bb2c00795496'
+            let wantToPayResult = '/gift/wantToPayResult?activeCode=' + preForm.activeCode + '&type=' + preForm.type + '&amount=' + preForm.amount + '&shareCode=3ce18aeea2b348a6b2d700db3cc2bb2c00795496'
             self.$router.push(wantToPayResult)
 
             return false
           }).catch(() => {
             let err = self.$validator.errorBag
             console.log(err)
-            if (err.has('limitCount')) {
+            if (err.has('amount')) {
               self.$vux.toast.show({
                 text: '数据有误',
                 type: 'text'
@@ -134,21 +134,21 @@ export default {
     },
     minus (index) {
       console.log('minus: ' + index)
-      if (this.form.limitCount[index]) {
-        if (this.form.limitCount[index].count > 1) {
-          this.form.limitCount[index].count--
+      if (this.form.amount[index]) {
+        if (this.form.amount[index].count > 1) {
+          this.form.amount[index].count--
         } else {
-          this.form.limitCount[index].count = 1
+          this.form.amount[index].count = 1
         }
       }
     },
     plus (index) {
       console.log('plus: ' + index)
-      if (this.form.limitCount[index]) {
-        if (this.form.limitCount[index].count < 100) {
-          this.form.limitCount[index].count++
+      if (this.form.amount[index]) {
+        if (this.form.amount[index].count < 100) {
+          this.form.amount[index].count++
         } else {
-          this.form.limitCount[index].count = 100
+          this.form.amount[index].count = 100
         }
       }
     },
@@ -191,14 +191,14 @@ export default {
     refresh () {
       let self = this
       if (this.$route.query) {
-        const activityId = this.$route.query.activityId
-        const type = this.$route.query.type
-        const limitCount = this.$route.query.limitCount
+        const activeCode = this.$route.query.activeCode
+        const pkgType = this.$route.query.pkgType
+        const amount = this.$route.query.amount
         let preForm = { budget: 1 }
-        if (activityId && limitCount && type) {
-          preForm.activityId = activityId
-          preForm.limitCount = Number(limitCount)
-          preForm.type = type
+        if (activeCode && amount && pkgType) {
+          preForm.activeCode = activeCode
+          preForm.amount = Number(amount)
+          preForm.pkgType = pkgType
         }
         self.storePreForm(preForm).then(() => {
           self.queryRecommendList(preForm).then(() => {
@@ -214,22 +214,21 @@ export default {
     initPage () {
       let self = this
       if (this.$route.query) {
-        const activityId = this.$route.query.activityId
-        const type = this.$route.query.type
-        const limitCount = this.$route.query.limitCount
+        const activeCode = this.$route.query.activeCode
+        const pkgType = this.$route.query.pkgType
+        const amount = this.$route.query.amount
         let preForm = { budget: 1 }
-        if (activityId && limitCount && type) {
-          preForm.activityId = activityId
-          preForm.limitCount = Number(limitCount)
-          preForm.type = type
-          self.form.type = type
+        if (activeCode && amount && pkgType) {
+          preForm.activeCode = activeCode
+          preForm.amount = Number(amount)
+          preForm.pkgType = pkgType
         }
         self.storePreForm(preForm).then(() => {
           self.queryRecommendList(preForm).then(data => {
-            self.form.limitCount = []
+            self.form.amount = []
             if (data && data.goodsList) {
               for (let i = 0; i < data.goodsList.length; i++) {
-                self.form.limitCount.push({
+                self.form.amount.push({
                   count: 1
                 })
               }
@@ -259,7 +258,7 @@ export default {
   data () {
     return {
       form: {
-        limitCount: []
+        amount: []
       },
       status: {
         pulldownStatus: 'default'
