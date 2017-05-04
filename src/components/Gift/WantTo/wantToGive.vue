@@ -2,7 +2,7 @@
   <div>
 
     <group class="group-wantto">
-      礼物详情
+      <swiper :list="swiper_list" v-model="swiper_index" @on-index-change="swiper_onIndexChange" loop></swiper>
     </group>
 
     <tabbar class="tabbar-no-border">
@@ -52,7 +52,7 @@ import moduleStore from './bll/wantToStore'
 import store from '../../../store'
 (!store.state.wantToStore) && store.registerModule('wantToStore', moduleStore)
 
-import { Tabbar, Group, Cell, XInput, XAddress, XTextarea, XButton, PopupPicker, Picker } from 'vux'
+import {Tabbar, Group, Cell, XInput, XButton, Swiper} from 'vux'
 
 export default {
   components: {
@@ -60,17 +60,17 @@ export default {
     Group,
     Cell,
     XInput,
-    XAddress,
-    XTextarea,
     XButton,
-    PopupPicker,
-    Picker
+    Swiper
   },
   computed: {
     ...mapGetters(['getPreForm'])
   },
   methods: {
-    ...mapActions(['queryActivity', 'storePreForm']),
+    ...mapActions(['queryActive', 'storePreForm']),
+    swiper_onIndexChange (index) {
+      this.swiper_index = index
+    },
     onChange (val) {
       console.log('val change', val)
     },
@@ -141,7 +141,7 @@ export default {
       if (this.$route.query) {
         const activeCode = this.$route.query.activeCode
         if (activeCode) {
-          self.queryActivity({ activeCode: activeCode }).then(data => {
+          self.queryActive({ activeCode: activeCode }).then(data => {
             let pre = self.getPreForm
             if (pre) {
               let preForm = {}
@@ -161,6 +161,12 @@ export default {
               preForm.amount = 1
               self.form = preForm
             }
+          }).catch(error => {
+            console.log(error)
+            let preForm = {}
+            preForm.activeCode = activeCode
+            preForm.amount = 1
+            self.form = preForm
           })
         } else {
           self.$vux.toast.show({
@@ -177,7 +183,23 @@ export default {
     }
   },
   data () {
+    const baseList = [{
+      url: 'javascript:',
+      img: 'https://static.vux.li/demo/1.jpg',
+      title: '送你一朵花'
+    }, {
+      url: 'javascript:',
+      img: 'https://static.vux.li/demo/2.jpg',
+      title: '送你一辆车'
+    }, {
+      url: 'javascript:',
+      img: 'https://static.vux.li/demo/3.jpg',
+      title: '送你一次旅行'
+    }]
+
     return {
+      swiper_list: baseList,
+      swiper_index: 0,
       form: {
         amount: 1
       }

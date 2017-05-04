@@ -4,10 +4,6 @@
       <loading v-model="isLoading"></loading>
     </div>
     <view-box ref="viewBox" :body-padding-top="paddingTop" :body-padding-bottom="paddingBottom">
-      <x-header slot="header" style="width:100%;position:absolute;left:0;top:0;z-index:100;" :left-options="leftOptions"
-                :title="title"
-                :transition="headerTransition"
-                @on-click-title="scrollTop" v-if="!isLoading && !isShowHeader"></x-header>
 
       <transition :name="'vux-pop-' + (direction === 'forward' ? 'in' : 'out')">
         <router-view class="router-view"></router-view>
@@ -118,35 +114,10 @@ export default {
       direction: state => state.vux.direction
     }),
     paddingTop () {
-      return this.isShowHeader ? '0' : '46px'
+      return '0'
     },
     paddingBottom () {
       return this.isTabbar ? '0' : '50px'
-    },
-    isShowHeader () {
-      if (/mainPage/.test(this.route.path)) return true
-      if (/gift\/baseInfo/.test(this.route.path)) return true
-      if (/gift\/gainList/.test(this.route.path)) return true
-      if (/gift\/gainInfo/.test(this.route.path)) return true
-      if (/gift\/sendList/.test(this.route.path)) return true
-      if (/gift\/sendDetail/.test(this.route.path)) return true
-      if (/addressList/.test(this.route.path)) return true
-      if (/addressAdd/.test(this.route.path)) return true
-      if (/addressEdit/.test(this.route.path)) return true
-      if (/giftAddress/.test(this.route.path)) return true
-      if (/gift\/wantToGive/.test(this.route.path)) return true
-      if (/gift\/wantToOrder/.test(this.route.path)) return true
-      if (/gift\/wantToPayResult/.test(this.route.path)) return true
-      if (/gift\/wantToShare/.test(this.route.path)) return true
-      if (/gift\/askForGive/.test(this.route.path)) return true
-      if (/qrcode/.test(this.route.path)) return true
-      return false
-    },
-    isShowBar () {
-//      if (/component/.test(this.path)) {
-//        return true
-//      }
-      return false
     },
     leftOptions () {
       return {

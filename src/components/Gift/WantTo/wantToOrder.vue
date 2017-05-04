@@ -3,27 +3,27 @@
     <form ref="recommendForm" v-model="form" @submit.prevent="validateBeforeSubmit">
       <scroller lock-x scrollbar-y use-pulldown height="-50" :pulldown-config="{content:'下拉刷新',downContent:'下拉刷新',upContent:'释放刷新',loadingContent:'加载中'}" @on-pulldown-loading="refresh" v-model="status" ref="scrollerRecommendList">
         <div>
-          <card v-if="getWantToGoodsList" v-for="(item, index) in getWantToGoodsList" :key="item.id">
+          <card v-if="getActive">
             <div slot="content" class="card-wantto">
               <group>
-                <cell :title="goodsName(item)" :value="goodsPrice(item)" class="no-before">
-                  <img slot="icon" width="38" style="display:block;margin-right:5px;" :src="goodsPic(item)">
+                <cell :title="goodsName(getActive)" :value="goodsPrice(getActive)" class="no-before">
+                  <img slot="icon" width="38" style="display:block;margin-right:5px;" :src="goodsPic(getActive)">
                 </cell>
                 <cell title="购买数量" class="no-before">
                   <div slot="value">
-                    <table class="goods-table" v-if="form.amount[index]">
+                    <table class="goods-table" v-if="form.amount">
                       <tr>
                         <td class="btn-w">
                           <div class="minus">
-                            <x-button class="btn-default btn-fill" action-type="button" @click.native="minus(index)">-</x-button>
+                            <x-button class="btn-default btn-fill" action-type="button" @click.native="minus">-</x-button>
                           </div>
                         </td>
                         <td class="input-w">
-                          <input class="weui-input count-input" disabled type="text" name="amount" v-model="form.amount[index].count" placeholder="数量" keyboard="number" v-validate="'required|numeric'" :class="{'input': true, 'is-danger': errors.has('amount') }">
+                          <input class="weui-input count-input" disabled type="text" name="amount" v-model="form.amount" placeholder="数量" keyboard="number" v-validate="'required|numeric'" :class="{'input': true, 'is-danger': errors.has('amount') }">
                         </td>
                         <td class="btn-w">
                           <div class="plus">
-                            <x-button class="btn-default btn-fill" action-type="button" @click.native="plus(index)">+</x-button>
+                            <x-button class="btn-default btn-fill" action-type="button" @click.native="plus">+</x-button>
                           </div>
                         </td>
                       </tr>
@@ -74,81 +74,76 @@ export default {
     Spinner
   },
   computed: {
-    ...mapGetters(['getWantToGoodsList'])
+    ...mapGetters(['getActive', 'getPreForm'])
   },
   methods: {
-    ...mapActions(['queryRecommendList', 'storePreForm', 'giftSwitch', 'giftPrePay']),
+    ...mapActions(['queryActive', 'storePreForm', 'giftPrePay']),
     validateBeforeSubmit () {
       let self = this
-      if (this.$route.query) {
-        const activeCode = this.$route.query.activeCode
-        const pkgType = this.$route.query.pkgType
-        const amount = this.$route.query.amount
-        let preForm = {}
-        if (activeCode && amount && pkgType) {
-          preForm.activeCode = activeCode
-          preForm.amount = Number(amount)
-          preForm.pkgType = pkgType
-        }
+      let preForm = self.getPreForm
+      const activeCode = preForm.activeCode
+      const pkgType = preForm.pkgType
+      const amount = self.form.amount
 
-        if (!preForm.activeCode || !preForm.type || !preForm.amount) {
-          self.$vux.toast.show({
-            text: '参数异常',
-            type: 'text'
+      if (activeCode && pkgType && amount) {
+        self.$validator.validateAll().then(() => {
+          let goods = self.getActive
+          let amounts = [amount].join(',')
+          let goodsIds = [goods.goodsId].join(',')
+
+          let payPreForm = {
+            amounts: amounts,
+            goodsIds: goodsIds,
+            activeCode: activeCode,
+            pkgType: Number(pkgType)
+          }
+
+          wechatUtil.giftPrePay(payPreForm).then(data => {
+            wechatUtil.chooseWXPay(self, data, function (res) {
+//              self.$vux.toast.show({
+//                text: '支付成功',
+//                type: 'text'
+//              })
+              let wantToPayResult = '/gift/wantToPayResult?activeCode=' + preForm.activeCode + '&type=' + preForm.type + '&amount=' + preForm.amount
+              self.$router.push(wantToPayResult)
+            })
           })
+
+          return false
+        }).catch(() => {
+          let err = self.$validator.errorBag
+          console.log(err)
+          if (err.has('amount')) {
+            self.$vux.toast.show({
+              text: '数据有误',
+              type: 'text'
+            })
+          }
+        })
+      } else {
+        self.$vux.toast.show({
+          text: '参数异常',
+          type: 'text'
+        })
+      }
+    },
+    minus () {
+      console.log('minus: ' + this.form.amount)
+      if (this.form.amount) {
+        if (this.form.amount > 1) {
+          this.form.amount--
         } else {
-          self.$validator.validateAll().then(() => {
-//            let goodsList = self.getWantToGoodsList
-//            let amounts = goodsList.map(goods => {
-//              return goods.amount
-//            }).join(',')
-//            let goodsIds = goodsList.map(goods => {
-//              return goods.goodsId
-//            }).join(',')
-//
-//            let preForm = {
-//              amounts: amounts,
-//              goodsIds: goodsIds
-//            }
-//
-//            wechatUtil.giftPrePay(preForm).then(data => {
-//              wechatUtil.chooseWXPay(self, data)
-//            })
-
-            let wantToPayResult = '/gift/wantToPayResult?activeCode=' + preForm.activeCode + '&type=' + preForm.type + '&amount=' + preForm.amount + '&shareCode=3ce18aeea2b348a6b2d700db3cc2bb2c00795496'
-            self.$router.push(wantToPayResult)
-
-            return false
-          }).catch(() => {
-            let err = self.$validator.errorBag
-            console.log(err)
-            if (err.has('amount')) {
-              self.$vux.toast.show({
-                text: '数据有误',
-                type: 'text'
-              })
-            }
-          })
+          this.form.amount = 1
         }
       }
     },
-    minus (index) {
-      console.log('minus: ' + index)
-      if (this.form.amount[index]) {
-        if (this.form.amount[index].count > 1) {
-          this.form.amount[index].count--
+    plus () {
+      console.log('plus: ' + this.form.amount)
+      if (this.form.amount) {
+        if (this.form.amount < 100) {
+          this.form.amount++
         } else {
-          this.form.amount[index].count = 1
-        }
-      }
-    },
-    plus (index) {
-      console.log('plus: ' + index)
-      if (this.form.amount[index]) {
-        if (this.form.amount[index].count < 100) {
-          this.form.amount[index].count++
-        } else {
-          this.form.amount[index].count = 100
+          this.form.amount = 100
         }
       }
     },
@@ -160,12 +155,8 @@ export default {
       return '￥' + price
     },
     goodsName (item) {
-      let name = item ? item.name : ''
+      let name = item ? item.goodsName : ''
       return name
-    },
-    goodsAmount (item) {
-      let amount = item ? item.amount : ''
-      return '×' + amount
     },
     goodsPic (item) {
       let goodsPic = item ? item.goodsPic : ''
@@ -176,32 +167,23 @@ export default {
         return defaultImg
       }
     },
-    giftSwitchHandler (item) {
-      let goodsId = item.goodsId
-      let goodsList = this.getWantToGoodsList
-      let goods = goodsList.filter(goods => {
-        return goods.goodsId !== goodsId
-      })
-      let existsGoodsIds = goods.map(goods => {
-        return goods.goodsId
-      }).join(',')
-      console.log(existsGoodsIds)
-      this.giftSwitch({goodsId: goodsId, existsGoodsIds: existsGoodsIds})
-    },
     refresh () {
       let self = this
       if (this.$route.query) {
         const activeCode = this.$route.query.activeCode
         const pkgType = this.$route.query.pkgType
         const amount = this.$route.query.amount
-        let preForm = { budget: 1 }
+        let preForm = { }
         if (activeCode && amount && pkgType) {
           preForm.activeCode = activeCode
           preForm.amount = Number(amount)
           preForm.pkgType = pkgType
         }
         self.storePreForm(preForm).then(() => {
-          self.queryRecommendList(preForm).then(() => {
+          self.queryActive({ activeCode: activeCode }).then(data => {
+            if (data && data.goodsId) {
+              self.form.amount = preForm.amount
+            }
             this.$nextTick(() => {
               setTimeout(() => {
                 self.$refs.scrollerRecommendList.donePulldown()
@@ -217,21 +199,16 @@ export default {
         const activeCode = this.$route.query.activeCode
         const pkgType = this.$route.query.pkgType
         const amount = this.$route.query.amount
-        let preForm = { budget: 1 }
+        let preForm = { }
         if (activeCode && amount && pkgType) {
           preForm.activeCode = activeCode
           preForm.amount = Number(amount)
           preForm.pkgType = pkgType
         }
         self.storePreForm(preForm).then(() => {
-          self.queryRecommendList(preForm).then(data => {
-            self.form.amount = []
-            if (data && data.goodsList) {
-              for (let i = 0; i < data.goodsList.length; i++) {
-                self.form.amount.push({
-                  count: 1
-                })
-              }
+          self.queryActive({ activeCode: activeCode }).then(data => {
+            if (data && data.goodsId) {
+              self.form.amount = preForm.amount
             }
             this.$nextTick(() => {
               setTimeout(() => {
@@ -258,7 +235,7 @@ export default {
   data () {
     return {
       form: {
-        amount: []
+        amount: 1
       },
       status: {
         pulldownStatus: 'default'

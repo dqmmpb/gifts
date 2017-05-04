@@ -7,12 +7,13 @@ import * as types from './wantToMutationTypes'
 
 const actions = {
 
-  queryActivity ({ commit }, { activeCode } = {}) {
+  queryActive ({ commit }, { activeCode } = {}) {
     commit(types.WANTTO_QUERY_ACTIVITY_BEGIN)
 
-    return http.post(`user/gfit/get/byid?activeCode=${activeCode}`)
+    return http.post(`general/goods/get/${activeCode}`)
       .then(data => {
         commit(types.WANTTO_QUERY_ACTIVITY_SUC, data.data)
+        return data.data
       })
   },
 

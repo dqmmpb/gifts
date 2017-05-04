@@ -10,10 +10,10 @@ import * as types from './wantToMutationTypes'
  */
 const mutations = {
   [types.WANTTO_QUERY_ACTIVITY_BEGIN] (state) {
-    state.activity = null
+    state.active = null
   },
   [types.WANTTO_QUERY_ACTIVITY_SUC] (state, data) {
-    state.activity = data.activity
+    state.active = data
   },
   [types.WANTTO_QUERY_GOODSLIST_BEGIN] (state) {
     state.goodsList = null

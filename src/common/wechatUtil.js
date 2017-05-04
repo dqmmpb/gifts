@@ -23,14 +23,14 @@ const wechatUtil = {
       })
   },
 
-  giftPrePay ({ amounts, goodsIds }) {
-    return http.post(`user/gift/prepay?amounts=${amounts}&goodsIds=${goodsIds}`)
+  giftPrePay (preForm) {
+    return http.post(`user/gift/prepay`, preForm)
       .then(data => {
         return data.data
       })
   },
 
-  chooseWXPay (self, data) {
+  chooseWXPay (self, data, callback) {
     // 微信支付
     self.$wechat.chooseWXPay({
       timestamp: parseInt(data.timestamp),
@@ -39,11 +39,9 @@ const wechatUtil = {
       signType: data.signType,
       paySign: data.paySign,
       success: function (res) {
-        // 支付成功后的回调函数
-        self.$vux.toast.show({
-          text: '支付成功',
-          type: 'text'
-        })
+        if (typeof callback === 'function') {
+          callback(res)
+        }
       }
     })
   },
