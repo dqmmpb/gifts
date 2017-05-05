@@ -40,7 +40,7 @@ module.exports = {
         target: 'http://59.110.153.132',
       },
       '/hongbao': {
-        target: 'http://120.27.209.16:80',
+        target: 'http://120.27.209.16',
       }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"

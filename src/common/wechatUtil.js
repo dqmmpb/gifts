@@ -23,8 +23,8 @@ const wechatUtil = {
       })
   },
 
-  giftPrePay (preForm) {
-    return http.post(`user/gift/prepay`, preForm)
+  giftPrePay ({ amounts, goodsIds, activeCode, pkgType }) {
+    return http.post(`user/gift/prepay?activeCode=${activeCode}&pkgType=${pkgType}&amounts=${amounts}&goodsIds=${goodsIds}`)
       .then(data => {
         return data.data
       })
@@ -32,8 +32,8 @@ const wechatUtil = {
 
   chooseWXPay (self, data, callback) {
     // 微信支付
-    self.$wechat.chooseWXPay({
-      timestamp: parseInt(data.timestamp),
+    let param = {
+      timestamp: data.timeStamp,
       nonceStr: data.nonceStr,
       package: data.packageStr,
       signType: data.signType,
@@ -43,21 +43,25 @@ const wechatUtil = {
           callback(res)
         }
       }
-    })
+    }
+    alert(JSON.stringify(param))
+    self.$wechat.chooseWXPay(param)
   },
 
   config (self, data) {
+    console.log('config')
     // 设置
     self.$wechat.config({
-      debug: false,
+      debug: true,
       appId: data.appid,
-      timestamp: parseInt(data.timestamp),
+      timestamp: data.timestamp,
       nonceStr: data.nonceStr,
       signature: data.signature,
       jsApiList: [
-        'onMenuShareTimeline', 'onMenuShareAppMessage'
+        'onMenuShareTimeline', 'onMenuShareAppMessage', 'chooseWXPay'
       ]
     })
+
     self.$wechat.ready(function () {
       // 分享朋友圈
       self.$wechat.onMenuShareTimeline({
@@ -89,15 +93,16 @@ const wechatUtil = {
   },
 
   configWantToShare (self, data, shareCode) {
+    console.log('configWantToShare')
     // 设置
     self.$wechat.config({
-      debug: false,
+      debug: true,
       appId: data.appid,
-      timestamp: parseInt(data.timestamp),
+      timestamp: data.timestamp,
       nonceStr: data.nonceStr,
       signature: data.signature,
       jsApiList: [
-        'onMenuShareTimeline', 'onMenuShareAppMessage'
+        'onMenuShareTimeline', 'onMenuShareAppMessage', 'chooseWXPay'
       ]
     })
     self.$wechat.ready(function () {
@@ -134,11 +139,11 @@ const wechatUtil = {
     self.$wechat.config({
       debug: false,
       appId: data.appid,
-      timestamp: parseInt(data.timestamp),
+      timestamp: data.timestamp,
       nonceStr: data.nonceStr,
       signature: data.signature,
       jsApiList: [
-        'onMenuShareTimeline', 'onMenuShareAppMessage'
+        'onMenuShareTimeline', 'onMenuShareAppMessage', 'chooseWXPay'
       ]
     })
     self.$wechat.ready(function () {

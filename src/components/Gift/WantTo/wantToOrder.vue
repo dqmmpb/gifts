@@ -99,7 +99,7 @@ export default {
           }
 
           wechatUtil.giftPrePay(payPreForm).then(data => {
-            wechatUtil.chooseWXPay(self, data, function (res) {
+            wechatUtil.chooseWXPay(self, data.payInfo, function (res) {
 //              self.$vux.toast.show({
 //                text: '支付成功',
 //                type: 'text'
@@ -218,7 +218,7 @@ export default {
           })
         })
 
-        wechatUtil.share({url: location.href}).then(data => {
+        wechatUtil.share({url: encodeURIComponent(location.href)}).then(data => {
           let shareCode
           if (self.$route.query) {
             shareCode = self.$route.query.shareCode
