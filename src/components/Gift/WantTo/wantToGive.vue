@@ -95,13 +95,13 @@ export default {
       }
     },
     buySelf () {
-      console.log('bySelf ' + this.form.amount)
+      console.log('bySelf: ' + this.form.amount)
       this.form.pkgType = 2
       this.validateBeforeSubmit()
     },
     buyFriend () {
-      console.log('buyFriend ' + this.form.amount)
-      this.form.pkgType = 0
+      console.log('buyFriend: ' + this.form.amount)
+      this.form.pkgType = 1
       this.validateBeforeSubmit()
     },
     validateBeforeSubmit () {
