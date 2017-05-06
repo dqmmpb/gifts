@@ -116,7 +116,7 @@ export default {
                   address: self.form.address
                 }
                 self.giftAddressAdd(preForm).then(data => {
-                  if (data && data.rc === '1') {
+                  if (data && data.rc === 1) {
                     let redirectUrl = self.$route.query.redirectUrl
                     if (redirectUrl) {
                       let dec = decodeURIComponent(redirectUrl)

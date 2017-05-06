@@ -39,9 +39,9 @@ module.exports = {
       '/hongbao_server': {
         target: 'http://59.110.153.132'
       },
-/*      '/hongbao': {
-        target: 'http://120.27.209.16'
-      },*/
+      // '/hongbao': {
+      //   target: 'http://120.27.209.16'
+      // },
       '/hongbao': {
         target: 'http://192.168.0.115:8080'
       }

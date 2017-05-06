@@ -100,12 +100,10 @@ export default {
 
           wechatUtil.giftPrePay(payPreForm).then(data => {
             let orderNo = data.orderNo
-//            wechatUtil.chooseWXPay(self, data.payInfo, function (res) {
-//              let wantToPayResult = '/gift/wantToPayResult?activeCode=' + preForm.activeCode + '&type=' + preForm.type + '&amount=' + preForm.amount
-//              self.$router.push(wantToPayResult)
-//            })
-            let wantToPayResult = '/gift/wantToPayResult?orderNo=' + orderNo
-            self.$router.push(wantToPayResult)
+            wechatUtil.chooseWXPay(self, data.payInfo, function (res) {
+              let wantToPayResult = '/gift/wantToPayResult?orderNo=' + orderNo
+              self.$router.push(wantToPayResult)
+            })
           })
 
           return false

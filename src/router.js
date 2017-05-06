@@ -104,7 +104,7 @@ const routes = [{
 }]
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: 'hash',
   linkActiveClass: 'is-active',
   scrollBehavior: () => ({y: 0}), // 这个功能只在 HTML5 history 模式下可用
   routes

@@ -85,10 +85,10 @@
 
 
     <tabbar v-if="getGainDetail" class="view-tabbar" slot="bottom">
-      <tabbar-item  v-if="getGainDetail.isDevlieried !== 0" :link="{path:'/gift/sendList'}">
+      <tabbar-item  v-if="getGainDetail.isDevlieried !== 0" :link="{path:'/mainPage', query:{ activeCode: getGainDetail.activeCode }}">
         <span slot="label">查看活动详情</span>
       </tabbar-item>
-      <tabbar-item :link="{path:'/gift/gainList'}" class="weui-bar__item_normal">
+      <tabbar-item :link="{path:'/gift/wantToGive', query:{ activeCode: getGainDetail.activeCode, goodsId: getGainDetail.goodsId }}" class="weui-bar__item_normal">
         <span slot="label">我也要送</span>
       </tabbar-item>
     </tabbar>

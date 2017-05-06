@@ -30,7 +30,6 @@ const mutations = {
   },
   [types.GIFT_QUERY_GAININFO_SUC] (state, data) {
     state.gift = data
-    state.gift.isDevlieried = 0
   },
   [types.GIFT_QUERY_ASKFORGIVEDETAIL_BEGIN] (state) {
     state.gift = null
