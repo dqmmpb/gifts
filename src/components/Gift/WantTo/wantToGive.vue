@@ -64,10 +64,10 @@ export default {
     Swiper
   },
   computed: {
-    ...mapGetters(['getPreForm'])
+    ...mapGetters(['getGoods', 'getPreForm'])
   },
   methods: {
-    ...mapActions(['queryActive', 'storePreForm']),
+    ...mapActions(['queryGoods', 'queryActive', 'storePreForm']),
     swiper_onIndexChange (index) {
       this.swiper_index = index
     },
@@ -115,11 +115,12 @@ export default {
         self.$validator.validateAll().then(() => {
           let preForm = {
             activeCode: self.form.activeCode,
+            goodsId: self.form.goodsId,
             amount: self.form.amount,
             pkgType: self.form.pkgType
           }
           self.storePreForm(preForm).then(() => {
-            let wantToOrder = '/gift/wantToOrder?activeCode=' + preForm.activeCode + '&pkgType=' + preForm.pkgType + '&amount=' + preForm.amount
+            let wantToOrder = '/gift/wantToOrder?activeCode=' + preForm.activeCode + '&goodsId=' + preForm.goodsId + '&pkgType=' + preForm.pkgType + '&amount=' + preForm.amount
             self.$router.push(wantToOrder)
           })
 
@@ -140,24 +141,28 @@ export default {
       let self = this
       if (this.$route.query) {
         const activeCode = this.$route.query.activeCode
-        if (activeCode) {
-          self.queryActive({ activeCode: activeCode }).then(data => {
+        const goodsId = this.$route.query.goodsId
+        if (activeCode && goodsId) {
+          self.queryGoods({ goodsId: goodsId, activeCode: activeCode }).then(data => {
             let pre = self.getPreForm
             if (pre) {
               let preForm = {}
               if (pre.amount && pre.type) {
                 preForm.activeCode = activeCode
+                preForm.goodsId = goodsId
                 preForm.amount = Number(pre.amount)
                 preForm.type = pre.type
                 self.form = preForm
               } else {
                 preForm.activeCode = activeCode
+                preForm.goodsId = goodsId
                 preForm.amount = 1
                 self.form = preForm
               }
             } else {
               let preForm = {}
               preForm.activeCode = activeCode
+              preForm.goodsId = goodsId
               preForm.amount = 1
               self.form = preForm
             }
@@ -165,6 +170,7 @@ export default {
             console.log(error)
             let preForm = {}
             preForm.activeCode = activeCode
+            preForm.goodsId = goodsId
             preForm.amount = 1
             self.form = preForm
           })

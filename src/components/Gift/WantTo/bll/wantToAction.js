@@ -17,6 +17,26 @@ const actions = {
       })
   },
 
+  queryGoods ({ commit }, { goodsId, activeCode } = {}) {
+    commit(types.WANTTO_QUERY_GOODS_BEGIN)
+
+    return http.post(`general/gift/detail/${goodsId}?activeCode=${activeCode}`)
+      .then(data => {
+        commit(types.WANTTO_QUERY_GOODS_SUC, data.data)
+        return data.data
+      })
+  },
+
+  queryOrder ({ commit }, { orderNo } = {}) {
+    commit(types.WANTTO_QUERY_ORDER_BEGIN)
+
+    return http.post(`general/order/get/${orderNo}`)
+      .then(data => {
+        commit(types.WANTTO_QUERY_ORDER_SUC, data.data)
+        return data.data
+      })
+  },
+
   queryRecommendList ({ commit }, budget) {
     commit(types.WANTTO_QUERY_GOODSLIST_BEGIN)
 

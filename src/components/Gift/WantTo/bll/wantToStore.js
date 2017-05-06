@@ -7,11 +7,15 @@ import mutations from './wantToMutation'
 
 const state = {
   active: null,
+  goods: null,
+  order: null,
   preForm: null,
   goodsList: []
 }
 
 const getters = {
+  getOrder: state => state.order,
+  getGoods: state => state.goods,
   getActive: state => state.active,
   getPreForm: state => state.preForm,
   getWantToGoodsList: state => state.goodsList

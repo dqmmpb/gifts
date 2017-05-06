@@ -3,11 +3,11 @@
     <form ref="recommendForm" v-model="form" @submit.prevent="validateBeforeSubmit">
       <scroller lock-x scrollbar-y use-pulldown height="-50" :pulldown-config="{content:'下拉刷新',downContent:'下拉刷新',upContent:'释放刷新',loadingContent:'加载中'}" @on-pulldown-loading="refresh" v-model="status" ref="scrollerRecommendList">
         <div>
-          <card v-if="getActive">
+          <card v-if="getGoods">
             <div slot="content" class="card-wantto">
               <group>
-                <cell :title="goodsName(getActive)" :value="goodsPrice(getActive)" class="no-before">
-                  <img slot="icon" width="38" style="display:block;margin-right:5px;" :src="goodsPic(getActive)">
+                <cell :title="goodsName(getGoods)" :value="goodsPrice(getGoods)" class="no-before">
+                  <img slot="icon" width="38" style="display:block;margin-right:5px;" :src="goodsPic(getGoods)">
                 </cell>
                 <cell title="购买数量" class="no-before">
                   <div slot="value">
@@ -39,7 +39,7 @@
 
       <tabbar class="view-tabbar" slot="bottom">
         <tabbar-item class="weui-bar-total">
-          <span slot="label">合计： 7188元{{form.type}}</span>
+          <span slot="label">合计： {{form.total}}元{{form.type}}</span>
         </tabbar-item>
         <tabbar-item @on-item-click="toPrePay" class="weui-bar__item_normal">
           <span slot="label">确认支付</span>
@@ -74,10 +74,10 @@ export default {
     Spinner
   },
   computed: {
-    ...mapGetters(['getActive', 'getPreForm'])
+    ...mapGetters(['getGoods', 'getPreForm'])
   },
   methods: {
-    ...mapActions(['queryActive', 'storePreForm', 'giftPrePay']),
+    ...mapActions(['queryGoods', 'storePreForm', 'giftPrePay']),
     validateBeforeSubmit () {
       let self = this
       let preForm = self.getPreForm
@@ -87,7 +87,7 @@ export default {
 
       if (activeCode && pkgType && amount) {
         self.$validator.validateAll().then(() => {
-          let goods = self.getActive
+          let goods = self.getPreForm
           let amounts = [amount].join(',')
           let goodsIds = [goods.goodsId].join(',')
 
@@ -99,14 +99,13 @@ export default {
           }
 
           wechatUtil.giftPrePay(payPreForm).then(data => {
-            wechatUtil.chooseWXPay(self, data.payInfo, function (res) {
-//              self.$vux.toast.show({
-//                text: '支付成功',
-//                type: 'text'
-//              })
-              let wantToPayResult = '/gift/wantToPayResult?activeCode=' + preForm.activeCode + '&type=' + preForm.type + '&amount=' + preForm.amount
-              self.$router.push(wantToPayResult)
-            })
+            let orderNo = data.orderNo
+//            wechatUtil.chooseWXPay(self, data.payInfo, function (res) {
+//              let wantToPayResult = '/gift/wantToPayResult?activeCode=' + preForm.activeCode + '&type=' + preForm.type + '&amount=' + preForm.amount
+//              self.$router.push(wantToPayResult)
+//            })
+            let wantToPayResult = '/gift/wantToPayResult?orderNo=' + orderNo
+            self.$router.push(wantToPayResult)
           })
 
           return false
@@ -136,6 +135,7 @@ export default {
           this.form.amount = 1
         }
       }
+      this.form.total = this.form.amount * this.getGoods.price
     },
     plus () {
       console.log('plus: ' + this.form.amount)
@@ -146,6 +146,7 @@ export default {
           this.form.amount = 100
         }
       }
+      this.form.total = this.form.amount * this.getGoods.price
     },
     toPrePay () {
       this.validateBeforeSubmit()
@@ -171,16 +172,18 @@ export default {
       let self = this
       if (this.$route.query) {
         const activeCode = this.$route.query.activeCode
+        const goodsId = this.$route.query.goodsId
         const pkgType = this.$route.query.pkgType
         const amount = this.$route.query.amount
         let preForm = { }
         if (activeCode && amount && pkgType) {
           preForm.activeCode = activeCode
+          preForm.goodsId = goodsId
           preForm.amount = Number(amount)
           preForm.pkgType = pkgType
         }
         self.storePreForm(preForm).then(() => {
-          self.queryActive({ activeCode: activeCode }).then(data => {
+          self.queryGoods({ goodsId: goodsId, activeCode: activeCode }).then(data => {
             if (data && data.goodsId) {
               self.form.amount = preForm.amount
             }
@@ -197,18 +200,21 @@ export default {
       let self = this
       if (this.$route.query) {
         const activeCode = this.$route.query.activeCode
+        const goodsId = this.$route.query.goodsId
         const pkgType = this.$route.query.pkgType
         const amount = this.$route.query.amount
         let preForm = { }
         if (activeCode && amount && pkgType) {
           preForm.activeCode = activeCode
+          preForm.goodsId = goodsId
           preForm.amount = Number(amount)
           preForm.pkgType = pkgType
         }
         self.storePreForm(preForm).then(() => {
-          self.queryActive({ activeCode: activeCode }).then(data => {
-            if (data && data.goodsId) {
+          self.queryGoods({ goodsId: goodsId, activeCode: activeCode }).then(data => {
+            if (data) {
               self.form.amount = preForm.amount
+              self.form.total = preForm.amount * data.price
             }
             this.$nextTick(() => {
               setTimeout(() => {
@@ -218,7 +224,8 @@ export default {
           })
         })
 
-        wechatUtil.share({url: encodeURIComponent(location.href)}).then(data => {
+        wechatUtil.share({url: location.href}).then(data => {
+          alert(JSON.stringify(data))
           let shareCode
           if (self.$route.query) {
             shareCode = self.$route.query.shareCode
@@ -235,7 +242,8 @@ export default {
   data () {
     return {
       form: {
-        amount: 1
+        amount: 1,
+        total: 0
       },
       status: {
         pulldownStatus: 'default'

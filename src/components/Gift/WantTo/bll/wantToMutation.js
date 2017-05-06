@@ -9,6 +9,18 @@ import * as types from './wantToMutationTypes'
  * @type {{}}
  */
 const mutations = {
+  [types.WANTTO_QUERY_GOODS_BEGIN] (state) {
+    state.goods = null
+  },
+  [types.WANTTO_QUERY_GOODS_SUC] (state, data) {
+    state.goods = data
+  },
+  [types.WANTTO_QUERY_ORDER_BEGIN] (state) {
+    state.order = null
+  },
+  [types.WANTTO_QUERY_ORDER_SUC] (state, data) {
+    state.order = data
+  },
   [types.WANTTO_QUERY_ACTIVITY_BEGIN] (state) {
     state.active = null
   },

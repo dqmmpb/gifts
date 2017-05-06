@@ -17,7 +17,7 @@ const wechatConfig = {
 const wechatUtil = {
 
   share ({url}) {
-    return http.post(`general/wechatconfig/get?url=${url}`)
+    return http.post(`general/wechatconfig/get?url=${encodeURIComponent(url)}`)
       .then(data => {
         return data.data
       })
@@ -50,6 +50,7 @@ const wechatUtil = {
 
   config (self, data) {
     console.log('config')
+    console.log(data)
     // 设置
     self.$wechat.config({
       debug: true,

@@ -1,14 +1,13 @@
 <template>
 
   <div>
-    <div v-if="getGainDetail" class="panel-padding">
+    <div v-if="getOrder" class="panel-padding">
       <div>支付成功</div>
       <card>
         <div slot="content">
           <group>
-            <cell title="商品名称" :value="goodsName()"></cell>
-            <cell title="购买数量" :value="goodsPrice()"></cell>
-            <cell title="订单编号" :value="goodsOrderNo()"></cell>
+            <cell title="购买数量" :value="orderFee(getOrder)"></cell>
+            <cell title="订单编号" :value="orderNo(getOrder)"></cell>
           </group>
         </div>
       </card>
@@ -56,6 +55,8 @@ import moduleStore from '../Gain/bll/gainStore'
 import store from '../../../store'
 (!store.state.gainStore) && store.registerModule('gainStore', moduleStore)
 
+import wechatUtil from '../../../common/wechatUtil'
+
 import { Tabbar, TabbarItem, Scroller, Group, Cell, Card, XButton, Spinner } from 'vux'
 
 export default {
@@ -70,10 +71,10 @@ export default {
     Spinner
   },
   computed: {
-    ...mapGetters(['getGainDetail'])
+    ...mapGetters(['getOrder'])
   },
   methods: {
-    ...mapActions(['queryGainInfo']),
+    ...mapActions(['queryOrder']),
     toAddressList () {
       const shareCode = this.$route.query.shareCode
       if (shareCode) {
@@ -88,20 +89,28 @@ export default {
     toQrCode () {
       return '/qrcode'
     },
-    goodsName () {
-      return '鹅毛礼1号'
+    orderFee (item) {
+      return item.orderFee
     },
-    goodsPrice () {
-      return '￥' + 7188
-    },
-    goodsOrderNo () {
-      return 'EML20170501000001'
+    orderNo (item) {
+      return item.orderNo
     },
     refresh () {
-      console.log('refresh... ' + 1)
-      const shareCode = this.$route.query.shareCode
-      if (shareCode) {
-        this.queryGainInfo({shareCode: shareCode}).then(() => {
+      console.log('refresh... ')
+      let self = this
+      if (this.$route.query) {
+        const orderNo = this.$route.query.orderNo
+
+        self.queryOrder({orderNo: orderNo}).then(data => {
+          let shareCode = data.shareCode
+          wechatUtil.share({url: location.href}).then(data => {
+            if (shareCode) {
+              wechatUtil.configWantToShare(self, data, shareCode)
+            } else {
+              wechatUtil.config(self, data)
+            }
+          })
+
           this.$nextTick(() => {
             setTimeout(() => {
               this.$refs.scrollerGainInfo.donePulldown()
@@ -111,12 +120,26 @@ export default {
       }
     },
     initPage () {
+      let self = this
       if (this.$route.query) {
-        const shareCode = this.$route.query.shareCode
-        if (shareCode) {
-          this.queryGainInfo({shareCode: shareCode}).then(() => {
+        const orderNo = this.$route.query.orderNo
+
+        self.queryOrder({orderNo: orderNo}).then(data => {
+          let shareCode = data.shareCode
+          wechatUtil.share({url: location.href}).then(data => {
+            if (shareCode) {
+              wechatUtil.configWantToShare(self, data, shareCode)
+            } else {
+              wechatUtil.config(self, data)
+            }
           })
-        }
+
+          this.$nextTick(() => {
+            setTimeout(() => {
+              self.$refs.scrollerRecommendList.reset()
+            }, 10)
+          })
+        })
       }
     }
   },

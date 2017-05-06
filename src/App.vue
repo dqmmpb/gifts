@@ -14,7 +14,7 @@
           <i class="fa fa-bars" slot="icon"></i>
           <span slot="label">活动首页</span>
         </tabbar-item>
-        <tabbar-item :link="{path:'/gift/baseInfo', query: {shareCode:'3ce18aeea2b348a6b2d700db3cc2bb2c00795496'}}" :selected="route.path === '/gift/baseInfo'">
+        <tabbar-item :link="{path:'/gift/baseInfo', query: {shareCode:'c2fcbee6017d49f99f1413d95ae595f534655784'}}" :selected="route.path === '/gift/baseInfo'">
           <i class="fa fa-bars" slot="icon"></i>
           <span slot="label">拆礼包</span>
         </tabbar-item>

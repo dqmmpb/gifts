@@ -34,13 +34,16 @@ module.exports = {
         changeOrigin: true
       },
       '/hongbao_local': {
-        target: 'http://192.168.1.104:8080',
+        target: 'http://192.168.1.104:8080'
       },
       '/hongbao_server': {
-        target: 'http://59.110.153.132',
+        target: 'http://59.110.153.132'
       },
+/*      '/hongbao': {
+        target: 'http://120.27.209.16'
+      },*/
       '/hongbao': {
-        target: 'http://120.27.209.16',
+        target: 'http://192.168.0.115:8080'
       }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"

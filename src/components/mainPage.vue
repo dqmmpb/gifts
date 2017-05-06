@@ -8,7 +8,7 @@
 
 
     <tabbar class="view-tabbar" slot="bottom">
-      <tabbar-item :link="{path:'/gift/wantToGive', query:{ activeCode: 'ZD521' } }" class="tabbar-button__btn">
+      <tabbar-item :link="{path:'/gift/wantToGive', query:{ activeCode: 'ZD521', goodsId: 1 } }" class="tabbar-button__btn">
         <span slot="label">查看鹅毛礼</span>
       </tabbar-item>
     </tabbar>
