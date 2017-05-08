@@ -35,10 +35,12 @@ exports.cssLoaders = function (options) {
     // Extract CSS when that option is specified
     // (which is the case during production build)
     if (options.extract) {
-      return ExtractTextPlugin.extract({
-        use: loaders,
-        fallback: 'vue-style-loader'
-      })
+      //return ExtractTextPlugin.extract('vue-style-loader', loaders)
+      let opt = {fallback: 'vue-style-loader', use: loaders};
+      if (process.env.NODE_ENV === 'production') {
+        opt.publicPath = config.build.assetsPathInCss;
+      }
+      return ExtractTextPlugin.extract(opt);
     } else {
       return ['vue-style-loader'].concat(loaders)
     }

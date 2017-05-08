@@ -7,7 +7,7 @@ import Vue from 'vue'
 import assignDeep from 'assign-deep'
 
 // const basePath = '/gifts-api/'
-const basePath = '/hongbao_local/'
+const basePath = '/hongbao/'
 
 function makeUrl (url) {
   if (url.startsWith('/')) {

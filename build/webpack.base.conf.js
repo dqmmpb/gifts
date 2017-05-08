@@ -23,7 +23,7 @@ let webpackConfig = {
       : config.dev.assetsPublicPath
   },
   resolve: {
-    extensions: ['.js', '.vue', '.json'],
+    extensions: ['.js', '.vue', '.css', '.json'],
     alias: {
       'vue$': 'vue/dist/vue',
       'vuex$': 'vuex/dist/vuex',
