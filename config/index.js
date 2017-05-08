@@ -23,7 +23,7 @@ module.exports = {
   },
   dev: {
     env: require('./dev.env'),
-    port: 8080,
+    port: 3000,
     autoOpenBrowser: false,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
@@ -34,17 +34,19 @@ module.exports = {
         changeOrigin: true
       },
       '/hongbao_local': {
-        target: 'http://192.168.1.104:8080'
+        target: 'http://192.168.2.123:8080',
+        pathRewrite: {'^/hongbao_local' : '/hongbao'},
+        changeOrigin: true
       },
       '/hongbao_server': {
         target: 'http://59.110.153.132'
       },
-      // '/hongbao': {
-      //   target: 'http://120.27.209.16'
-      // },
       '/hongbao': {
-        target: 'http://192.168.0.115:8080'
-      }
+        target: 'http://120.27.209.16'
+      }// ,
+      // '/hongbao': {
+      //   target: 'http://192.168.0.115:8080'
+      // }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README

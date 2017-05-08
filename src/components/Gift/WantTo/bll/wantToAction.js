@@ -12,6 +12,7 @@ const actions = {
 
     return http.post(`general/goods/get/${activeCode}`)
       .then(data => {
+        data.data.activeCode = activeCode
         commit(types.WANTTO_QUERY_ACTIVITY_SUC, data.data)
         return data.data
       })

@@ -10,7 +10,7 @@
       </transition>
 
       <tabbar class="view-tabbar" v-if="!isLoading && !isTabbar" slot="bottom">
-        <tabbar-item :link="{path:'/mainPage'}" :selected="route.path === '/mainPage'">
+        <tabbar-item :link="{path:'/mainPage', query:{ activeCode: 'ZD521'}}" :selected="route.path === '/mainPage'">
           <i class="fa fa-bars" slot="icon"></i>
           <span slot="label">活动首页</span>
         </tabbar-item>

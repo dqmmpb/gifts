@@ -52,6 +52,8 @@ import moduleStore from './bll/wantToStore'
 import store from '../../../store'
 (!store.state.wantToStore) && store.registerModule('wantToStore', moduleStore)
 
+import wechatUtil from '../../../common/wechatUtil'
+
 import {Tabbar, Group, Cell, XInput, XButton, Swiper} from 'vux'
 
 export default {
@@ -176,16 +178,28 @@ export default {
           })
         } else {
           self.$vux.toast.show({
-            text: '商品ID异常',
+            text: '活动号异常',
             type: 'text'
           })
         }
       } else {
         self.$vux.toast.show({
-          text: '商品ID异常',
+          text: '活动号异常',
           type: 'text'
         })
       }
+
+      wechatUtil.share({url: location.href}).then(data => {
+        let shareCode
+        if (self.$route.query) {
+          shareCode = self.$route.query.shareCode
+        }
+        if (shareCode) {
+          wechatUtil.configWantToShare(self, data, shareCode)
+        } else {
+          wechatUtil.config(self, data)
+        }
+      })
     }
   },
   data () {

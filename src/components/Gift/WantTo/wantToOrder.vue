@@ -223,7 +223,6 @@ export default {
         })
 
         wechatUtil.share({url: location.href}).then(data => {
-          alert(JSON.stringify(data))
           let shareCode
           if (self.$route.query) {
             shareCode = self.$route.query.shareCode

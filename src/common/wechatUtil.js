@@ -6,8 +6,8 @@ import http from './httpUtil'
 
 const wechatConfig = {
   title: '鹅毛礼', // 分享标题
-  link: 'http://192.168.0.115:8080', // 分享链接
-  shareLink: 'http://192.168.0.115:8080/hongbao/view', // 分享链接
+  link: 'http://192.168.2.123:3000', // 分享链接
+  shareLink: 'http://192.168.2.123:8080/hongbao/view', // 分享链接
   imgUrl: 'http://7xjclc.com2.z0.glb.qiniucdn.com/1002.png', // 分享图标
   desc: '小小鹅毛礼，快来领取！' // 分享描述
 }
@@ -18,7 +18,9 @@ const wechatConfig = {
 const wechatUtil = {
 
   share ({url}) {
-    return http.post(`general/wechatconfig/get?url=${encodeURIComponent(url.split('#')[0])}`)
+    let encodeURLShare = encodeURIComponent(url.split('#')[0])
+    console.log(url.split('#')[0])
+    return http.post(`general/wechatconfig/get?url=${encodeURLShare}`)
       .then(data => {
         return data.data
       })
@@ -51,7 +53,6 @@ const wechatUtil = {
 
   config (self, data) {
     console.log('config')
-    console.log(data)
     // 设置
     self.$wechat.config({
       debug: true,
@@ -108,6 +109,7 @@ const wechatUtil = {
       ]
     })
     self.$wechat.ready(function () {
+      console.log(wechatConfig.shareLink + '/' + shareCode)
       // 分享朋友圈
       self.$wechat.onMenuShareTimeline({
         title: wechatConfig.title, // 分享标题
